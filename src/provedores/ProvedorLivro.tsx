@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { TLivro } from "../tipos";
+import { ILivro } from "../tipos";
 import { ContextoBaseLivro } from "../contextos";
-import { IPropsChildren } from "../uteis";
+import { IChildrenProps } from "../uteis";
 
-export const ProvedorLivro = ({ children }: IPropsChildren) => {
-    const [livro, setLivro] = useState<TLivro>(null!);
+export const ProvedorLivro = ({ children }: IChildrenProps) => {
+    const [livro, setLivro] = useState<ILivro>(null!);
 
     useEffect(() => {
         axios
@@ -15,7 +15,7 @@ export const ProvedorLivro = ({ children }: IPropsChildren) => {
             .then((resultado) => {
                 setLivro(resultado.data);
             });
-    }, [setLivro]);
+    }, []);
 
     return (
         <ContextoBaseLivro.Provider

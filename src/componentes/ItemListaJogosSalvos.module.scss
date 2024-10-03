@@ -1,0 +1,44 @@
+.itemLista {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 0 0 16px 0;
+    list-style: none;
+    border: 1px solid #0a0a0a;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f2f2f2;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.08);
+    font-size: 1rem;
+    height: 50px;
+    width: 300px;
+
+    &:hover {
+        transition: 0.2s;
+        border: 1px solid #64ffff;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+        -moz-transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        transform: scale(1.05);
+    }
+
+    &_indice,
+    &_novoJogo {
+        font-size: 1.2rem;
+        font-style: italic;
+    }
+
+    &_detalhes {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &_infos {
+        margin: 0;
+        text-align: left;
+        width: 100%;
+        line-break: strict;
+    }
+}

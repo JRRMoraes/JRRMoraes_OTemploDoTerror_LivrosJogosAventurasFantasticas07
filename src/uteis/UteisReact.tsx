@@ -6,7 +6,7 @@ import {
     useState,
 } from "react";
 
-export interface IPropsChildren {
+export interface IChildrenProps {
     children?: ReactElement;
 }
 

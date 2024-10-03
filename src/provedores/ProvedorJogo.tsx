@@ -1,42 +1,37 @@
-import { useEffect, useState } from "react";
-import { TJogo } from "../tipos";
+import { useState } from "react";
+import { IJogo, CriarJogoNulo } from "../tipos";
 import { ContextoBaseJogos } from "../contextos";
-import { IPropsChildren, CriarStateComLocalStorage } from "../uteis";
+import { IChildrenProps, CriarStateComLocalStorage } from "../uteis";
 
-const LOCALSTORAGE_JOGOS = "JRRMoraes_LJAF07_OTemploDoTerror__Jogos";
+const LOCALSTORAGE_JOGOS = "JRRMoraes_LJAF07_OTemploDoTerror__JogoSalvo";
 
-const JOGOS_ZERADOS: TJogo[] = [
-    {
-        idJogo: 1,
-        ativo: false,
-    },
-    {
-        idJogo: 2,
-        ativo: false,
-    },
-    {
-        idJogo: 3,
-        ativo: false,
-    },
-];
-
-export const ProvedorJogos = ({ children }: IPropsChildren) => {
-    const [jogos, setJogos] = CriarStateComLocalStorage<TJogo[]>(
-        LOCALSTORAGE_JOGOS,
-        JOGOS_ZERADOS
+export const ProvedorJogos = ({ children }: IChildrenProps) => {
+    const [jogoSalvo1, setJogoSalvo1] = CriarStateComLocalStorage<IJogo>(
+        LOCALSTORAGE_JOGOS + "1",
+        CriarJogoNulo(1)
     );
 
-    const [jogoAtual, setJogoAtual] = useState<TJogo>(null!);
+    const [jogoSalvo2, setJogoSalvo2] = CriarStateComLocalStorage<IJogo>(
+        LOCALSTORAGE_JOGOS + "2",
+        CriarJogoNulo(2)
+    );
 
-    useEffect(() => {
-        if (jogos && jogos["length"] === 0) setJogos(JOGOS_ZERADOS);
-    }, [jogos, setJogos]);
+    const [jogoSalvo3, setJogoSalvo3] = CriarStateComLocalStorage<IJogo>(
+        LOCALSTORAGE_JOGOS + "3",
+        CriarJogoNulo(3)
+    );
+
+    const [jogoAtual, setJogoAtual] = useState<IJogo>(null!);
 
     return (
         <ContextoBaseJogos.Provider
             value={{
-                jogos,
-                setJogos,
+                jogoSalvo1,
+                setJogoSalvo1,
+                jogoSalvo2,
+                setJogoSalvo2,
+                jogoSalvo3,
+                setJogoSalvo3,
                 jogoAtual,
                 setJogoAtual,
             }}

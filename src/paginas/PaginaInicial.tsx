@@ -1,25 +1,37 @@
-import { ContextoJogos } from "../contextos";
+import { TelaListaJogosSalvos } from "../telas";
 
 export const PaginaInicial = () => {
-    const { jogos, setJogos } = ContextoJogos();
+    function MontarImagemCapa() {
+        return (
+            <img
+                className="capa"
+                src="src\assets\LJAF07_OTemploDoTerror\imagens\Capa.png"
+                alt="O Templo do Terror"
+                height="100%"
+            ></img>
+        );
+    }
 
-    function MontarRetorno_Sucesso() {
+    function MontarRetorno_ResumoInicial() {
         return (
             <div>
                 <ul>
-                    {jogos?.map((jogoI) => {
-                        return (
-                            <li key={jogoI.idJogo}>
-                                {jogoI.idJogo} - {jogoI.jogador}
-                            </li>
-                        );
-                    })}
+                    {
+                        //!livro.resumoInicial?.map((textoI: string) => {
+                        //    <li>{textoI}</li>;
+                        //})
+                    }
                 </ul>
             </div>
         );
     }
 
-    return <div>{MontarRetorno_Sucesso()}</div>;
+    return (
+        <div>
+            {MontarImagemCapa()}
+            <TelaListaJogosSalvos />
+        </div>
+    );
 };
 
 export default PaginaInicial;

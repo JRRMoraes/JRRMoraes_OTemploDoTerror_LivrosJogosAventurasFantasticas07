@@ -1,0 +1,33 @@
+button {
+    border-radius: 8px;
+    border: 1px solid #646cff;
+    padding: 0.6em 1.2em;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    transition: border-color 0.25s;
+    cursor: pointer;
+
+    &:hover {
+        border-color: #00ff00;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+        transition: 0.2s;
+        cursor: pointer;
+
+        &:active {
+            -moz-transform: scale(1.2);
+            -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+        }
+    }
+
+    &:focus,
+    &:focus-visible {
+        outline: 2px auto #00ff00;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+    }
+}
