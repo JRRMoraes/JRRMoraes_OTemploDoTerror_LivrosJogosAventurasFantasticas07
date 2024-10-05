@@ -23,6 +23,7 @@ export interface ICombate {
 export interface IDestino {
     idPagina: number;
     destino: string;
+    funcao: () => void;
 }
 
 export interface IPagina {

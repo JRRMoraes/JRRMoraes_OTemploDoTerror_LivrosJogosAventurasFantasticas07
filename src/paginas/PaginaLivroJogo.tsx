@@ -1,3 +1,4 @@
+import styles from "./PaginaLivroJogo.module.scss";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { ContextoJogos } from "../contextos";
@@ -7,18 +8,18 @@ export const PaginaLivroJogo = () => {
     let { idJogo } = useParams();
 
     const { jogoAtual, setJogoAtual, ObterJogoSalvo } = ContextoJogos();
-    if (!jogoAtual) setJogoAtual(ObterJogoSalvo(idJogo!));
-    //    useEffect(() => {
-    //        if (!jogoAtual) setJogoAtual(ObterJogoSalvo(idJogo!));
-    //    }, []);
-    if (!jogoAtual) return <></>;
 
+    useEffect(() => {
+        if (!jogoAtual) setJogoAtual(ObterJogoSalvo(idJogo!));
+    }, []);
+
+    if (!jogoAtual) return <></>;
     return (
-        <div>
-            <div>
+        <div className={styles.livroJogo}>
+            <div className={styles.livroJogo_panilha}>
                 <TelaPanilha />
             </div>
-            <div>
+            <div className={styles.livroJogo_campanha}>
                 <TelaCampanha />
             </div>
         </div>

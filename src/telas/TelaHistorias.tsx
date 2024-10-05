@@ -1,12 +1,6 @@
 import styles from "./TelaHistorias.module.scss";
 import { useState, useEffect } from "react";
-import {
-    IPagina,
-    IHistoria,
-    IEfeito,
-    PAGINA_ZERADA,
-    HISTORIA_ZERADA,
-} from "../tipos";
+import { IPagina, IHistoria, IEfeito, PAGINA_ZERADA, HISTORIA_ZERADA } from "../tipos";
 import { ContextoJogos } from "../contextos";
 import { Botao } from "../componentes";
 
@@ -14,36 +8,22 @@ interface ITelaHistoriasProps {
     paginaAtual: IPagina;
 }
 
-interface IEstadoTelaHistorias {
-    processando: boolean;
-    concluido: boolean;
-    idPagina: number;
-}
-
 export const TelaHistorias = ({ paginaAtual }: ITelaHistoriasProps) => {
-    if (!paginaAtual || !paginaAtual.historias || !paginaAtual.historias.length)
-        return;
-
     const { jogoAtual } = ContextoJogos();
-    if (!jogoAtual) return <></>;
-
+    const [idPagina, setIdPagina] = useState(PAGINA_ZERADA.idPagina);
     const [historias, setHistorias] = useState<IHistoria[]>([]);
+    const [concluido, setConcluido] = useState(false);
+    const TEMPO_CHAR = { normal: 20, rapido: 2 };
+    const TEMPO_TEXTO = { normal: 100, rapido: 10 };
+    const [tempoChar, setTempoChar] = useState(TEMPO_CHAR.normal);
+    const [tempoTexto, setTempoTexto] = useState(TEMPO_TEXTO.normal);
+    const [indiceHistoria, setIndiceHistoria] = useState(0);
+    const [indiceTexto, setIndiceTexto] = useState(0);
+    const [indiceTextoChar, setIndiceTextoChar] = useState(0);
+    const [indiceEfeito, setIndiceEfeito] = useState(0);
+    const [indiceEfeitoChar, setIndiceEfeitoChar] = useState(0);
 
-    let indiceHistoria: number;
-    let indiceTexto: number;
-    let indiceTextoChar: number;
-    let indiceEfeito: number;
-    let indiceEfeitoChar: number;
-    let tempo: number;
-    let timer: NodeJS.Timeout;
-
-    const [estado, setEstado] = useState<IEstadoTelaHistorias>({
-        processando: false,
-        concluido: false,
-        idPagina: PAGINA_ZERADA.idPagina,
-    });
-
-    function HistoriaAtual() {
+    function HistoriaAtual(): IHistoria {
         if (paginaAtual.historias[indiceHistoria]) {
             return paginaAtual.historias[indiceHistoria];
         } else {
@@ -52,170 +32,53 @@ export const TelaHistorias = ({ paginaAtual }: ITelaHistoriasProps) => {
     }
 
     function IncrementarHistoriaTextoDoIndice(char: string) {
-        //setHistorias(
-        //    [...historias].map((historiaI, indiceI) => {
-        //        if (indiceI === indiceHistoria)
-        //            historiaI.textos[indiceTexto] += char;
-        //        return historiaI;
-        //     })
-        // );
-
+        if (!historias[indiceHistoria].textos[indiceTexto]) {
+            historias[indiceHistoria].textos = [...historias[indiceHistoria].textos, ""];
+        }
         historias[indiceHistoria].textos[indiceTexto] += char;
-        //setHistorias([...historias]);
     }
 
     function IncrementarHistoriaEfeitoDoIndice(char: string) {
-        setHistorias(
-            [...historias].map((historiaI, indiceI) => {
-                if (indiceI === indiceHistoria) {
-                    if (!historiaI.efeitos) {
-                        historiaI.efeitos![indiceEfeito].texto += char;
-                    }
-                }
-                return historiaI;
-            })
-        );
-    }
-
-    function FinalizarHistoria() {
-        tempo = 4;
-        clearInterval(timer);
-        timer = setInterval(() => {
-            Datilografar();
-        }, tempo);
-    }
-
-    function ExecutarDatilografia() {
-        if (estado.processando) return <></>;
-        setEstado({ ...estado, processando: true });
-        indiceHistoria = 0;
-        indiceTexto = 0;
-        indiceTextoChar = -1;
-        indiceEfeito = 0;
-        indiceEfeitoChar = -1;
-        tempo = 20;
-        timer = setInterval(() => {
-            Datilografar();
-        }, tempo);
-        return <></>;
-    }
-
-    function Datilografar() {
-        while (indiceHistoria < paginaAtual.historias.length) {
-            if (!historias[indiceHistoria]) return;
-            if (HistoriaAtual().textos) {
-                while (indiceTexto < HistoriaAtual().textos.length) {
-                    if (!historias[indiceHistoria].textos[indiceTexto])
-                        historias[indiceHistoria].textos = [
-                            ...historias[indiceHistoria].textos,
-                            "",
-                        ];
-                    indiceTextoChar++;
-                    if (
-                        indiceTextoChar <
-                        HistoriaAtual().textos[indiceTexto].length
-                    ) {
-                        IncrementarHistoriaTextoDoIndice(
-                            HistoriaAtual().textos[indiceTexto][indiceTextoChar]
-                        );
-                    } else {
-                        indiceTextoChar = -1;
-                        indiceTexto++;
-                    }
-                }
-            }
-
-            if (HistoriaAtual().efeitos) {
-                while (indiceEfeito < HistoriaAtual().efeitos!.length) {
-                    if (!historias[indiceHistoria].efeitos![indiceEfeito])
-                        historias[indiceHistoria].efeitos = [
-                            ...historias[indiceHistoria].efeitos!,
-                            {
-                                texto: "",
-                                sobre: HistoriaAtual().efeitos![indiceEfeito]
-                                    .sobre,
-                                valor: HistoriaAtual().efeitos![indiceEfeito]
-                                    .valor,
-                            },
-                        ];
-                    indiceEfeitoChar++;
-                    if (
-                        indiceEfeitoChar <
-                        HistoriaAtual().efeitos![indiceEfeito].texto.length
-                    ) {
-                        IncrementarHistoriaEfeitoDoIndice(
-                            HistoriaAtual().efeitos![indiceEfeito].texto[
-                                indiceEfeitoChar
-                            ]
-                        );
-                    } else {
-                        indiceEfeitoChar = -1;
-                        indiceEfeito++;
-                    }
-                }
-            }
-
-            indiceHistoria++;
-            if (indiceHistoria >= paginaAtual.historias.length) {
-                clearInterval(timer);
-                setEstado({ ...estado, concluido: true });
-            }
+        if (!historias[indiceHistoria].efeitos![indiceEfeito]) {
+            historias[indiceHistoria].efeitos = [
+                ...historias[indiceHistoria].efeitos!,
+                {
+                    texto: "",
+                    sobre: HistoriaAtual().efeitos![indiceEfeito].sobre,
+                    valor: HistoriaAtual().efeitos![indiceEfeito].valor,
+                },
+            ];
         }
+        historias[indiceHistoria].efeitos![indiceEfeito].texto += char;
     }
 
     function TestarReinicio() {
         let idPaginaL = PAGINA_ZERADA.idPagina;
-        if (paginaAtual && paginaAtual.idPagina >= 0)
-            idPaginaL = paginaAtual.idPagina;
-        if (estado.idPagina !== idPaginaL) Reiniciar(idPaginaL);
-        return <></>;
+        if (paginaAtual && paginaAtual.idPagina >= 0) idPaginaL = paginaAtual.idPagina;
+        if (idPagina !== idPaginaL) Reiniciar(idPaginaL);
     }
 
     function Reiniciar(idPagina: number) {
-        clearInterval(timer);
+        setIdPagina(idPagina);
         setHistorias([]);
-        if (paginaAtual && paginaAtual.historias)
-            setHistorias(paginaAtual.historias);
-
-        //    paginaAtual.historias.forEach((historiaI, indiceI) => {
-        //        setHistorias((prevHistorias) => [
-        //            ...prevHistorias,
-        //            HISTORIA_ZERADA,
-        //        ]);
-        //    });
-        setEstado({
-            ...estado,
-            processando: false,
-            concluido: false,
-            idPagina: idPagina,
-        });
+        setConcluido(false);
+        setTempoChar(TEMPO_CHAR.normal);
+        setTempoTexto(TEMPO_TEXTO.normal);
+        setIndiceHistoria(0);
+        setIndiceTexto(0);
+        setIndiceTextoChar(0);
+        setIndiceEfeito(0);
+        setIndiceEfeitoChar(0);
     }
-
-    //   useEffect(() => {
-    //       TestarReinicio();
-    //      Datilografar();
-    //return () => {
-    //    clearInterval(timer);
-    //};
-    //  }, []);
 
     function MontarRetorno_Textos() {
         return (
             <div>
-                {
-                    !historias.map((historiaI: IHistoria) => {
-                        historiaI.textos?.map((textoI: string) => {
-                            return (
-                                <>
-                                    {"a1"}
-                                    <p className={styles.historias_texto}>
-                                        {textoI + "     a2"}
-                                    </p>
-                                </>
-                            );
-                        });
-                    })
-                }
+                {historias.map((historiaI: IHistoria) => {
+                    return historiaI.textos?.map((textoI: string) => {
+                        return <p className={styles.historias_texto}>{textoI}</p>;
+                    });
+                })}
             </div>
         );
     }
@@ -223,55 +86,90 @@ export const TelaHistorias = ({ paginaAtual }: ITelaHistoriasProps) => {
     function MontarRetorno_Efeitos() {
         return (
             <div>
-                {
-                    !historias.map((historiaI: IHistoria) => {
-                        historiaI.efeitos?.map((efeitoI: IEfeito) => {
-                            return (
-                                <div className={styles.historias_efeito}>
-                                    <h5>{efeitoI.texto}</h5>
-                                    <h6>
-                                        {efeitoI.valor + "  " + efeitoI.sobre}
-                                    </h6>
-                                </div>
-                            );
-                        });
-                    })
-                }
-            </div>
-        );
-    }
-
-    function MontarRetorno() {
-        TestarReinicio();
-        //ExecutarDatilografia();
-        if (!historias || !historias.length) return <></>;
-        return (
-            <div>
-                aaaa
-                {MontarRetorno_Textos()}
-                bbbb
-                {MontarRetorno_Efeitos()}
-                cccc
-                {
-                    !historias?.map((historiaI: IHistoria) => {
-                        historiaI.textos?.map(
-                            (textoI: string, indiceI: number) => {
-                                {
-                                    console.log("aaaaa " + textoI);
-                                }
-                                return (
-                                    <p key={indiceI}>{textoI + "   a333"}</p>
-                                );
-                            }
+                {historias.map((historiaI: IHistoria) => {
+                    return historiaI.efeitos?.map((efeitoI: IEfeito) => {
+                        return (
+                            <div className={styles.historias_efeito}>
+                                <h5>{efeitoI.texto}</h5>
+                                <h6>{efeitoI.valor + "  " + efeitoI.sobre}</h6>
+                            </div>
                         );
-                    })
-                }
-                <Botao aoClicar={() => FinalizarHistoria()}>Todo texto</Botao>
+                    });
+                })}
             </div>
         );
     }
 
-    return <>{MontarRetorno()}</>;
+    function MontarRetorno_BotaoFinalizarHistoria() {
+        if (!concluido) {
+            return (
+                <div className={styles.historias_finalizarHistoria}>
+                    <Botao aoClicar={() => FinalizarHistoria()}>Finalizar história</Botao>
+                </div>
+            );
+        } else {
+            return <></>;
+        }
+    }
+
+    function FinalizarHistoria() {
+        setTempoChar(TEMPO_CHAR.rapido);
+        setTempoTexto(TEMPO_TEXTO.rapido);
+    }
+
+    useEffect(() => {
+        if (!jogoAtual) return;
+        if (!paginaAtual || !paginaAtual.historias || !paginaAtual.historias.length) return;
+
+        //TestarReinicio();
+        if (indiceHistoria >= paginaAtual.historias.length) {
+            setConcluido(true);
+            return;
+        }
+        if (!historias[indiceHistoria]) {
+            setHistorias((prevHistorias) => [...prevHistorias, HISTORIA_ZERADA]);
+        }
+
+        function Datilografar() {
+            if (HistoriaAtual().textos && indiceTexto < HistoriaAtual().textos.length) {
+                if (indiceTextoChar < HistoriaAtual().textos[indiceTexto].length) {
+                    IncrementarHistoriaTextoDoIndice(HistoriaAtual().textos[indiceTexto][indiceTextoChar]);
+                    setIndiceTextoChar((prevIndiceTextoChar) => prevIndiceTextoChar + 1);
+                } else {
+                    setTimeout(() => {
+                        setIndiceTexto((prevIndiceTexto) => prevIndiceTexto + 1);
+                        setIndiceTextoChar(0);
+                    }, tempoTexto);
+                }
+            } else if (HistoriaAtual().efeitos && indiceEfeito < HistoriaAtual().efeitos!.length) {
+                if (indiceEfeitoChar < HistoriaAtual().efeitos![indiceEfeito].texto.length) {
+                    IncrementarHistoriaEfeitoDoIndice(HistoriaAtual().efeitos![indiceEfeito].texto[indiceEfeitoChar]);
+                    setIndiceEfeitoChar((prevIndiceEfeitoChar) => prevIndiceEfeitoChar + 1);
+                } else {
+                    setTimeout(() => {
+                        setIndiceEfeito((prevIndiceEfeito) => prevIndiceEfeito + 1);
+                        setIndiceEfeitoChar(0);
+                    }, tempoTexto);
+                }
+            } else {
+                setIndiceHistoria((prevIndiceHistoria) => prevIndiceHistoria + 1);
+            }
+        }
+
+        const timer = setTimeout(Datilografar, tempoChar);
+        return () => clearTimeout(timer);
+    }, [jogoAtual, paginaAtual, historias, indiceHistoria, indiceTexto, indiceTextoChar, indiceEfeito, indiceEfeitoChar, tempoTexto, tempoChar]);
+
+    if (!jogoAtual) return <></>;
+    if (!paginaAtual || !paginaAtual.historias || !paginaAtual.historias.length) return <></>;
+    if (!historias || !historias.length) return <></>;
+    return (
+        <div className={styles.historias}>
+            {MontarRetorno_Textos()}
+            {MontarRetorno_Efeitos()}
+            {MontarRetorno_BotaoFinalizarHistoria()}
+        </div>
+    );
 };
 
 export default TelaHistorias;

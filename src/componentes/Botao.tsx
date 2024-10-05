@@ -1,3 +1,4 @@
+import "./Botao.module.scss";
 import { ReactElement } from "react";
 
 interface IBotaoProps {
@@ -7,12 +8,7 @@ interface IBotaoProps {
     desativado?: boolean;
 }
 
-export const Botao = ({
-    children,
-    aoClicar,
-    tipo = "button",
-    desativado = false,
-}: IBotaoProps) => {
+export const Botao = ({ children, aoClicar, tipo = "button", desativado = false }: IBotaoProps) => {
     function AoClicar() {
         if (aoClicar) aoClicar();
     }

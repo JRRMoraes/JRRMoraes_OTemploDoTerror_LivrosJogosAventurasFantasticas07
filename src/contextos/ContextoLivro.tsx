@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction, useContext } from "react";
-import { PAGINA_ZERADA, IJogo, ILivro, IPagina } from "../tipos";
+import { IJogo, ILivro, IPagina, PAGINA_ZERADA } from "../tipos";
 
 export type TContextoBaseLivro = {
     livro: ILivro;
@@ -15,8 +15,7 @@ export const ContextoLivro = () => {
     const { livro, setLivro } = useContext(ContextoBaseLivro);
 
     function ObterPagina(jogo: IJogo): IPagina {
-        if (!livro || !livro.paginasIniciais || !livro.paginasCampanha)
-            return PAGINA_ZERADA;
+        if (!livro || !livro.paginasIniciais || !livro.paginasCampanha) return PAGINA_ZERADA;
         if (!jogo) return PAGINA_ZERADA;
         if (!jogo.campanhaCapitulo) {
             jogo.campanhaCapitulo = "PAGINAS_INICIAIS";
@@ -24,18 +23,14 @@ export const ContextoLivro = () => {
         }
         if (jogo.campanhaCapitulo === "PAGINAS_INICIAIS") {
             if (jogo.campanhaIndice !== 999) {
-                return livro.paginasIniciais.find(
-                    (paginaI) => paginaI.idPagina === jogo.campanhaIndice
-                )!;
+                return livro.paginasIniciais.find((paginaI) => paginaI.idPagina === jogo.campanhaIndice)!;
             } else {
                 jogo.campanhaCapitulo = "PAGINAS_CAMPANHA";
                 jogo.campanhaIndice = 0;
             }
         }
         if (jogo.campanhaCapitulo === "PAGINAS_CAMPANHA") {
-            return livro.paginasCampanha.find(
-                (paginaI) => paginaI.idPagina === jogo.campanhaIndice
-            )!;
+            return livro.paginasCampanha.find((paginaI) => paginaI.idPagina === jogo.campanhaIndice)!;
         }
         return PAGINA_ZERADA;
     }

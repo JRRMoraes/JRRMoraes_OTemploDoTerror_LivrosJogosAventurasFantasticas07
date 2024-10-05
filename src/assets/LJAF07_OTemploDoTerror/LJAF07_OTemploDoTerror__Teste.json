@@ -279,9 +279,7 @@
             "idPagina": 3,
             "historias": [
                 {
-                    "textos": [
-                        "A porta dá para um outro corredor bem iluminado e que parece ser regularmente utilizado."
-                    ]
+                    "textos": ["A porta dá para um outro corredor bem iluminado e que parece ser regularmente utilizado."]
                 }
             ],
             "destinos": [
@@ -299,9 +297,7 @@
             "idPagina": 4,
             "historias": [
                 {
-                    "textos": [
-                        "A água fresca sacia sua sede. Você se sente imediatamente revigorado, já que a água contém raras substâncias fortificantes."
-                    ],
+                    "textos": ["A água fresca sacia sua sede. Você se sente imediatamente revigorado, já que a água contém raras substâncias fortificantes."],
                     "efeito": {
                         "texto": "Some 4 pontos de ENERGIA.",
                         "sobre": "ENERGIA",
@@ -309,9 +305,7 @@
                     }
                 },
                 {
-                    "textos": [
-                        "Com a água ainda escorrendo pelo queixo, sua procura continua."
-                    ]
+                    "textos": ["Com a água ainda escorrendo pelo queixo, sua procura continua."]
                 }
             ],
             "destinos": [
@@ -365,9 +359,7 @@
             "idPagina": 8,
             "historias": [
                 {
-                    "textos": [
-                        "Ao vê-lo, o Homem-Lagarto sibila com força e avança na sua direção, espada erguida sobre a cabeça."
-                    ]
+                    "textos": ["Ao vê-lo, o Homem-Lagarto sibila com força e avança na sua direção, espada erguida sobre a cabeça."]
                 }
             ],
             "combates": [
@@ -431,10 +423,7 @@
             "destinos": [
                 {
                     "idPagina": 11,
-                    "destinos": [
-                        "Se você vencer, tentará dormir de novo, mas ficará dando voltas pelo resto da noite.",
-                        "De manhã, você parte de novo. Volte para 11."
-                    ]
+                    "destinos": ["Se você vencer, tentará dormir de novo, mas ficará dando voltas pelo resto da noite.", "De manhã, você parte de novo. Volte para 11."]
                 }
             ]
         },
@@ -442,9 +431,7 @@
             "idPagina": 12,
             "historias": [
                 {
-                    "textos": [
-                        "Incapaz de abrir a porta, você recua para caminhar de volta pelo corredor, passando pela última encruzilhada."
-                    ]
+                    "textos": ["Incapaz de abrir a porta, você recua para caminhar de volta pelo corredor, passando pela última encruzilhada."]
                 }
             ],
             "destinos": [

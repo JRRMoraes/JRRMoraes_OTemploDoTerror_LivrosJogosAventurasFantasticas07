@@ -8,9 +8,7 @@ interface IItemListaJogosSalvosProps {
     jogoSalvo: IJogo;
 }
 
-export const ItemListaJogosSalvos = ({
-    jogoSalvo,
-}: IItemListaJogosSalvosProps) => {
+export const ItemListaJogosSalvos = ({ jogoSalvo }: IItemListaJogosSalvosProps) => {
     const navegador = useNavigate();
 
     function AoJogarJogoSalvo() {
@@ -44,13 +42,9 @@ export const ItemListaJogosSalvos = ({
                 onBlur={() => AoDesfocar()}
                 onMouseLeave={() => AoDesfocar()}
             >
-                <div className={styles.itemLista_indice}>
-                    {jogoSalvo.idJogo + ":"}
-                </div>
+                <div className={styles.itemLista_indice}>{jogoSalvo.idJogo + ":"}</div>
                 <div className={styles.itemLista_detalhes}>
-                    <div className={styles.itemLista_novoJogo}>
-                        Iniciar novo jogo
-                    </div>
+                    <div className={styles.itemLista_novoJogo}>Iniciar novo jogo</div>
                     <div>{ExibirBotaoJogar()}</div>
                 </div>
             </div>
@@ -64,14 +58,10 @@ export const ItemListaJogosSalvos = ({
                 onFocus={() => AoFocar()}
                 onBlur={() => AoDesfocar()}
             >
-                <div className={styles.itemLista_indice}>
-                    {jogoSalvo.idJogo + ":"}
-                </div>
+                <div className={styles.itemLista_indice}>{jogoSalvo.idJogo + ":"}</div>
                 <div className={styles.itemLista_detalhes}>
                     <div className={styles.itemLista_infos}>
-                        {jogoSalvo.panilha?.jogador} -
-                        {jogoSalvo.panilha?.habilidade} -
-                        {jogoSalvo.panilha?.energia} -{jogoSalvo.panilha?.sorte}
+                        {jogoSalvo.panilha?.jogador} -{jogoSalvo.panilha?.habilidade} -{jogoSalvo.panilha?.energia} -{jogoSalvo.panilha?.sorte}
                     </div>
                     <div>{ExibirBotaoJogar()}</div>
                 </div>
@@ -80,8 +70,11 @@ export const ItemListaJogosSalvos = ({
     }
 
     function MontarJogoSalvo() {
-        if (jogoSalvo.panilha) return MontarJogoSalvoExistente();
-        else return MontarJogoSalvoNovoJogo();
+        if (jogoSalvo.panilha) {
+            return MontarJogoSalvoExistente();
+        } else {
+            return MontarJogoSalvoNovoJogo();
+        }
     }
 
     return <li key={jogoSalvo.idJogo}>{MontarJogoSalvo()}</li>;

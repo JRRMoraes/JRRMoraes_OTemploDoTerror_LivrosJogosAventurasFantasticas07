@@ -2,9 +2,9 @@ import { ContextoJogos } from "../contextos";
 
 export const TelaPanilha = () => {
     const { jogoAtual } = ContextoJogos();
+
     if (!jogoAtual) return <></>;
     if (!jogoAtual.panilha) return <></>;
-
     return (
         <div>
             <div>{jogoAtual.panilha.jogador}</div>

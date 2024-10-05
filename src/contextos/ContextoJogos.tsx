@@ -16,16 +16,7 @@ export const ContextoBaseJogos = createContext<TContextoBaseJogos>(null!);
 ContextoBaseJogos.displayName = "Jogos";
 
 export const ContextoJogos = () => {
-    const {
-        jogoSalvo1,
-        setJogoSalvo1,
-        jogoSalvo2,
-        setJogoSalvo2,
-        jogoSalvo3,
-        setJogoSalvo3,
-        jogoAtual,
-        setJogoAtual,
-    } = useContext(ContextoBaseJogos);
+    const { jogoSalvo1, setJogoSalvo1, jogoSalvo2, setJogoSalvo2, jogoSalvo3, setJogoSalvo3, jogoAtual, setJogoAtual } = useContext(ContextoBaseJogos);
 
     function ObterJogoSalvo(idJogoSalvo: string) {
         if (idJogoSalvo === "1") {
@@ -60,6 +51,7 @@ export const ContextoJogos = () => {
             jogoRetorno.campanhaCapitulo = "PAGINAS_INICIAIS";
             jogoRetorno.campanhaIndice = 1;
         }
+        if (jogoRetorno.panilha) jogoRetorno.panilha = null!;
         //if (!jogoRetorno.panilha) {
         //    jogoRetorno.panilha = {
         //        jogador: "",

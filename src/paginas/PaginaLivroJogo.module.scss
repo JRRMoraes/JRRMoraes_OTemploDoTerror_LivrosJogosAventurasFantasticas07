@@ -1,0 +1,23 @@
+.livroJogo {
+    height: 100%;
+    width: 100%;
+    border: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    &_campanha {
+        height: 100%;
+        width: 48%;
+        border: 1px solid #0a0a0a;
+        margin: auto;
+    }
+
+    &_panilha {
+        height: 100%;
+        width: 48%;
+        border: 1px solid #0a0a0a;
+        margin: auto;
+    }
+}

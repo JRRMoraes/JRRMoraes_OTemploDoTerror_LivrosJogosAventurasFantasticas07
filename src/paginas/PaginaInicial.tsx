@@ -1,6 +1,10 @@
+import { TextosDatilografados } from "../componentes";
+import { ContextoLivro } from "../contextos";
 import { TelaListaJogosSalvos } from "../telas";
 
 export const PaginaInicial = () => {
+    const { livro } = ContextoLivro();
+
     function MontarImagemCapa() {
         return (
             <img
@@ -15,20 +19,19 @@ export const PaginaInicial = () => {
     function MontarRetorno_ResumoInicial() {
         return (
             <div>
-                <ul>
-                    {
-                        //!livro.resumoInicial?.map((textoI: string) => {
-                        //    <li>{textoI}</li>;
-                        //})
-                    }
-                </ul>
+                <TextosDatilografados
+                    textos={livro.resumoInicial}
+                    velocidade={50}
+                />
             </div>
         );
     }
 
+    if (!livro) return <></>;
     return (
         <div>
             {MontarImagemCapa()}
+            {MontarRetorno_ResumoInicial()}
             <TelaListaJogosSalvos />
         </div>
     );

@@ -8,13 +8,9 @@ export const ProvedorLivro = ({ children }: IChildrenProps) => {
     const [livro, setLivro] = useState<ILivro>(null!);
 
     useEffect(() => {
-        axios
-            .get(
-                "src/assets/LJAF07_OTemploDoTerror/LJAF07_OTemploDoTerror__Teste.json"
-            )
-            .then((resultado) => {
-                setLivro(resultado.data);
-            });
+        axios.get("src/assets/LJAF07_OTemploDoTerror/LJAF07_OTemploDoTerror__Teste.json").then((resultado) => {
+            setLivro(resultado.data);
+        });
     }, []);
 
     return (
