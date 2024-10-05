@@ -1,24 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ContextoJogos } from "../contextos";
-import { IDestino, IPagina, PAGINA_ZERADA } from "../tipos";
 import { Botao } from "../componentes";
 
-interface ITelaHistoriasProps {
-    paginaAtual: IPagina;
-}
-
-export const TelaDestinos = ({ paginaAtual }: ITelaHistoriasProps) => {
-    const { jogoAtual, setJogoAtual } = ContextoJogos();
-    const [idPagina, setIdPagina] = useState(PAGINA_ZERADA.idPagina);
-    const [destinos, setDestinos] = useState<IDestino[]>([]);
+export const TelaDestinos = () => {
+    const { jogoAtual, setJogoAtual, paginaCampanha } = ContextoJogos();
 
     function CriarFuncoesDosDestinos() {
-        setDestinos(paginaAtual.destinos);
-        destinos.forEach((destinoI) => {
+        if (!paginaCampanha.destinos) {
+            return;
+        }
+        paginaCampanha.destinos.forEach((destinoI) => {
             destinoI.funcao = () => {
                 setJogoAtual((prevJogoAtual) => {
-                    prevJogoAtual.campanhaIndice = destinoI.idPagina;
-                    return prevJogoAtual;
+                    return { ...prevJogoAtual, campanhaIndice: destinoI.idPagina };
                 });
             };
         });
@@ -27,11 +21,11 @@ export const TelaDestinos = ({ paginaAtual }: ITelaHistoriasProps) => {
     function MontarRetorno_Destinos() {
         return (
             <div>
-                {destinos.map((destinoI, indiceI) => {
+                {paginaCampanha.destinos.map((destinoI, indiceI) => {
                     if (destinoI.funcao) {
                         return (
                             <div key={indiceI}>
-                                <Botao aoClicar={() => destinoI.funcao!()}>{destinoI.destino}</Botao>
+                                <Botao aoClicar={() => destinoI.funcao()}>{destinoI.destino}</Botao>
                             </div>
                         );
                     } else {
@@ -44,10 +38,14 @@ export const TelaDestinos = ({ paginaAtual }: ITelaHistoriasProps) => {
 
     useEffect(() => {
         CriarFuncoesDosDestinos();
-    }, [paginaAtual]);
+    }, [paginaCampanha]);
 
-    if (!jogoAtual) return <></>;
-    if (!paginaAtual || !paginaAtual.destinos || !paginaAtual.destinos.length) return <></>;
+    if (!jogoAtual) {
+        return <></>;
+    }
+    if (!paginaCampanha || !paginaCampanha.destinos || !paginaCampanha.destinos.length) {
+        return <></>;
+    }
     return <div>{MontarRetorno_Destinos()}</div>;
 };
 

@@ -13,14 +13,18 @@ export function CriarStateComLocalStorage<T>(chaveStorage: string, original: T):
     function CarregarInicial() {
         let inicial = original;
         let carregado = localStorage.getItem(chaveStorage);
-        if (carregado && carregado !== "null") inicial = JSON.parse(carregado) as T;
+        if (carregado && carregado !== "null") {
+            inicial = JSON.parse(carregado) as T;
+        }
         return inicial;
     }
 
     const [valor, setValor] = useState<T>(CarregarInicial());
 
     useEffect(() => {
-        if (chaveStorage) localStorage.setItem(chaveStorage, JSON.stringify(valor));
+        if (chaveStorage) {
+            localStorage.setItem(chaveStorage, JSON.stringify(valor));
+        }
     }, [valor]);
 
     return [valor, setValor];

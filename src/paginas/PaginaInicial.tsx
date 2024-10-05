@@ -27,7 +27,9 @@ export const PaginaInicial = () => {
         );
     }
 
-    if (!livro) return <></>;
+    if (!livro) {
+        return <></>;
+    }
     return (
         <div>
             {MontarImagemCapa()}

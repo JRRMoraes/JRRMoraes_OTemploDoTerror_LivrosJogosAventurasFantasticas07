@@ -13,6 +13,7 @@ export interface IJogo {
     panilha?: IPanilha;
     campanhaCapitulo: "PAGINAS_INICIAIS" | "PAGINAS_CAMPANHA";
     campanhaIndice: number;
+    dataCriacao: Date;
     dataSalvo: Date;
 }
 
@@ -22,6 +23,7 @@ export function CriarJogoNulo(idJogo: number): IJogo {
         panilha: undefined,
         campanhaCapitulo: "PAGINAS_INICIAIS",
         campanhaIndice: 0,
+        dataCriacao: null!,
         dataSalvo: null!,
     };
     return retorno;

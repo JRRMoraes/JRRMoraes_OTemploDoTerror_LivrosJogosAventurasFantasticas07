@@ -53,3 +53,8 @@ export interface ILivro {
     paginasIniciais: IPagina[];
     paginasCampanha: IPagina[];
 }
+
+export interface IPaginaCampanha extends IPagina {
+    ehJogoCarregado: boolean;
+    estado: "HISTORIAS" | "COMBATES" | "DESTINOS";
+}

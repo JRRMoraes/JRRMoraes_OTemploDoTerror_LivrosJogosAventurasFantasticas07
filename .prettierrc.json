@@ -1,0 +1,17 @@
+{
+    "trailingComma": "es5",
+    "printWidth": 200,
+    "tabWidth": 4,
+    "semi": true,
+    "singleQuote": false,
+    "jsxSingleQuote": false,
+    "bracketSpacing": true,
+    "arrowFunctionParens": "always",
+    "arrowParens": "always",
+    "bracketSameLine": false,
+    "jsxBracketSameLine": false,
+    "proseWrap": "always",
+    "experimentalTernaries": true,
+    "singleAttributePerLine": true,
+    "vueIndentScriptAndStyle": true
+}

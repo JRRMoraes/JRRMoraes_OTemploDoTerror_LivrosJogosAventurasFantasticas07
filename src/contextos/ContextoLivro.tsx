@@ -15,8 +15,12 @@ export const ContextoLivro = () => {
     const { livro, setLivro } = useContext(ContextoBaseLivro);
 
     function ObterPagina(jogo: IJogo): IPagina {
-        if (!livro || !livro.paginasIniciais || !livro.paginasCampanha) return PAGINA_ZERADA;
-        if (!jogo) return PAGINA_ZERADA;
+        if (!livro || !livro.paginasIniciais || !livro.paginasCampanha) {
+            return PAGINA_ZERADA;
+        }
+        if (!jogo) {
+            return PAGINA_ZERADA;
+        }
         if (!jogo.campanhaCapitulo) {
             jogo.campanhaCapitulo = "PAGINAS_INICIAIS";
             jogo.campanhaIndice = 1;

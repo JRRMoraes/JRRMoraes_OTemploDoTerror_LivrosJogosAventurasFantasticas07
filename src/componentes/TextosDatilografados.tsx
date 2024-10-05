@@ -28,7 +28,9 @@ export const TextosDatilografados = ({ textos, velocidade, aoConcluir }: ITextos
     }
 
     useEffect(() => {
-        if (!textos || !textos.length) return;
+        if (!textos || !textos.length) {
+            return;
+        }
 
         function Datilografar() {
             if (indiceTexto < TextoAtual().length) {
@@ -54,8 +56,8 @@ export const TextosDatilografados = ({ textos, velocidade, aoConcluir }: ITextos
     if (!textos || !textos.length) return <></>;
     return (
         <div>
-            {datilografados.map((datilografadoI) => {
-                return <p>{datilografadoI}</p>;
+            {datilografados.map((datilografadoI, indiceI) => {
+                return <p key={indiceI}>{datilografadoI}</p>;
             })}
         </div>
     );

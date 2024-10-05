@@ -1,18 +1,19 @@
 import styles from "./ItemListaJogosSalvos.module.scss";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";,
+import { ContextoJogos } from "../contextos";
 import { IJogo } from "../tipos";
 import { Botao } from "./Botao";
+
 
 interface IItemListaJogosSalvosProps {
     jogoSalvo: IJogo;
 }
 
 export const ItemListaJogosSalvos = ({ jogoSalvo }: IItemListaJogosSalvosProps) => {
-    const navegador = useNavigate();
+    const { NavegarParaPaginaLivroJogoComJogoSalvo } = ContextoJogos();
 
     function AoJogarJogoSalvo() {
-        navegador("/" + jogoSalvo.idJogo);
+        NavegarParaPaginaLivroJogoComJogoSalvo(jogoSalvo);
     }
 
     const [focado, setFocado] = useState<boolean>(false);

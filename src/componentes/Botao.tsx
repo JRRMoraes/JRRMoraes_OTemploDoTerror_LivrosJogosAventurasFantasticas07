@@ -10,7 +10,9 @@ interface IBotaoProps {
 
 export const Botao = ({ children, aoClicar, tipo = "button", desativado = false }: IBotaoProps) => {
     function AoClicar() {
-        if (aoClicar) aoClicar();
+        if (aoClicar) {
+            aoClicar();
+        }
     }
 
     return (

@@ -1,19 +1,32 @@
 import styles from "./PaginaLivroJogo.module.scss";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { ContextoJogos } from "../contextos";
+import { useEffect, useState } from "react";
+import { ContextoJogos, ContextoLivro } from "../contextos";
 import { TelaCampanha, TelaPanilha } from "../telas";
 
 export const PaginaLivroJogo = () => {
     let { idJogo } = useParams();
 
-    const { jogoAtual, setJogoAtual, ObterJogoSalvo } = ContextoJogos();
+    const [ehJogoCarregado, setEhJogoCarregado] = useState(false);
+
+    const { ObterPagina } = ContextoLivro();
+
+    const { jogoAtual, paginaCampanha, CarregarJogoSalvoOuNovo, ImporPaginaAtualECampanha, ImporPaginaCampanhaViaAtual } = ContextoJogos();
 
     useEffect(() => {
-        if (!jogoAtual) setJogoAtual(ObterJogoSalvo(idJogo!));
-    }, []);
+        setEhJogoCarregado(CarregarJogoSalvoOuNovo(idJogo!));
+    }, [idJogo]);
 
-    if (!jogoAtual) return <></>;
+    useEffect(() => {
+        if (jogoAtual) {
+            ImporPaginaAtualECampanha(ObterPagina(jogoAtual), ehJogoCarregado);
+            ImporPaginaCampanhaViaAtual();
+        }
+    }, [jogoAtual, paginaCampanha]);
+
+    if (!jogoAtual || !paginaCampanha) {
+        return <></>;
+    }
     return (
         <div className={styles.livroJogo}>
             <div className={styles.livroJogo_panilha}>
