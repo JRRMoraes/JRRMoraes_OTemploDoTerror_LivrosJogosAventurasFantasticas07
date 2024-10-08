@@ -1,0 +1,42 @@
+.panilha {
+    padding: 100px 30px 100px 30px;
+
+    &_habilidade {
+        font-size: 1.2rem;
+        color: blue;
+    }
+
+    &_energia {
+        font-size: 1.2rem;
+        color: green;
+    }
+
+    &_sorte {
+        font-size: 1.2rem;
+        color: purple;
+    }
+
+    table {
+        width: 90%;
+        text-align: center;
+        margin: auto;
+        border-collapse: collapse;
+        border: 2px groove #213547;
+        table-layout: fixed;
+    }
+
+    th,
+    td {
+        border-collapse: collapse;
+        border-left: 2px groove #213547;
+        border-right: 2px groove #213547;
+    }
+
+    &_fonteNormal {
+        color: #213547;
+    }
+
+    &_numeroAtual {
+        font-size: 1.6rem;
+    }
+}

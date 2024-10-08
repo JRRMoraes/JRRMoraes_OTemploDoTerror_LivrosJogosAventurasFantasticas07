@@ -1,0 +1,30 @@
+.panilhaNova {
+    padding: 100px 50px 100px 50px;
+
+    &_rolagem_titulo {
+        width: 35%;
+        max-width: 35%;
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    &_rolagem_total {
+        font-size: 1.6rem;
+    }
+
+    &_rolagem_soma {
+        width: 15%;
+        text-align: right;
+    }
+
+    &_rolagem_dados {
+        width: 50%;
+        text-align: left;
+    }
+
+    table {
+        width: 90%;
+        margin: auto;
+        table-layout: fixed;
+    }
+}

@@ -1,0 +1,41 @@
+.paginaInicial {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #101010;
+    background-position: center;
+    height: 100vh;
+    min-height: 100vh;
+    width: 100vw;
+    min-width: 100vw;
+    margin: 0;
+    padding: 0;
+
+    &_total {
+        height: 100vh;
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &_espaco {
+        height: 40vh;
+        min-height: 40vh;
+        max-height: 40vh;
+        width: 100vw;
+    }
+
+    &_conteudo {
+        height: 60vh;
+        min-height: 60vh;
+        max-height: 60vh;
+        width: 80vw;
+        color: #fefefe;
+        text-shadow: 2rem;
+        font-size: larger;
+        line-height: normal;
+    }
+}

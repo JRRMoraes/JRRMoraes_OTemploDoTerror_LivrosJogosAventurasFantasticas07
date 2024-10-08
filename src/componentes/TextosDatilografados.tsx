@@ -8,7 +8,6 @@ interface ITextosDatilografadosProps {
 
 export const TextosDatilografados = ({ textos, velocidade, aoConcluir }: ITextosDatilografadosProps) => {
     const [datilografados, setDatilografados] = useState<string[]>([]);
-    const [concluido, setConcluido] = useState(false);
     const [indiceTexto, setIndiceTexto] = useState(0);
     const [indiceLetra, setIndiceLetra] = useState(0);
 
@@ -21,10 +20,11 @@ export const TextosDatilografados = ({ textos, velocidade, aoConcluir }: ITextos
     }
 
     function IncrementarDatilografado(letra: string) {
-        if (!datilografados[indiceTexto]) {
-            setDatilografados((prevDatilografados) => [...prevDatilografados, ""]);
+        if (datilografados[indiceTexto]) {
+            datilografados[indiceTexto] += letra;
+        } else {
+            setDatilografados((prevDatilografados) => [...prevDatilografados, letra]);
         }
-        datilografados[indiceTexto] += letra;
     }
 
     useEffect(() => {
@@ -44,8 +44,9 @@ export const TextosDatilografados = ({ textos, velocidade, aoConcluir }: ITextos
                     }, velocidade);
                 }
             } else {
-                setConcluido(true);
-                if (aoConcluir) aoConcluir();
+                if (aoConcluir) {
+                    aoConcluir();
+                }
             }
         }
 

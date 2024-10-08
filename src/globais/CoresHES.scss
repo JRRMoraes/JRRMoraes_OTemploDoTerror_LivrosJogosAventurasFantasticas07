@@ -1,0 +1,19 @@
+$corHabilidade: #87ceeb;
+$corEnergia: #008000;
+$corSorte: #800080;
+
+.coresHES {
+    font-size: 1.2rem;
+
+    &_habilidade {
+        color: $corHabilidade;
+    }
+
+    &_energia {
+        color: $corEnergia;
+    }
+
+    &_sorte {
+        color: $corSorte;
+    }
+}

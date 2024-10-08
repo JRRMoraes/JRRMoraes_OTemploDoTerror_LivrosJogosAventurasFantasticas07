@@ -1,6 +1,6 @@
 import { createContext, Dispatch, SetStateAction, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { IJogo, IPagina, IPaginaCampanha } from "../tipos";
+import { IJogo, IPagina, IPaginaCampanha, PAGINA_ZERADA } from "../tipos";
 
 export type TContextoBaseJogos = {
     jogoSalvo1: IJogo;
@@ -62,17 +62,6 @@ export const ContextoJogos = () => {
             _jogoRetorno.campanhaIndice = 1;
             _jogoRetorno.panilha = null!;
         }
-        //if (!jogoRetorno.panilha) {
-        //    jogoRetorno.panilha = {
-        //        jogador: "",
-        //        habilidade: 0,
-        //        habilidadeInicial: 0,
-        //        energia: 0,
-        //        energiaInicial: 0,
-        //        sorte: 0,
-        //        sorteInicial: 0,
-        //    };
-        //}
         return _jogoRetorno;
     }
 
@@ -91,7 +80,7 @@ export const ContextoJogos = () => {
     }
 
     function ImporPaginaAtualECampanha(pagina: IPagina, jogoCarregado: boolean) {
-        if (!pagina) {
+        if (!pagina || pagina.idPagina === PAGINA_ZERADA.idPagina) {
             setPaginaAtual(null!);
             setPaginaCampanha(null!);
             return jogoCarregado;
@@ -104,7 +93,7 @@ export const ContextoJogos = () => {
                 idPagina: pagina.idPagina,
                 titulo: pagina.titulo,
                 ehJogoCarregado: jogoCarregado,
-                estado: "HISTORIAS",
+                estado: "",
                 historias: null!,
                 combates: null!,
                 destinos: null!,
@@ -114,9 +103,9 @@ export const ContextoJogos = () => {
                     return {
                         ...prevPaginaCampanha,
                         estado: "DESTINOS",
-                        historias: pagina.historias,
-                        combates: pagina.combates,
-                        destinos: pagina.destinos,
+                        historias: pagina.historias ? pagina.historias : [],
+                        combates: pagina.combates ? pagina.combates : [],
+                        destinos: pagina.destinos ? pagina.destinos : [],
                     };
                 });
             }
@@ -128,17 +117,21 @@ export const ContextoJogos = () => {
         if (!paginaAtual || !paginaCampanha) {
             return;
         }
-        if (paginaCampanha.estado === "HISTORIAS" && !paginaCampanha.historias) {
+        if (paginaCampanha.estado === "") {
             setPaginaCampanha((prevPaginaCampanha) => {
-                return { ...prevPaginaCampanha, historias: paginaAtual.historias };
+                return { ...prevPaginaCampanha, estado: "HISTORIAS" };
+            });
+        } else if (paginaCampanha.estado === "HISTORIAS" && !paginaCampanha.historias) {
+            setPaginaCampanha((prevPaginaCampanha) => {
+                return { ...prevPaginaCampanha, historias: paginaAtual.historias ? paginaAtual.historias : [] };
             });
         } else if (paginaCampanha.estado === "COMBATES" && !paginaCampanha.combates) {
             setPaginaCampanha((prevPaginaCampanha) => {
-                return { ...prevPaginaCampanha, combates: paginaAtual.combates };
+                return { ...prevPaginaCampanha, combates: paginaAtual.combates ? paginaAtual.combates : [] };
             });
         } else if (paginaCampanha.estado === "DESTINOS" && !paginaCampanha.destinos) {
             setPaginaCampanha((prevPaginaCampanha) => {
-                return { ...prevPaginaCampanha, destinos: paginaAtual.destinos };
+                return { ...prevPaginaCampanha, destinos: paginaAtual.destinos ? paginaAtual.destinos : [] };
             });
         }
     }

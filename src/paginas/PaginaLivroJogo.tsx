@@ -1,15 +1,16 @@
 import styles from "./PaginaLivroJogo.module.scss";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { ContextoJogos, ContextoLivro } from "../contextos";
+import { useState, useEffect } from "react";
+import { ContextoLivro, ContextoJogos } from "../contextos";
 import { TelaCampanha, TelaPanilha } from "../telas";
+import { isMobile } from "react-device-detect";
 
 export const PaginaLivroJogo = () => {
     let { idJogo } = useParams();
 
     const [ehJogoCarregado, setEhJogoCarregado] = useState(false);
 
-    const { ObterPagina } = ContextoLivro();
+    const { livro, ObterPagina } = ContextoLivro();
 
     const { jogoAtual, paginaCampanha, CarregarJogoSalvoOuNovo, ImporPaginaAtualECampanha, ImporPaginaCampanhaViaAtual } = ContextoJogos();
 
@@ -22,11 +23,12 @@ export const PaginaLivroJogo = () => {
             ImporPaginaAtualECampanha(ObterPagina(jogoAtual), ehJogoCarregado);
             ImporPaginaCampanhaViaAtual();
         }
-    }, [jogoAtual, paginaCampanha]);
+    }, [livro, jogoAtual, paginaCampanha]);
 
     if (!jogoAtual || !paginaCampanha) {
         return <></>;
     }
+    //// Se isMobile, criar abas
     return (
         <div className={styles.livroJogo}>
             <div className={styles.livroJogo_panilha}>

@@ -1,23 +1,33 @@
 .livroJogo {
-    height: 100%;
-    width: 100%;
+    height: 100vw;
+    width: 100vw;
     border: 0 auto;
+    margin: 0;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    background-image: url("fundo_mesa_madeira_bruta.jpg");
+    background-repeat: round;
+    background-size: contain;
 
     &_campanha {
         height: 100%;
         width: 48%;
         border: 1px solid #0a0a0a;
-        margin: auto;
+        background: url("fundo_pergaminho_papel_antigo_2.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 99% 99%;
     }
 
     &_panilha {
         height: 100%;
         width: 48%;
         border: 1px solid #0a0a0a;
-        margin: auto;
+        background: url("fundo_pergaminho_papel_antigo_1.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 99% 99%;
     }
 }

@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { ILivro } from "../tipos";
-import { ContextoBaseLivro } from "../contextos";
 import { IChildrenProps } from "../uteis";
+import { ContextoBaseLivro } from "../contextos";
 
 export const ProvedorLivro = ({ children }: IChildrenProps) => {
     const [livro, setLivro] = useState<ILivro>(null!);
 
     useEffect(() => {
-        axios.get("src/assets/LJAF07_OTemploDoTerror/LJAF07_OTemploDoTerror__Teste.json").then((resultado) => {
-            setLivro(resultado.data);
-        });
-    }, []);
+        if (!livro) {
+            axios.get("src/assets/LJAF07_OTemploDoTerror/LJAF07_OTemploDoTerror__Teste.json").then((resultado) => {
+                setLivro(resultado.data);
+            });
+        }
+    }, [livro]);
 
     return (
         <ContextoBaseLivro.Provider

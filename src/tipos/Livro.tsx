@@ -56,5 +56,5 @@ export interface ILivro {
 
 export interface IPaginaCampanha extends IPagina {
     ehJogoCarregado: boolean;
-    estado: "HISTORIAS" | "COMBATES" | "DESTINOS";
+    estado: "" | "HISTORIAS" | "COMBATES" | "DESTINOS";
 }

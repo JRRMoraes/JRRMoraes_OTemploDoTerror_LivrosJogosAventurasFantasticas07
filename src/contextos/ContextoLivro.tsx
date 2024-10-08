@@ -1,4 +1,4 @@
-import { createContext, Dispatch, SetStateAction, useContext } from "react";
+import { createContext, Dispatch, SetStateAction, useContext, ReactElement } from "react";
 import { IJogo, ILivro, IPagina, PAGINA_ZERADA } from "../tipos";
 
 export type TContextoBaseLivro = {
@@ -8,8 +8,6 @@ export type TContextoBaseLivro = {
 
 export const ContextoBaseLivro = createContext<TContextoBaseLivro>(null!);
 ContextoBaseLivro.displayName = "Livro";
-
-const CAMINHO_IMAGEM = "src/assets/LJAF07_OTemploDoTerror/imagens/";
 
 export const ContextoLivro = () => {
     const { livro, setLivro } = useContext(ContextoBaseLivro);
@@ -39,20 +37,16 @@ export const ContextoLivro = () => {
         return PAGINA_ZERADA;
     }
 
-    function MontarImagem(nome: string, altura: number, largura: number) {
-        return (
-            <img
-                src={CAMINHO_IMAGEM + nome}
-                alt={nome}
-                height={altura}
-            />
-        );
+    function CaminhoImagem(imagem: string) {
+        return CAMINHO_IMAGEM + imagem;
     }
 
     return {
         livro,
         setLivro,
         ObterPagina,
-        MontarImagem,
+        CaminhoImagem,
     };
 };
+
+export const CAMINHO_IMAGEM = "src/assets/LJAF07_OTemploDoTerror/imagens/";

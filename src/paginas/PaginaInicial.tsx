@@ -1,41 +1,54 @@
-import { TextosDatilografados } from "../componentes";
+import styles from "./PaginaInicial.module.scss";
+import { useState } from "react";
 import { ContextoLivro } from "../contextos";
+import { IChildrenProps } from "../uteis";
+import { TextosDatilografados } from "../componentes";
 import { TelaListaJogosSalvos } from "../telas";
 
 export const PaginaInicial = () => {
-    const { livro } = ContextoLivro();
+    const { livro, CaminhoImagem } = ContextoLivro();
 
-    function MontarImagemCapa() {
+    const [estado, setEstado] = useState<"ABERTURA" | "MENU">("ABERTURA");
+
+    const MontarRetorno = ({ children }: IChildrenProps) => {
         return (
-            <img
-                className="capa"
-                src="src\assets\LJAF07_OTemploDoTerror\imagens\Capa.png"
-                alt="O Templo do Terror"
-                height="100%"
-            ></img>
+            <div
+                className={styles.paginaInicial}
+                style={{ backgroundImage: "url(" + CaminhoImagem("Capa.png") + ")" }}
+            >
+                {children}
+            </div>
         );
+    };
+
+    function ExibirMenu() {
+        setEstado("MENU");
     }
 
-    function MontarRetorno_ResumoInicial() {
-        return (
-            <div>
+    function MontarRetorno_AberturaOuMenu() {
+        if (estado === "ABERTURA") {
+            return (
                 <TextosDatilografados
                     textos={livro.resumoInicial}
                     velocidade={50}
+                    aoConcluir={() => ExibirMenu()}
                 />
-            </div>
-        );
+            );
+        } else {
+            return <TelaListaJogosSalvos />;
+        }
     }
 
     if (!livro) {
         return <></>;
     }
     return (
-        <div>
-            {MontarImagemCapa()}
-            {MontarRetorno_ResumoInicial()}
-            <TelaListaJogosSalvos />
-        </div>
+        <MontarRetorno>
+            <div className={styles.paginaInicial_total}>
+                <div className={styles.paginaInicial_espaco}></div>
+                <div className={styles.paginaInicial_conteudo}>{MontarRetorno_AberturaOuMenu()}</div>
+            </div>
+        </MontarRetorno>
     );
 };
 

@@ -1,9 +1,8 @@
 import styles from "./ItemListaJogosSalvos.module.scss";
-import { useState } from "react";,
+import { useState } from "react";
 import { ContextoJogos } from "../contextos";
 import { IJogo } from "../tipos";
 import { Botao } from "./Botao";
-
 
 interface IItemListaJogosSalvosProps {
     jogoSalvo: IJogo;
