@@ -1,26 +1,41 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { ContextoJogos } from "../contextos";
 import { Botao } from "../componentes";
 import { PAGINA_ZERADA } from "../tipos";
+import { EProcesso } from "../uteis";
 
 export const TelaDestinos = () => {
-    const { jogoAtual, setJogoAtual, paginaCampanha, setPaginaCampanha } = ContextoJogos();
+    const { jogoAtual, paginaCampanha, ImporPaginaCampanhaEJogoAtualViaDestino, SalvarJogoAtualNoSalvo } = ContextoJogos();
 
-    const [paginaDestino, setPaginaDestino] = useState(PAGINA_ZERADA.idPagina);
+    const [salvando, setSalvando] = useState(EProcesso.AGUARDANDO);
+
+    function MontarRetorno() {
+        switch (salvando) {
+            case EProcesso.AGUARDANDO:
+                setSalvando(EProcesso.INICIANDO);
+                return <></>;
+            case (EProcesso.INICIANDO, EProcesso.PROCESSANDO):
+                return <>{MontarRetorno_SalvarJogoAtual()}</>;
+            case EProcesso.CONCLUIDO:
+                return <>{MontarRetorno_Destinos()}</>;
+            default:
+                return <></>;
+        }
+    }
+
+    function MontarRetorno_SalvarJogoAtual() {
+        return <div>SALVANDO JOGO</div>;
+    }
 
     function MontarRetorno_Destinos() {
         return (
             <div>
                 {paginaCampanha.destinos.map((destinoI, indiceI) => {
-                    if (destinoI.funcao) {
-                        return (
-                            <div key={indiceI}>
-                                <Botao aoClicar={() => destinoI.funcao()}>{destinoI.destino + " - " + destinoI.idPagina}</Botao>
-                            </div>
-                        );
-                    } else {
-                        return <div key={indiceI}>{destinoI.destino + " - " + destinoI.idPagina}</div>;
-                    }
+                    return (
+                        <div key={indiceI}>
+                            <Botao aoClicar={() => destinoI.funcao()}>{destinoI.destino + " - " + destinoI.idPagina}</Botao>
+                        </div>
+                    );
                 })}
             </div>
         );
@@ -28,31 +43,28 @@ export const TelaDestinos = () => {
 
     useEffect(() => {
         if (!jogoAtual || !paginaCampanha || !paginaCampanha.destinos || !paginaCampanha.destinos.length) {
-            setPaginaDestino(PAGINA_ZERADA.idPagina);
-        } else if (paginaCampanha.destinos.length) {
-            paginaCampanha.destinos.forEach((destinoI, indiceI) => {
-                paginaCampanha.destinos[indiceI].funcao = () => {
-                    setPaginaDestino(paginaCampanha.destinos[indiceI].idPagina);
-                };
-            });
-        }
-    }, [jogoAtual, paginaCampanha]);
-
-    useEffect(() => {
-        if (!jogoAtual || !paginaCampanha || !paginaCampanha.destinos || !paginaCampanha.destinos.length) {
             return;
         }
-        if (paginaDestino === PAGINA_ZERADA.idPagina) {
+        if (paginaCampanha.idPaginaDestino === PAGINA_ZERADA.idPagina) {
             return;
         } else {
-            setPaginaCampanha((prevPaginaCampanha) => {
-                return { ...prevPaginaCampanha, estado: "" };
-            });
-            setJogoAtual((prevJogoAtual) => {
-                return { ...prevJogoAtual, campanhaIndice: paginaDestino };
-            });
+            ImporPaginaCampanhaEJogoAtualViaDestino(paginaCampanha.idPaginaDestino);
         }
-    }, [paginaCampanha, paginaDestino]);
+    }, [paginaCampanha]);
+
+    useEffect(() => {
+        if (salvando === EProcesso.INICIANDO) {
+            if (!paginaCampanha.ehJogoCarregado) {
+                setSalvando(EProcesso.PROCESSANDO);
+                SalvarJogoAtualNoSalvo();
+                setTimeout(() => {
+                    setSalvando(EProcesso.CONCLUIDO);
+                }, 2000);
+            } else {
+                setSalvando(EProcesso.CONCLUIDO);
+            }
+        }
+    }, [salvando]);
 
     if (!jogoAtual) {
         return <></>;
@@ -60,7 +72,10 @@ export const TelaDestinos = () => {
     if (!paginaCampanha || !paginaCampanha.destinos || !paginaCampanha.destinos.length) {
         return <></>;
     }
-    return <div>{MontarRetorno_Destinos()}</div>;
+    if (paginaCampanha.estado !== "DESTINOS") {
+        return <></>;
+    }
+    return <div>{MontarRetorno()}</div>;
 };
 
 export default TelaDestinos;

@@ -1,5 +1,13 @@
 .panilhaNova {
-    padding: 100px 50px 100px 50px;
+    table {
+        width: 90%;
+        margin: auto;
+        table-layout: fixed;
+    }
+
+    h3 {
+        text-align: center;
+    }
 
     &_rolagem_titulo {
         width: 35%;
@@ -22,9 +30,9 @@
         text-align: left;
     }
 
-    table {
-        width: 90%;
-        margin: auto;
-        table-layout: fixed;
+    &_botoes {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
     }
 }

@@ -38,17 +38,20 @@ export const ContextoJogos = () => {
         setPaginaCampanha(null!);
         if (idJogoSalvo === "1") {
             setJogoAtual(AjustarSeForNovoJogo(jogoSalvo1));
+            return !!(jogoSalvo1 && jogoSalvo1.panilha);
         } else if (idJogoSalvo === "2") {
             setJogoAtual(AjustarSeForNovoJogo(jogoSalvo2));
+            return !!(jogoSalvo2 && jogoSalvo2.panilha);
         } else if (idJogoSalvo === "3") {
             setJogoAtual(AjustarSeForNovoJogo(jogoSalvo3));
+            return !!(jogoSalvo3 && jogoSalvo3.panilha);
         } else if (!idJogoSalvo) {
+            return false;
         } else {
             setJogoAtual(null!);
             navegador("/");
             return false;
         }
-        return !!(jogoAtual && jogoAtual.panilha);
     }
 
     function AjustarSeForNovoJogo(jogoSalvo: IJogo) {
@@ -94,6 +97,7 @@ export const ContextoJogos = () => {
                 titulo: pagina.titulo,
                 ehJogoCarregado: jogoCarregado,
                 estado: "",
+                idPaginaDestino: PAGINA_ZERADA.idPagina,
                 historias: null!,
                 combates: null!,
                 destinos: null!,
@@ -108,9 +112,27 @@ export const ContextoJogos = () => {
                         destinos: pagina.destinos ? pagina.destinos : [],
                     };
                 });
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    prevPaginaCampanha.destinos.forEach((destinoI, indiceI) => {
+                        destinoI.funcao = () => {
+                            setPaginaCampanha((prevPaginaCampanha_IdPaginaDestino) => {
+                                return { ...prevPaginaCampanha_IdPaginaDestino, idPaginaDestino: destinoI.idPagina };
+                            });
+                        };
+                    });
+                    return prevPaginaCampanha;
+                });
             }
             return false;
         }
+    }
+
+    function ImporPaginaCampanhaEJogoAtualViaDestino(idPaginaDestino: number) {
+        setPaginaAtual(null!);
+        setPaginaCampanha(null!);
+        setJogoAtual((prevJogoAtual) => {
+            return { ...prevJogoAtual, campanhaIndice: idPaginaDestino };
+        });
     }
 
     function ImporPaginaCampanhaViaAtual() {
@@ -133,6 +155,16 @@ export const ContextoJogos = () => {
             setPaginaCampanha((prevPaginaCampanha) => {
                 return { ...prevPaginaCampanha, destinos: paginaAtual.destinos ? paginaAtual.destinos : [] };
             });
+            setPaginaCampanha((prevPaginaCampanha) => {
+                prevPaginaCampanha.destinos.forEach((destinoI, indiceI) => {
+                    destinoI.funcao = () => {
+                        setPaginaCampanha((prevPaginaCampanha_IdPaginaDestino) => {
+                            return { ...prevPaginaCampanha_IdPaginaDestino, idPaginaDestino: destinoI.idPagina };
+                        });
+                    };
+                });
+                return prevPaginaCampanha;
+            });
         }
     }
 
@@ -153,6 +185,7 @@ export const ContextoJogos = () => {
         CarregarJogoSalvoOuNovo,
         SalvarJogoAtualNoSalvo,
         ImporPaginaAtualECampanha,
+        ImporPaginaCampanhaEJogoAtualViaDestino,
         ImporPaginaCampanhaViaAtual,
     };
 };

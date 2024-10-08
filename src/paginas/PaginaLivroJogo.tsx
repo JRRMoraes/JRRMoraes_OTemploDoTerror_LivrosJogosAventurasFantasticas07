@@ -15,12 +15,14 @@ export const PaginaLivroJogo = () => {
     const { jogoAtual, paginaCampanha, CarregarJogoSalvoOuNovo, ImporPaginaAtualECampanha, ImporPaginaCampanhaViaAtual } = ContextoJogos();
 
     useEffect(() => {
-        setEhJogoCarregado(CarregarJogoSalvoOuNovo(idJogo!));
+        if (!jogoAtual) {
+            setEhJogoCarregado(CarregarJogoSalvoOuNovo(idJogo!));
+        }
     }, [idJogo]);
 
     useEffect(() => {
         if (jogoAtual) {
-            ImporPaginaAtualECampanha(ObterPagina(jogoAtual), ehJogoCarregado);
+            setEhJogoCarregado(ImporPaginaAtualECampanha(ObterPagina(jogoAtual), ehJogoCarregado));
             ImporPaginaCampanhaViaAtual();
         }
     }, [livro, jogoAtual, paginaCampanha]);
@@ -28,17 +30,39 @@ export const PaginaLivroJogo = () => {
     if (!jogoAtual || !paginaCampanha) {
         return <></>;
     }
-    //// Se isMobile, criar abas
-    return (
-        <div className={styles.livroJogo}>
-            <div className={styles.livroJogo_panilha}>
-                <TelaPanilha />
+    if (!isMobile) {
+        return (
+            <div className={styles.livroJogo_Desktop}>
+                <div className={styles.livroJogo_Desktop_panilha}>
+                    <div className={styles.livroJogo_Desktop_panilha_2}>
+                        <TelaPanilha />
+                    </div>
+                </div>
+                <div className={styles.livroJogo_Desktop_campanha}>
+                    <div className={styles.livroJogo_Desktop_campanha_2}>
+                        <TelaCampanha />
+                    </div>
+                </div>
             </div>
-            <div className={styles.livroJogo_campanha}>
-                <TelaCampanha />
+        );
+    } else {
+        return (
+            <div className={styles.livroJogo_Celular}>
+                <div className={styles.livroJogo_Celular_fundo}>
+                    <div className={styles.livroJogo_Celular_panilha}>
+                        <div className={styles.livroJogo_Celular_panilha_2}>
+                            <TelaPanilha />
+                        </div>
+                    </div>
+                    <div className={styles.livroJogo_Celular_campanha}>
+                        <div className={styles.livroJogo_Celular_campanha_2}>
+                            <TelaCampanha />
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 };
 
 export default PaginaLivroJogo;

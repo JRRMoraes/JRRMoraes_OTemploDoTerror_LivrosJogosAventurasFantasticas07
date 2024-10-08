@@ -29,3 +29,11 @@ export function CriarStateComLocalStorage<T>(chaveStorage: string, original: T):
 
     return [valor, setValor];
 }
+
+export enum EProcesso {
+    AGUARDANDO = "Aguardando",
+    INICIANDO = "Iniciando",
+    PROCESSANDO = "Processando",
+    CONCLUIDO = "Concluído",
+    ERRO = "Erro",
+}

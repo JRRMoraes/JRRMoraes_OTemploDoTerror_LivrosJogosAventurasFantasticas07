@@ -1,28 +1,11 @@
 .panilha {
-    padding: 100px 30px 100px 30px;
-
-    &_habilidade {
-        font-size: 1.2rem;
-        color: blue;
-    }
-
-    &_energia {
-        font-size: 1.2rem;
-        color: green;
-    }
-
-    &_sorte {
-        font-size: 1.2rem;
-        color: purple;
-    }
-
     table {
         width: 90%;
-        text-align: center;
         margin: auto;
+        table-layout: fixed;
+        text-align: center;
         border-collapse: collapse;
         border: 2px groove #213547;
-        table-layout: fixed;
     }
 
     th,

@@ -1,33 +1,93 @@
-.livroJogo {
-    height: 100vw;
-    width: 100vw;
-    border: 0 auto;
+.livroJogo_Desktop {
+    border: 0;
     margin: 0;
+    gap: 10px;
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    background-image: url("fundo_mesa_madeira_bruta.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    &_campanha {
+        height: 100%;
+        width: 48%;
+        background: url("fundo_pergaminho_papel_antigo_2.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+
+        &_2 {
+            padding: 80px 50px 80px 50px;
+        }
+    }
+
+    &_panilha {
+        height: 100%;
+        width: 48%;
+        background: url("fundo_pergaminho_papel_antigo_1.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+
+        &_2 {
+            padding: 80px 50px 80px 50px;
+        }
+    }
+}
+
+.livroJogo_Celular {
+    //height: auto;
+    //width: 100vw;
+    border: 0;
+    margin: 0;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-image: url("fundo_mesa_madeira_bruta.jpg");
     background-repeat: round;
     background-size: contain;
 
-    &_campanha {
-        height: 100%;
-        width: 48%;
-        border: 1px solid #0a0a0a;
-        background: url("fundo_pergaminho_papel_antigo_2.png");
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: 99% 99%;
+    ::-webkit-scrollbar {
+        width: 25px;
     }
 
-    &_panilha {
-        height: 100%;
-        width: 48%;
+    ::-webkit-scrollbar-track {
+        background: #dc3545;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-image: linear-gradient(red, yellow);
+        border-radius: 25px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-image: linear-gradient(#ee0970, #ff6a00);
+    }
+
+    &_fundo {
         border: 1px solid #0a0a0a;
         background: url("fundo_pergaminho_papel_antigo_1.png");
         background-position: center;
-        background-repeat: no-repeat;
-        background-size: 99% 99%;
+        background-repeat: repeat-y;
+        background-size: cover;
+    }
+
+    &_campanha {
+        border: 1px solid #0a0a0a;
+
+        &_2 {
+            padding: 20px 10px 100px 10px;
+        }
+    }
+
+    &_panilha {
+        border: 1px solid #0a0a0a;
+
+        &_2 {
+            padding: 100px 10px 20px 10px;
+        }
     }
 }

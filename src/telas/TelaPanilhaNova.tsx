@@ -17,11 +17,14 @@ export const TelaPanilhaNova = () => {
         energia2: 0,
         sorte1: 0,
     });
+
     const [totaisRolados, setTotaisRolados] = useState<ITotaisRoladosParaPanilhaNova>({
         habilidade: 0,
         energia: 0,
         sorte: 0,
     });
+
+    const [rolandoDados, setRolandoDados] = useState({ rolando: false, quantidade: 0 });
 
     const reactDiceHabilidade = useRef<ReactDiceRef>(null);
     const reactDiceEnergia = useRef<ReactDiceRef>(null);
@@ -46,6 +49,9 @@ export const TelaPanilhaNova = () => {
         setTotaisRolados((prevTotaisRolados) => {
             return { ...prevTotaisRolados, habilidade: 6 + values[0] };
         });
+        setRolandoDados((prevRolandoDados) => {
+            return { ...prevRolandoDados, quantidade: prevRolandoDados.quantidade + 1 };
+        });
     };
 
     const rolagemEnergiaConcluida = (totalValue: number, values: number[]) => {
@@ -54,6 +60,9 @@ export const TelaPanilhaNova = () => {
         });
         setTotaisRolados((prevTotaisRolados) => {
             return { ...prevTotaisRolados, energia: 12 + values[0] + values[1] };
+        });
+        setRolandoDados((prevRolandoDados) => {
+            return { ...prevRolandoDados, quantidade: prevRolandoDados.quantidade + 1 };
         });
     };
 
@@ -64,7 +73,18 @@ export const TelaPanilhaNova = () => {
         setTotaisRolados((prevTotaisRolados) => {
             return { ...prevTotaisRolados, sorte: 6 + values[0] };
         });
+        setRolandoDados((prevRolandoDados) => {
+            return { ...prevRolandoDados, quantidade: prevRolandoDados.quantidade + 1 };
+        });
     };
+
+    function ObterTotalDaRolagem(total: number) {
+        if (indiceRolagem === 0 || rolandoDados.rolando) {
+            return "?";
+        } else {
+            return total;
+        }
+    }
 
     function MontarRetorno_Rolagens() {
         return (
@@ -74,7 +94,7 @@ export const TelaPanilhaNova = () => {
                         <tbody>
                             <tr>
                                 <td className={styles.panilhaNova_rolagem_titulo}>
-                                    {"HABILIDADE:  "} <span className={styles.panilhaNova_rolagem_total}>{totaisRolados.habilidade}</span>
+                                    {"HABILIDADE:  "} <span className={styles.panilhaNova_rolagem_total}>{ObterTotalDaRolagem(totaisRolados.habilidade)}</span>
                                 </td>
                                 <td className={styles.panilhaNova_rolagem_soma}>6 +</td>
                                 <td className={styles.panilhaNova_rolagem_dados}>
@@ -96,7 +116,7 @@ export const TelaPanilhaNova = () => {
                         <tbody>
                             <tr>
                                 <td className={styles.panilhaNova_rolagem_titulo}>
-                                    {"ENERGIA:  "} <span className={styles.panilhaNova_rolagem_total}>{totaisRolados.energia}</span>
+                                    {"ENERGIA:  "} <span className={styles.panilhaNova_rolagem_total}>{ObterTotalDaRolagem(totaisRolados.energia)}</span>
                                 </td>
                                 <td className={styles.panilhaNova_rolagem_soma}>12 +</td>
                                 <td className={styles.panilhaNova_rolagem_dados}>
@@ -118,7 +138,7 @@ export const TelaPanilhaNova = () => {
                         <tbody>
                             <tr>
                                 <td className={styles.panilhaNova_rolagem_titulo}>
-                                    {"SORTE:  "} <span className={styles.panilhaNova_rolagem_total}>{totaisRolados.sorte}</span>
+                                    {"SORTE:  "} <span className={styles.panilhaNova_rolagem_total}>{ObterTotalDaRolagem(totaisRolados.sorte)}</span>
                                 </td>
                                 <td className={styles.panilhaNova_rolagem_soma}>6 +</td>
                                 <td className={styles.panilhaNova_rolagem_dados}>
@@ -146,6 +166,7 @@ export const TelaPanilhaNova = () => {
     }
 
     function ExecutarRolagem() {
+        setRolandoDados({ rolando: true, quantidade: 0 });
         setIndiceRolagem((prevIndiceRolagem) => prevIndiceRolagem + 1);
     }
 
@@ -156,7 +177,14 @@ export const TelaPanilhaNova = () => {
                     <h4>Você terá 3 rolagens de dados e aceite a que desejar.</h4>
                     <p>Entretanto a rolagem descartada será perdida.</p>
                     {MontarRetorno_Rolagens()}
-                    <Botao aoClicar={() => ExecutarRolagem()}>CLIQUE AQUI, para fazer a primeira rolagem</Botao>
+                    <div className={styles.panilhaNova_botoes}>
+                        <Botao
+                            aoClicar={() => ExecutarRolagem()}
+                            desativado={rolandoDados.rolando}
+                        >
+                            CLIQUE AQUI, para fazer a primeira rolagem
+                        </Botao>
+                    </div>
                 </div>
             );
         } else {
@@ -170,8 +198,20 @@ export const TelaPanilhaNova = () => {
                 <div>
                     <h4>Nessa primeira rolagem, você obteve:</h4>
                     {MontarRetorno_Rolagens()}
-                    <Botao aoClicar={() => AceitarRolagem()}>Você ACEITA essas rolagens?</Botao>
-                    <Botao aoClicar={() => ExecutarRolagem()}>Você quer ROLAR novamente? Ainda tem 2 tentativas</Botao>
+                    <div className={styles.panilhaNova_botoes}>
+                        <Botao
+                            aoClicar={() => AceitarRolagem()}
+                            desativado={rolandoDados.rolando}
+                        >
+                            Você ACEITA essas rolagens?
+                        </Botao>
+                        <Botao
+                            aoClicar={() => ExecutarRolagem()}
+                            desativado={rolandoDados.rolando}
+                        >
+                            Você quer ROLAR novamente? Ainda tem 2 tentativas
+                        </Botao>
+                    </div>
                 </div>
             );
         } else {
@@ -185,8 +225,20 @@ export const TelaPanilhaNova = () => {
                 <div>
                     <h4>Nessa segunda rolagem, você obteve:</h4>
                     {MontarRetorno_Rolagens()}
-                    <Botao aoClicar={() => AceitarRolagem()}>Você ACEITA essas rolagens?</Botao>
-                    <Botao aoClicar={() => ExecutarRolagem()}>Você quer ROLAR novamente? Ainda tem 1 tentativas</Botao>
+                    <div className={styles.panilhaNova_botoes}>
+                        <Botao
+                            aoClicar={() => AceitarRolagem()}
+                            desativado={rolandoDados.rolando}
+                        >
+                            Você ACEITA essas rolagens?
+                        </Botao>
+                        <Botao
+                            aoClicar={() => ExecutarRolagem()}
+                            desativado={rolandoDados.rolando}
+                        >
+                            Você quer ROLAR novamente? Ainda tem 1 tentativas
+                        </Botao>
+                    </div>
                 </div>
             );
         } else {
@@ -200,7 +252,14 @@ export const TelaPanilhaNova = () => {
                 <div>
                     <h4>Nessa terceira rolagem, você obteve:</h4>
                     {MontarRetorno_Rolagens()}
-                    <Botao aoClicar={() => AceitarRolagem()}>Você DEVE ACEITAR essas rolagens</Botao>
+                    <div className={styles.panilhaNova_botoes}>
+                        <Botao
+                            aoClicar={() => AceitarRolagem()}
+                            desativado={rolandoDados.rolando}
+                        >
+                            Você DEVE ACEITAR essas rolagens
+                        </Botao>
+                    </div>
                 </div>
             );
         } else {
@@ -217,6 +276,22 @@ export const TelaPanilhaNova = () => {
         }
     }, [jogoAtual, indiceRolagem]);
 
+    useEffect(() => {
+        if (rolandoDados.rolando) {
+            if (indiceRolagem === 0 && rolandoDados.quantidade >= 12) {
+                setRolandoDados((prevRolandoDados) => {
+                    return { ...prevRolandoDados, rolando: false };
+                });
+            } else if (indiceRolagem !== 0 && rolandoDados.quantidade >= 15) {
+                setRolandoDados((prevRolandoDados) => {
+                    return { ...prevRolandoDados, rolando: false };
+                });
+            }
+        } else if (rolandoDados.quantidade !== 0) {
+            setRolandoDados({ rolando: false, quantidade: 0 });
+        }
+    }, [rolandoDados]);
+
     if (!jogoAtual) {
         return <></>;
     }
@@ -226,7 +301,11 @@ export const TelaPanilhaNova = () => {
     return (
         <div className={styles.panilhaNova}>
             <h3>
-                Role os dados para determinar sua <span className={styles.panilhaNova_habilidade}>HABILIDADE</span> , ENERGIA e SORTE
+                Role os dados para determinar sua
+                <br />
+                <span className="coresHES_habilidade">HABILIDADE</span>, <span className="coresHES_energia">ENERGIA</span>
+                {" e "}
+                <span className="coresHES_sorte">SORTE</span>
             </h3>
             <div>
                 {MontarRetorno_BoasVindas()}

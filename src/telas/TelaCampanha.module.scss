@@ -1,8 +1,10 @@
 .campanha {
-    padding: 60px 30px 60px 30px;
-
     &_indice,
     &_titulo {
         font-style: italic;
+    }
+
+    h3 {
+        text-align: center;
     }
 }

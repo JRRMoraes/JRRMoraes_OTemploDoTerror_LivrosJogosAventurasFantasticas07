@@ -13,7 +13,7 @@ interface ITelaHistoriasConclusao {
 export const TelaHistorias = () => {
     const { jogoAtual, paginaCampanha, setPaginaCampanha } = ContextoJogos();
 
-    const VELOCIDADES = { normal: 20, rapido: 2 };
+    const VELOCIDADES = { normal: 20, rapido: 1 };
     const [velocidade, setVelocidade] = useState(VELOCIDADES.normal);
 
     const [conclusoes, setConclusoes] = useState<ITelaHistoriasConclusao[]>([]);
@@ -88,6 +88,7 @@ export const TelaHistorias = () => {
             setTodosConcluidos(false);
             setVelocidade(VELOCIDADES.normal);
         } else if (paginaCampanha.historias.length && (!conclusoes || !conclusoes.length)) {
+            setVelocidade(!paginaCampanha.ehJogoCarregado ? VELOCIDADES.normal : VELOCIDADES.rapido);
             paginaCampanha.historias.forEach((historiaI, indiceI) => {
                 setConclusoes((prevConclusoes) => {
                     return [
