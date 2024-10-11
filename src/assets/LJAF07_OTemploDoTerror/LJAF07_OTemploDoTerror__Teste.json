@@ -3,16 +3,28 @@
     "titulo": "O Templo do Terror",
     "autor": "Ian Livingstone",
     "capa": "Capa.png",
-    "resumoInicial": [
-        "O sombrio poder do jovem Malbordus está chegando a seu ápice. Os elfos que o criaram atribuíram-lhe uma tarefa final:",
-        "Reaver os cinco artefatos do Dragão escondidos por séculos na cidade perdida de Vatos, em algum lugar no Deserto dos Crânios.",
-        "Somente quando os tiver em seu poder ele será capaz de rebelar-se e submeter Allansia. Cada dia que passa o aproxima mais desse objetivo, e somente VOCÊ pode detê-lo!",
-        "SUA missão é atravessar as areias escaldantes do deserto, encontrar a misteriosa cidade perdida e destruir os tesouros que Malbordus está procurando, antes que ele possa alcançá-los.",
-        "Mas cuidado! Cada passo que você dá o aproxima mais de sua perdição...",
-        "Ian Livingstone, co-fundador da Games Workshop, um sucesso absoluto, e editor de White Dwarf, criou uma aventura emocionante de espada e feitiçaria para você, com um elaborado sistema de combate e uma Folha de Aventuras para registrar seus ganhos e perdas.",
-        "Tudo o que você precisa é de dois dados, um lápis e uma borracha.",
-        "Há muitos perigos à sua frente, e seu sucesso não está de forma alguma garantido.",
-        "Adversários poderosos alinham-se nas fileiras do inimigo, e muitas vezes sua única alternativa será matar ou ser morto!."
+    "apresentacoes": [
+        {
+            "textos": [
+                "O sombrio poder do jovem Malbordus está chegando a seu ápice. Os elfos que o criaram atribuíram-lhe uma tarefa final:",
+                "Reaver os cinco artefatos do Dragão escondidos por séculos na cidade perdida de Vatos, em algum lugar no Deserto dos Crânios.",
+                "Somente quando os tiver em seu poder ele será capaz de rebelar-se e submeter Allansia. Cada dia que passa o aproxima mais desse objetivo, e somente VOCÊ pode detê-lo!"
+            ]
+        },
+        {
+            "textos": [
+                "SUA missão é atravessar as areias escaldantes do deserto, encontrar a misteriosa cidade perdida e destruir os tesouros que Malbordus está procurando, antes que ele possa alcançá-los.",
+                "Mas cuidado! Cada passo que você dá o aproxima mais de sua perdição..."
+            ]
+        },
+        {
+            "textos": [
+                "Ian Livingstone, co-fundador da Games Workshop, um sucesso absoluto, e editor de White Dwarf, criou uma aventura emocionante de espada e feitiçaria para você, com um elaborado sistema de combate e uma Folha de Aventuras para registrar seus ganhos e perdas.",
+                "Tudo o que você precisa é de dois dados, um lápis e uma borracha.",
+                "Há muitos perigos à sua frente, e seu sucesso não está de forma alguma garantido.",
+                "Adversários poderosos alinham-se nas fileiras do inimigo, e muitas vezes sua única alternativa será matar ou ser morto!."
+            ]
+        }
     ],
     "ilustrador": "Bill Houston",
     "ISBN": "85-85238-32-1",
@@ -32,6 +44,7 @@
             "destinos": [
                 {
                     "idPagina": 2,
+                    "bloqueioOperacao": "JogoAtual_Panilha_Invalida",
                     "destino": "Próximo >>"
                 }
             ]
@@ -42,12 +55,30 @@
             "historias": [
                 {
                     "textos": [
-                        "Jogue um dado. Some 6 a esse número e assinale o total no quadro de HABILIDADE de sua Folha de Aventuras:",
-                        "Jogue dois dados. Some 12 ao número obtido e assinale o total no quadro de ENERGIA.",
-                        "Há também um quadro de SORTE. Jogue um dado, some 6 a esse número e assinale o total no quadro de SORTE.",
                         "Por motivos que serão explicados adiante, os índices de HABILIDADE, ENERGIA e SORTE mudam constantemente durante a aventura. Você deve fazer um registro preciso desses índices e, por este motivo, é aconselhável que escreva números pequenos ou que tenha uma borracha sempre à mão. Mas nunca apague seus índices Iniciais.",
                         "Embora você possa conquistar pontos adicionais de HABILIDADE, ENERGIA e SORTE, esses totais nunca poderão exceder seus índices Iniciais, a não ser em raríssimas ocasiões, quando haverá instruções específicas para você numa determinada página.",
                         "Seu índice de HABILIDADE reflete a sua capacidade como espadachim e sua aptidão geral como lutador. O seu índice de ENERGIA reflete sua constituição física geral, vontade de sobreviver, determinação e condição física como um todo; quanto mais alto for seu índice de ENERGIA, mais tempo você conseguirá sobreviver. O seu índice de SORTE indica o quanto você é uma pessoa naturalmente de sorte. Sorte - e magia - é um fato da vida no reino da fantasia que você está prestes a explorar."
+                    ],
+                    "efeitos": [
+                        {
+                            "texto": "Deu ruim, -4 energia",
+                            "sobre": "ENERGIA",
+                            "valor": -4
+                        }
+                    ]
+                },
+                {
+                    "textos": [
+                        "Por motivos que serão explicados adiante, os índices de HABILIDADE, ENERGIA e SORTE mudam constantemente durante a aventura. Você deve fazer um registro preciso desses índices e, por este motivo, é aconselhável que escreva números pequenos ou que tenha uma borracha sempre à mão. Mas nunca apague seus índices Iniciais.",
+                        "Embora você possa conquistar pontos adicionais de HABILIDADE, ENERGIA e SORTE, esses totais nunca poderão exceder seus índices Iniciais, a não ser em raríssimas ocasiões, quando haverá instruções específicas para você numa determinada página.",
+                        "Seu índice de HABILIDADE reflete a sua capacidade como espadachim e sua aptidão geral como lutador. O seu índice de ENERGIA reflete sua constituição física geral, vontade de sobreviver, determinação e condição física como um todo; quanto mais alto for seu índice de ENERGIA, mais tempo você conseguirá sobreviver. O seu índice de SORTE indica o quanto você é uma pessoa naturalmente de sorte. Sorte - e magia - é um fato da vida no reino da fantasia que você está prestes a explorar."
+                    ],
+                    "efeitos": [
+                        {
+                            "texto": "Deu bom, 4 energia",
+                            "sobre": "ENERGIA",
+                            "valor": 4
+                        }
                     ]
                 }
             ],
@@ -79,6 +110,13 @@
                     ]
                 }
             ],
+            "combates": [
+                {
+                    "nome": "HOMEM-LAGARTO",
+                    "habilidade": 9,
+                    "energia": 8
+                }
+            ],
             "destinos": [
                 {
                     "idPagina": 4,
@@ -99,30 +137,49 @@
                         "Em certas páginas do livro, você será orientado a Testar a sua Sorte e será comunicado quanto às consequências de ter ou não ter sorte. Porém, nos combates, você tem sempre a opção de usar a sorte, seja para causar um ferimento mais grave numa criatura que você acabou de ferir, seja para minimizar os efeitos de um ferimento que a criatura acabou de causar em você.",
                         "Se você tiver acabado de ferir a criatura, pode Testar a sua Sorte conforme descrito acima. Se tiver sorte, terá causado um ferimento grave e poderá subtrair 2 pontos extras do índice de ENERGIA da criatura. Porém, se não tiver sorte, o ferimento será um mero arranhão, e você terá que devolver 1 ponto à ENERGIA da criatura (isto é, em vez dos 2 pontos normais de danos, você terá conseguido apenas 1).",
                         "Se a criatura tiver acabado de feri-lo, você poderá Testar a sua Sorte para tentar minimizar o ferimento. Se tiver sorte, conseguiu evitar que o golpe o atingisse com toda força. Você recupera 1 ponto de ENERGIA (isto é, em lugar de causar os 2 pontos de danos, o golpe causa apenas 1). Se não tiver sorte, você recebeu um ferimento mais grave. Subtraia 1 ponto extra de sua ENERGIA. Lembre-se que você tem que subtrair um ponto da sua própria SORTE sempre que Testar a sua Sorte."
+                    ],
+                    "efeitos": [
+                        {
+                            "texto": "Deu bom, 4 energia",
+                            "sobre": "ITENS:TesteX",
+                            "valor": 1
+                        }
                     ]
                 }
             ],
             "destinos": [
                 {
                     "idPagina": 5,
-                    "destino": "Próximo >>"
+                    "destino": "Próximo >>",
+                    "bloqueioOperacao": "ITENS:TesteX"
                 }
             ]
         },
         {
             "idPagina": 5,
-            "titulo": "Recuperação de Habilidade",
             "historias": [
                 {
                     "textos": [
-                        "O índice de HABILIDADE não mudará muito durante uma aventura. Ocasionalmente, poderá haver instruções em uma página para aumentar ou diminuir o seu índice de HABILIDADE. Uma Arma Mágica pode aumentar sua HABILIDADE, mas lembre-se que você só pode usar uma arma de cada vez! Você não pode receber dois prêmios de HABILIDADE por estar carregando duas Espadas Mágicas. O seu índice de HABILIDADE jamais poderá ultrapassar seu valor Inicial, a não ser quando especificamente autorizado."
+                        "Se você estiver usando um medalhão de ouro com um coração gravado, vá para 258.",
+                        "Se você não estiver usando, Teste a sua Sorte.",
+                        "Se você tiver Sorte, vá para 284. Se você não tiver Sorte, vá para 71."
                     ]
                 }
             ],
             "destinos": [
                 {
                     "idPagina": 6,
-                    "destino": "Próximo >>"
+                    "destino": "Se você estiver usando um medalhão de ouro com um coração gravado, vá para 6.",
+                    "bloqueioOperacao": "Possui_Item_MedalhaoDeOuro",
+                    "bloqueioNegado": true
+                },
+                {
+                    "idPagina": 7,
+                    "destino": "Se você não estiver usando, Teste a sua Sorte. Se você tiver Sorte, vá para 7. Se você não tiver Sorte, vá para 8.",
+                    "bloqueioOperacao": "Possui_Item_MedalhaoDeOuro",
+                    "bloqueioNegado": false,
+                    "testaSorte": true,
+                    "idPaginaAzar": 8
                 }
             ]
         },
@@ -196,7 +253,8 @@
             ],
             "destinos": [
                 {
-                    "idPagina": 999,
+                    "idPagina": 0,
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "destino": "INICIAR O JOGO"
                 }
             ]

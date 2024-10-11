@@ -1,7 +1,7 @@
 import styles from "./ItemListaJogosSalvos.module.scss";
 import { useState } from "react";
 import { ContextoJogos } from "../contextos";
-import { IJogo } from "../tipos";
+import { IJogo, ECampanhaCapitulo } from "../tipos";
 import { Botao } from "./Botao";
 
 interface IItemListaJogosSalvosProps {
@@ -9,11 +9,7 @@ interface IItemListaJogosSalvosProps {
 }
 
 export const ItemListaJogosSalvos = ({ jogoSalvo }: IItemListaJogosSalvosProps) => {
-    const { NavegarParaPaginaLivroJogoComJogoSalvo } = ContextoJogos();
-
-    function AoJogarJogoSalvo() {
-        NavegarParaPaginaLivroJogoComJogoSalvo(jogoSalvo);
-    }
+    const { NavegarParaPaginaLivroJogoComJogoSalvo, ExcluirJogoSalvo } = ContextoJogos();
 
     const [focado, setFocado] = useState<boolean>(false);
 
@@ -25,7 +21,37 @@ export const ItemListaJogosSalvos = ({ jogoSalvo }: IItemListaJogosSalvosProps) 
         setFocado(false);
     }
 
-    function ExibirBotaoJogar() {
+    function MontarRetorno_JogoSalvoOuNovo() {
+        if (jogoSalvo && jogoSalvo.panilha) {
+            let _pagina = "Página: " + jogoSalvo.campanhaIndice;
+            let _campanha = jogoSalvo.campanhaCapitulo === ECampanhaCapitulo.PAGINAS_INICIAIS ? " do Início" : " da Campanha";
+            return (
+                <div>
+                    <div className={styles.itemLista_infos}>
+                        <p>{"Habilidade: " + jogoSalvo.panilha?.habilidade + ", Energia: " + jogoSalvo.panilha?.energia + " e Sorte: " + jogoSalvo.panilha?.sorte}</p>
+                    </div>
+                    <div>
+                        {MontarRetorno_BotaoJogar()}
+                        <p>{_pagina + _campanha}</p>
+                        {MontarRetorno_BotaoExcluirJogo()}
+                    </div>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <div className={styles.itemLista_novoJogo}>Iniciar novo jogo</div>
+                    <div>{MontarRetorno_BotaoJogar()}</div>
+                </div>
+            );
+        }
+    }
+
+    function AoJogarJogoSalvo() {
+        NavegarParaPaginaLivroJogoComJogoSalvo(jogoSalvo);
+    }
+
+    function MontarRetorno_BotaoJogar() {
         if (focado) {
             return <Botao aoClicar={() => AoJogarJogoSalvo()}>JOGAR</Botao>;
         } else {
@@ -33,7 +59,19 @@ export const ItemListaJogosSalvos = ({ jogoSalvo }: IItemListaJogosSalvosProps) 
         }
     }
 
-    function MontarJogoSalvoNovoJogo() {
+    function AoExcluirJogoSalvo() {
+        ExcluirJogoSalvo(jogoSalvo.idJogo.toString());
+    }
+
+    function MontarRetorno_BotaoExcluirJogo() {
+        if (focado) {
+            return <Botao aoClicar={() => AoExcluirJogoSalvo()}>EXCLUIR</Botao>;
+        } else {
+            return <></>;
+        }
+    }
+
+    function MontarRetorno() {
         return (
             <div
                 className={styles.itemLista}
@@ -43,41 +81,30 @@ export const ItemListaJogosSalvos = ({ jogoSalvo }: IItemListaJogosSalvosProps) 
                 onMouseLeave={() => AoDesfocar()}
             >
                 <div className={styles.itemLista_indice}>{jogoSalvo.idJogo + ":"}</div>
-                <div className={styles.itemLista_detalhes}>
-                    <div className={styles.itemLista_novoJogo}>Iniciar novo jogo</div>
-                    <div>{ExibirBotaoJogar()}</div>
-                </div>
+                <div className={styles.itemLista_detalhes}>{MontarRetorno_JogoSalvoOuNovo()}</div>
             </div>
         );
     }
 
-    function MontarJogoSalvoExistente() {
+    if (jogoSalvo && jogoSalvo.panilha) {
         return (
-            <div
-                className={styles.itemLista}
-                onFocus={() => AoFocar()}
-                onBlur={() => AoDesfocar()}
+            <li
+                key={jogoSalvo.idJogo}
+                className={styles.itemSalvo}
             >
-                <div className={styles.itemLista_indice}>{jogoSalvo.idJogo + ":"}</div>
-                <div className={styles.itemLista_detalhes}>
-                    <div className={styles.itemLista_infos}>
-                        {jogoSalvo.panilha?.jogador} -{jogoSalvo.panilha?.habilidade} -{jogoSalvo.panilha?.energia} -{jogoSalvo.panilha?.sorte}
-                    </div>
-                    <div>{ExibirBotaoJogar()}</div>
-                </div>
-            </div>
+                {MontarRetorno()}
+            </li>
+        );
+    } else {
+        return (
+            <li
+                key={jogoSalvo.idJogo}
+                className={styles.itemNovo}
+            >
+                {MontarRetorno()}
+            </li>
         );
     }
-
-    function MontarJogoSalvo() {
-        if (jogoSalvo.panilha) {
-            return MontarJogoSalvoExistente();
-        } else {
-            return MontarJogoSalvoNovoJogo();
-        }
-    }
-
-    return <li key={jogoSalvo.idJogo}>{MontarJogoSalvo()}</li>;
 };
 
 export default ItemListaJogosSalvos;

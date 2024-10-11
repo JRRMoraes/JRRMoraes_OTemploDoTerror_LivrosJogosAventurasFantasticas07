@@ -10,15 +10,6 @@ export function CriarState<T>(original: T): [T, Dispatch<SetStateAction<T>>] {
 }
 
 export function CriarStateComLocalStorage<T>(chaveStorage: string, original: T): [T, Dispatch<SetStateAction<T>>] {
-    function CarregarInicial() {
-        let inicial = original;
-        let carregado = localStorage.getItem(chaveStorage);
-        if (carregado && carregado !== "null") {
-            inicial = JSON.parse(carregado) as T;
-        }
-        return inicial;
-    }
-
     const [valor, setValor] = useState<T>(CarregarInicial());
 
     useEffect(() => {
@@ -28,12 +19,20 @@ export function CriarStateComLocalStorage<T>(chaveStorage: string, original: T):
     }, [valor]);
 
     return [valor, setValor];
+
+    function CarregarInicial() {
+        let inicial = original;
+        let carregado = localStorage.getItem(chaveStorage);
+        if (carregado && carregado !== "null") {
+            inicial = JSON.parse(carregado) as T;
+        }
+        return inicial;
+    }
 }
 
 export enum EProcesso {
-    AGUARDANDO = "Aguardando",
+    _ZERO = "_Zero",
     INICIANDO = "Iniciando",
     PROCESSANDO = "Processando",
     CONCLUIDO = "Concluído",
-    ERRO = "Erro",
 }

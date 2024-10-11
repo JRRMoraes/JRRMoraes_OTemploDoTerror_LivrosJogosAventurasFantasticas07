@@ -1,14 +1,34 @@
 import styles from "./PaginaInicial.module.scss";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ContextoLivro } from "../contextos";
 import { IChildrenProps } from "../uteis";
 import { TextosDatilografados } from "../componentes";
 import { TelaListaJogosSalvos } from "../telas";
+import { TEMPO_ANIMACAO } from "../globais/Constantes";
 
 export const PaginaInicial = () => {
     const { livro, CaminhoImagem } = ContextoLivro();
 
     const [estado, setEstado] = useState<"ABERTURA" | "MENU">("ABERTURA");
+
+    const [indiceApresentacoes, setIndiceApresentacoes] = useState(0);
+
+    const exibeMenuViaTeclado = useCallback((evento: KeyboardEvent) => {
+        ExibirMenu();
+    }, []);
+
+    const exibeMenuViaMouse = useCallback((evento: MouseEvent) => {
+        ExibirMenu();
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener("keydown", exibeMenuViaTeclado, false);
+        document.addEventListener("click", exibeMenuViaMouse, false);
+        return () => {
+            document.removeEventListener("keydown", exibeMenuViaTeclado, false);
+            document.removeEventListener("click", exibeMenuViaMouse, false);
+        };
+    }, [exibeMenuViaTeclado, exibeMenuViaMouse]);
 
     const MontarRetorno = ({ children }: IChildrenProps) => {
         return (
@@ -21,24 +41,6 @@ export const PaginaInicial = () => {
         );
     };
 
-    function ExibirMenu() {
-        setEstado("MENU");
-    }
-
-    function MontarRetorno_AberturaOuMenu() {
-        if (estado === "ABERTURA") {
-            return (
-                <TextosDatilografados
-                    textos={livro.resumoInicial}
-                    velocidade={50}
-                    aoConcluir={() => ExibirMenu()}
-                />
-            );
-        } else {
-            return <TelaListaJogosSalvos />;
-        }
-    }
-
     if (!livro) {
         return <></>;
     }
@@ -50,6 +52,38 @@ export const PaginaInicial = () => {
             </div>
         </MontarRetorno>
     );
+
+    function ProcessarApresentacoes() {
+        if (indiceApresentacoes + 1 < livro.apresentacoes.length) {
+            setTimeout(() => {
+                setIndiceApresentacoes((prevIndiceApresentacoes) => prevIndiceApresentacoes + 1);
+            }, TEMPO_ANIMACAO);
+        } else {
+            ExibirMenu();
+        }
+    }
+
+    function ExibirMenu() {
+        setEstado("MENU");
+    }
+
+    function MontarRetorno_AberturaOuMenu() {
+        if (estado === "ABERTURA") {
+            if (livro.apresentacoes[indiceApresentacoes] && livro.apresentacoes[indiceApresentacoes].textos) {
+                return (
+                    <TextosDatilografados
+                        textos={livro.apresentacoes[indiceApresentacoes].textos}
+                        velocidade={50}
+                        aoConcluir={() => ProcessarApresentacoes()}
+                    />
+                );
+            } else {
+                return <></>;
+            }
+        } else {
+            return <TelaListaJogosSalvos />;
+        }
+    }
 };
 
 export default PaginaInicial;

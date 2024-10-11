@@ -2,9 +2,97 @@ import styles from "./TelaPanilha.module.scss";
 import "../globais/CoresHES.scss";
 import { ContextoJogos } from "../contextos";
 import TelaPanilhaNova from "./TelaPanilhaNova";
+import { PanilhaPopup } from "../componentes";
+import { EProcesso } from "../uteis";
 
 export const TelaPanilha = () => {
     const { jogoAtual } = ContextoJogos();
+
+    if (!jogoAtual) {
+        return <></>;
+    }
+    if (!jogoAtual.panilha) {
+        return <TelaPanilhaNova />;
+    } else {
+        return (
+            <div className={styles.panilha}>
+                <h3>{"Página X  -  Folha de Aventuras"}</h3>
+                <div>
+                    <table className={styles.panilha_tabela_hes}>
+                        <thead>
+                            <tr>
+                                <th className={styles.panilha_habilidade}>Habilidade:</th>
+                                <th className={styles.panilha_energia}>Energia:</th>
+                                <th className={styles.panilha_sorte}>Sorte:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td className={styles.panilha_habilidade}>
+                                    <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.habilidade}</span>
+                                    <span className={styles.panilha_fonteNormal}>{" / "}</span>
+                                    <span>{jogoAtual.panilha.habilidadeInicial}</span>
+                                </td>
+                                <td className={styles.panilha_energia}>
+                                    <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.energia}</span>
+                                    <span className={styles.panilha_fonteNormal}>{" / "}</span>
+                                    <span>{jogoAtual.panilha.energiaInicial}</span>
+                                </td>
+                                <td className={styles.panilha_sorte}>
+                                    <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.sorte}</span>
+                                    <span className={styles.panilha_fonteNormal}>{" / "}</span>
+                                    <span>{jogoAtual.panilha.sorteInicial}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table className={styles.panilha_tabela_op}>
+                        <thead>
+                            <tr>
+                                <th>Ouro:</th>
+                                <th>Provisões:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.ouro}</span>
+                                </td>
+                                <td>
+                                    <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.provisao}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table className={styles.panilha_tabela_encantos}>
+                        <thead>
+                            <tr>
+                                <th>Encantos:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{MontarRetorno_Encantos()}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table className={styles.panilha_tabela_itens}>
+                        <thead>
+                            <tr>
+                                <th>Itens:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{MontarRetorno_Itens()}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>{MontarRetorno_PanilhaPopup()}</div>
+            </div>
+        );
+    }
 
     function MontarRetorno_Encantos() {
         if (jogoAtual && jogoAtual.panilha && jogoAtual.panilha.encantos) {
@@ -34,87 +122,10 @@ export const TelaPanilha = () => {
         }
     }
 
-    if (!jogoAtual) {
-        return <></>;
-    }
-    if (!jogoAtual.panilha) {
-        return <TelaPanilhaNova />;
-    } else {
-        return (
-            <div className={styles.panilha}>
-                <div>{jogoAtual.panilha.jogador}</div>
-                <table className={styles.panilha_tabela_hes}>
-                    <thead>
-                        <tr>
-                            <th className={styles.panilha_habilidade}>Habilidade:</th>
-                            <th className={styles.panilha_energia}>Energia:</th>
-                            <th className={styles.panilha_sorte}>Sorte:</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className={styles.panilha_habilidade}>
-                                <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.habilidade}</span>
-                                <span className={styles.panilha_fonteNormal}>{" / "}</span>
-                                <span>{jogoAtual.panilha.habilidadeInicial}</span>
-                            </td>
-                            <td className={styles.panilha_energia}>
-                                <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.energia}</span>
-                                <span className={styles.panilha_fonteNormal}>{" / "}</span>
-                                <span>{jogoAtual.panilha.energiaInicial}</span>
-                            </td>
-                            <td className={styles.panilha_sorte}>
-                                <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.sorte}</span>
-                                <span className={styles.panilha_fonteNormal}>{" / "}</span>
-                                <span>{jogoAtual.panilha.sorteInicial}</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table className={styles.panilha_tabela_op}>
-                    <thead>
-                        <tr>
-                            <th>Ouro:</th>
-                            <th>Provisões:</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.ouro}</span>
-                            </td>
-                            <td>
-                                <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.provisao}</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table className={styles.panilha_tabela_encantos}>
-                    <thead>
-                        <tr>
-                            <th>Encantos:</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{MontarRetorno_Encantos()}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table className={styles.panilha_tabela_itens}>
-                    <thead>
-                        <tr>
-                            <th>Itens:</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{MontarRetorno_Itens()}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        );
+    function MontarRetorno_PanilhaPopup() {
+        if (jogoAtual && jogoAtual.panilha && jogoAtual.panilha.auxEfeitos && jogoAtual.panilha.auxEfeitos.length && jogoAtual.panilha.auxProcessoEfeito !== EProcesso._ZERO) {
+            return <PanilhaPopup efeitos={jogoAtual.panilha.auxEfeitos} />;
+        }
     }
 };
 

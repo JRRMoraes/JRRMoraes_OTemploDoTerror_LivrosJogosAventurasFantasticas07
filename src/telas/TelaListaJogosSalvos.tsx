@@ -5,6 +5,8 @@ import { ItemListaJogosSalvos } from "../componentes";
 export const TelaListaJogosSalvos = () => {
     const { jogoSalvo1, jogoSalvo2, jogoSalvo3 } = ContextoJogos();
 
+    return <div>{MontarRetorno_Sucesso()}</div>;
+
     function MontarRetorno_Sucesso() {
         return (
             <div className={styles.lista}>
@@ -16,8 +18,6 @@ export const TelaListaJogosSalvos = () => {
             </div>
         );
     }
-
-    return <div>{MontarRetorno_Sucesso()}</div>;
 };
 
 export default TelaListaJogosSalvos;

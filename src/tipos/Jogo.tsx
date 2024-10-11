@@ -1,10 +1,12 @@
+import { EProcesso, SubstituirTexto, TextosIguais } from "../uteis";
+import { IEfeito } from "./Livro";
+
 export interface IPanilhaItem {
     idItem: string;
     quantidade: number;
 }
 
 export interface IPanilha {
-    jogador: string;
     habilidade: number;
     habilidadeInicial: number;
     energia: number;
@@ -15,12 +17,20 @@ export interface IPanilha {
     provisao: number;
     encantos: string[];
     itens: IPanilhaItem[];
+    auxEfeitos: IEfeito[];
+    auxProcessoEfeito: EProcesso;
+}
+
+export enum ECampanhaCapitulo {
+    _NULO = "_",
+    PAGINAS_INICIAIS = "Iníciais",
+    PAGINAS_CAMPANHA = "Campanha",
 }
 
 export interface IJogo {
     idJogo: number;
-    panilha?: IPanilha;
-    campanhaCapitulo: "PAGINAS_INICIAIS" | "PAGINAS_CAMPANHA";
+    panilha: IPanilha;
+    campanhaCapitulo: ECampanhaCapitulo;
     campanhaIndice: number;
     dataCriacao: Date;
     dataSalvo: Date;
@@ -29,8 +39,8 @@ export interface IJogo {
 export function CriarJogoNulo(idJogo: number): IJogo {
     let retorno: IJogo = {
         idJogo: idJogo,
-        panilha: undefined,
-        campanhaCapitulo: "PAGINAS_INICIAIS",
+        panilha: null!,
+        campanhaCapitulo: ECampanhaCapitulo.PAGINAS_INICIAIS,
         campanhaIndice: 0,
         dataCriacao: null!,
         dataSalvo: null!,
@@ -51,9 +61,12 @@ export interface ITotaisRoladosParaPanilhaNova {
     sorte: number;
 }
 
+export const COR_HABILIDADE = "#87ceeb";
+export const COR_ENERGIA = "#008000";
+export const COR_SORTE = "#800080";
+
 export function CriarPanilhaViaRolagens(totaisRolados: ITotaisRoladosParaPanilhaNova): IPanilha {
     return {
-        jogador: "",
         habilidade: totaisRolados.habilidade,
         habilidadeInicial: totaisRolados.habilidade,
         energia: totaisRolados.energia,
@@ -64,9 +77,35 @@ export function CriarPanilhaViaRolagens(totaisRolados: ITotaisRoladosParaPanilha
         provisao: 0,
         encantos: [],
         itens: [],
+        auxEfeitos: null!,
+        auxProcessoEfeito: EProcesso._ZERO,
     };
 }
 
-export const COR_HABILIDADE = "#87ceeb";
-export const COR_ENERGIA = "#008000";
-export const COR_SORTE = "#800080";
+export const RetornarPanilhaEncantosAtualizados = (encantos: string[], efeito: IEfeito): string[] => {
+    let _encantoNome = SubstituirTexto(efeito.sobre, "ENCANTOS:", "", true);
+    if (!_encantoNome) {
+        return encantos;
+    }
+    const _encantos = encantos.map((encantoI) => {
+        if (TextosIguais(encantoI, _encantoNome)) {
+            return efeito.valor >= 1 ? _encantoNome : "";
+        }
+        return encantoI;
+    });
+    return _encantos.filter((encantoI) => !TextosIguais(encantoI, ""));
+};
+
+export const RetornarPanilhaItensAtualizados = (itens: IPanilhaItem[], efeito: IEfeito): IPanilhaItem[] => {
+    let _itemNome = SubstituirTexto(efeito.sobre, "ITENS:", "", true);
+    if (!_itemNome) {
+        return itens;
+    }
+    const _itens = itens.map((itemI) => {
+        if (TextosIguais(itemI.idItem, _itemNome)) {
+            return { ...itemI, quantidade: Math.max(0, itemI.quantidade + efeito.valor) };
+        }
+        return itemI;
+    });
+    return _itens.filter((itemI) => itemI.quantidade > 0);
+};

@@ -2,12 +2,12 @@ import styles from "./TelaPanilhaNova.module.scss";
 import "../globais/CoresHES.scss";
 import { useState, useEffect, useRef } from "react";
 import { ContextoJogos } from "../contextos";
-import { IRolagensParaPanilhaNova, ITotaisRoladosParaPanilhaNova, CriarPanilhaViaRolagens, COR_HABILIDADE, COR_ENERGIA, COR_SORTE } from "../tipos";
+import { IRolagensParaPanilhaNova, ITotaisRoladosParaPanilhaNova, COR_HABILIDADE, COR_ENERGIA, COR_SORTE } from "../tipos";
 import { Botao } from "../componentes";
 import ReactDice, { ReactDiceRef } from "react-dice-complete";
 
 export const TelaPanilhaNova = () => {
-    const { jogoAtual, setJogoAtual } = ContextoJogos();
+    const { jogoAtual, CriarPanilhaNoJogoAtualViaRolagens } = ContextoJogos();
 
     const [indiceRolagem, setIndiceRolagem] = useState(0);
 
@@ -29,18 +29,6 @@ export const TelaPanilhaNova = () => {
     const reactDiceHabilidade = useRef<ReactDiceRef>(null);
     const reactDiceEnergia = useRef<ReactDiceRef>(null);
     const reactDiceSorte = useRef<ReactDiceRef>(null);
-
-    function RolarDados() {
-        setRolagens({
-            habilidade1: 0,
-            energia1: 0,
-            energia2: 0,
-            sorte1: 0,
-        });
-        reactDiceHabilidade.current?.rollAll();
-        reactDiceEnergia.current?.rollAll();
-        reactDiceSorte.current?.rollAll();
-    }
 
     const rolagemHabilidadeConcluida = (totalValue: number, values: number[]) => {
         setRolagens((prevRolagens) => {
@@ -78,13 +66,54 @@ export const TelaPanilhaNova = () => {
         });
     };
 
-    function ObterTotalDaRolagem(total: number) {
-        if (indiceRolagem === 0 || rolandoDados.rolando) {
-            return "?";
-        } else {
-            return total;
+    useEffect(() => {
+        if (!jogoAtual || jogoAtual.panilha) {
+            return;
         }
+        if (indiceRolagem >= 1) {
+            RolarDados();
+        }
+    }, [jogoAtual, indiceRolagem]);
+
+    useEffect(() => {
+        if (rolandoDados.rolando) {
+            if (indiceRolagem === 0 && rolandoDados.quantidade >= 12) {
+                setRolandoDados((prevRolandoDados) => {
+                    return { ...prevRolandoDados, rolando: false };
+                });
+            } else if (indiceRolagem !== 0 && rolandoDados.quantidade >= 15) {
+                setRolandoDados((prevRolandoDados) => {
+                    return { ...prevRolandoDados, rolando: false };
+                });
+            }
+        } else if (rolandoDados.quantidade !== 0) {
+            setRolandoDados({ rolando: false, quantidade: 0 });
+        }
+    }, [rolandoDados]);
+
+    if (!jogoAtual) {
+        return <></>;
     }
+    if (jogoAtual.panilha) {
+        return <></>;
+    }
+    return (
+        <div className={styles.panilhaNova}>
+            <h3>
+                Role os dados para determinar sua
+                <br />
+                <span className="coresHES_habilidade">HABILIDADE</span>, <span className="coresHES_energia">ENERGIA</span>
+                {" e "}
+                <span className="coresHES_sorte">SORTE</span>
+            </h3>
+            <div>
+                {MontarRetorno_BoasVindas()}
+                {MontarRetorno_PrimeiraRolagem()}
+                {MontarRetorno_SegundaRolagem()}
+                {MontarRetorno_TerceiraRolagem()}
+            </div>
+        </div>
+    );
 
     function MontarRetorno_Rolagens() {
         return (
@@ -157,17 +186,6 @@ export const TelaPanilhaNova = () => {
                 </div>
             </div>
         );
-    }
-
-    function AceitarRolagem() {
-        setJogoAtual((prevJogoAtual) => {
-            return { ...prevJogoAtual, panilha: CriarPanilhaViaRolagens(totaisRolados) };
-        });
-    }
-
-    function ExecutarRolagem() {
-        setRolandoDados({ rolando: true, quantidade: 0 });
-        setIndiceRolagem((prevIndiceRolagem) => prevIndiceRolagem + 1);
     }
 
     function MontarRetorno_BoasVindas() {
@@ -267,54 +285,34 @@ export const TelaPanilhaNova = () => {
         }
     }
 
-    useEffect(() => {
-        if (!jogoAtual || jogoAtual.panilha) {
-            return;
-        }
-        if (indiceRolagem >= 1) {
-            RolarDados();
-        }
-    }, [jogoAtual, indiceRolagem]);
-
-    useEffect(() => {
-        if (rolandoDados.rolando) {
-            if (indiceRolagem === 0 && rolandoDados.quantidade >= 12) {
-                setRolandoDados((prevRolandoDados) => {
-                    return { ...prevRolandoDados, rolando: false };
-                });
-            } else if (indiceRolagem !== 0 && rolandoDados.quantidade >= 15) {
-                setRolandoDados((prevRolandoDados) => {
-                    return { ...prevRolandoDados, rolando: false };
-                });
-            }
-        } else if (rolandoDados.quantidade !== 0) {
-            setRolandoDados({ rolando: false, quantidade: 0 });
-        }
-    }, [rolandoDados]);
-
-    if (!jogoAtual) {
-        return <></>;
+    function RolarDados() {
+        setRolagens({
+            habilidade1: 0,
+            energia1: 0,
+            energia2: 0,
+            sorte1: 0,
+        });
+        reactDiceHabilidade.current?.rollAll();
+        reactDiceEnergia.current?.rollAll();
+        reactDiceSorte.current?.rollAll();
     }
-    if (jogoAtual.panilha) {
-        return <></>;
+
+    function ObterTotalDaRolagem(total: number) {
+        if (indiceRolagem === 0 || rolandoDados.rolando) {
+            return "?";
+        } else {
+            return total;
+        }
     }
-    return (
-        <div className={styles.panilhaNova}>
-            <h3>
-                Role os dados para determinar sua
-                <br />
-                <span className="coresHES_habilidade">HABILIDADE</span>, <span className="coresHES_energia">ENERGIA</span>
-                {" e "}
-                <span className="coresHES_sorte">SORTE</span>
-            </h3>
-            <div>
-                {MontarRetorno_BoasVindas()}
-                {MontarRetorno_PrimeiraRolagem()}
-                {MontarRetorno_SegundaRolagem()}
-                {MontarRetorno_TerceiraRolagem()}
-            </div>
-        </div>
-    );
+
+    function AceitarRolagem() {
+        CriarPanilhaNoJogoAtualViaRolagens(totaisRolados);
+    }
+
+    function ExecutarRolagem() {
+        setRolandoDados({ rolando: true, quantidade: 0 });
+        setIndiceRolagem((prevIndiceRolagem) => prevIndiceRolagem + 1);
+    }
 };
 
 export default TelaPanilhaNova;

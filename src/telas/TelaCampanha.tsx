@@ -6,16 +6,6 @@ import TelaDestinos from "./TelaDestinos";
 export const TelaCampanha = () => {
     const { jogoAtual, paginaCampanha } = ContextoJogos();
 
-    function MontarRetorno_IndiceTitulo() {
-        if (paginaCampanha.titulo) {
-            return <h3 className={styles.campanha_titulo}>{paginaCampanha.titulo}</h3>;
-        } else if (paginaCampanha.idPagina >= 0) {
-            return <h3 className={styles.campanha_indice}>{paginaCampanha.idPagina}</h3>;
-        } else {
-            return <></>;
-        }
-    }
-
     if (!jogoAtual || !paginaCampanha) {
         return <></>;
     }
@@ -26,6 +16,16 @@ export const TelaCampanha = () => {
             <TelaDestinos />
         </div>
     );
+
+    function MontarRetorno_IndiceTitulo() {
+        if (paginaCampanha.titulo) {
+            return <h3 className={styles.campanha_titulo}>{paginaCampanha.titulo}</h3>;
+        } else if (paginaCampanha.idPagina > 0) {
+            return <h3 className={styles.campanha_indice}>{paginaCampanha.idPagina}</h3>;
+        } else {
+            return <></>;
+        }
+    }
 };
 
 export default TelaCampanha;

@@ -1,3 +1,9 @@
+import { ECampanhaCapitulo } from "./Jogo";
+
+export interface IApresentacao {
+    textos: string[];
+}
+
 export interface IEfeito {
     texto: string;
     sobre: string;
@@ -6,7 +12,7 @@ export interface IEfeito {
 
 export interface IHistoria {
     textos: string[];
-    efeitos?: IEfeito[];
+    efeitos: IEfeito[];
 }
 
 export const HISTORIA_ZERADA: IHistoria = {
@@ -22,13 +28,19 @@ export interface ICombate {
 
 export interface IDestino {
     idPagina: number;
+    idPaginaAzar: number;
+    idCapitulo: ECampanhaCapitulo;
     destino: string;
-    funcao: () => void;
+    //auxDestinoFuncao: () => void;
+    bloqueioOperacao: string;
+    bloqueioNegado: boolean;
+    testaSorte: boolean;
 }
 
 export interface IPagina {
     idPagina: number;
-    titulo?: string;
+    auxIdCapitulo: ECampanhaCapitulo;
+    titulo: string;
     historias: IHistoria[];
     combates: ICombate[];
     destinos: IDestino[];
@@ -36,6 +48,7 @@ export interface IPagina {
 
 export const PAGINA_ZERADA: IPagina = {
     idPagina: -999,
+    auxIdCapitulo: ECampanhaCapitulo.PAGINAS_INICIAIS,
     titulo: "",
     historias: [],
     combates: [],
@@ -49,13 +62,21 @@ export interface ILivro {
     ilustrador: string;
     isbn: string;
     capa: string;
-    resumoInicial: string[];
+    apresentacoes: IApresentacao[];
     paginasIniciais: IPagina[];
     paginasCampanha: IPagina[];
 }
 
+export enum EPaginaCampanhaEstado {
+    _INICIO,
+    HISTORIAS,
+    COMBATES,
+    DESTINOS,
+}
+
 export interface IPaginaCampanha extends IPagina {
     ehJogoCarregado: boolean;
-    estado: "" | "HISTORIAS" | "COMBATES" | "DESTINOS";
+    estado: EPaginaCampanhaEstado;
     idPaginaDestino: number;
+    idCapituloDestino: ECampanhaCapitulo;
 }

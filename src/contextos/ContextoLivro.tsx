@@ -1,5 +1,5 @@
-import { createContext, Dispatch, SetStateAction, useContext, ReactElement } from "react";
-import { IJogo, ILivro, IPagina, PAGINA_ZERADA } from "../tipos";
+import { Dispatch, SetStateAction, createContext, useContext } from "react";
+import { IJogo, ILivro, IPagina, ECampanhaCapitulo, PAGINA_ZERADA } from "../tipos";
 
 export type TContextoBaseLivro = {
     livro: ILivro;
@@ -20,21 +20,21 @@ export const ContextoLivro = () => {
             return PAGINA_ZERADA;
         }
         if (!jogo.campanhaCapitulo) {
-            jogo.campanhaCapitulo = "PAGINAS_INICIAIS";
+            jogo.campanhaCapitulo = ECampanhaCapitulo.PAGINAS_INICIAIS;
             jogo.campanhaIndice = 1;
         }
-        if (jogo.campanhaCapitulo === "PAGINAS_INICIAIS") {
-            if (jogo.campanhaIndice !== 999) {
-                return livro.paginasIniciais.find((paginaI) => paginaI.idPagina === jogo.campanhaIndice)!;
-            } else {
-                jogo.campanhaCapitulo = "PAGINAS_CAMPANHA";
-                jogo.campanhaIndice = 0;
-            }
+        let _pagina = PAGINA_ZERADA;
+        if (jogo.campanhaCapitulo === ECampanhaCapitulo.PAGINAS_INICIAIS) {
+            _pagina = livro.paginasIniciais.find((paginaI) => paginaI.idPagina === jogo.campanhaIndice)!;
+        } else if (jogo.campanhaCapitulo === ECampanhaCapitulo.PAGINAS_CAMPANHA) {
+            _pagina = livro.paginasCampanha.find((paginaI) => paginaI.idPagina === jogo.campanhaIndice)!;
         }
-        if (jogo.campanhaCapitulo === "PAGINAS_CAMPANHA") {
-            return livro.paginasCampanha.find((paginaI) => paginaI.idPagina === jogo.campanhaIndice)!;
+        if (!_pagina || _pagina === PAGINA_ZERADA) {
+            console.log("ContextoLivro.ObterPagina:::  Não foi possível encontrar a página " + jogo.campanhaIndice + " da " + jogo.campanhaCapitulo);
+            return PAGINA_ZERADA;
         }
-        return PAGINA_ZERADA;
+        _pagina.auxIdCapitulo = jogo.campanhaCapitulo;
+        return _pagina;
     }
 
     function CaminhoImagem(imagem: string) {
@@ -48,5 +48,7 @@ export const ContextoLivro = () => {
         CaminhoImagem,
     };
 };
+
+export default ContextoLivro;
 
 export const CAMINHO_IMAGEM = "src/assets/LJAF07_OTemploDoTerror/imagens/";
