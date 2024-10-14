@@ -7,6 +7,8 @@ import { ContextoBaseLivro } from "../contextos";
 export const ProvedorLivro = ({ children }: IChildrenProps) => {
     const [livro, setLivro] = useState<ILivro>(null!);
 
+    const [audioMusica, setAudioMusica] = useState<string>("");
+
     useEffect(() => {
         if (!livro) {
             axios.get("src/assets/LJAF07_OTemploDoTerror/LJAF07_OTemploDoTerror__Teste.json").then((resultado) => {
@@ -20,6 +22,8 @@ export const ProvedorLivro = ({ children }: IChildrenProps) => {
             value={{
                 livro,
                 setLivro,
+                audioMusica,
+                setAudioMusica,
             }}
         >
             {children}

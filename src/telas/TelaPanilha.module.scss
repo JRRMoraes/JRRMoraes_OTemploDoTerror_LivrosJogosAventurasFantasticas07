@@ -8,11 +8,19 @@
         border: 2px groove #213547;
     }
 
+    h3 {
+        text-align: center;
+    }
+
     th,
     td {
         border-collapse: collapse;
         border-left: 2px groove #213547;
         border-right: 2px groove #213547;
+    }
+
+    ul {
+        margin: 4px;
     }
 
     &_fonteNormal {
@@ -21,5 +29,13 @@
 
     &_numeroAtual {
         font-size: 1.6rem;
+    }
+
+    &_encantos {
+        text-align: left;
+    }
+
+    &_itens {
+        text-align: left;
     }
 }

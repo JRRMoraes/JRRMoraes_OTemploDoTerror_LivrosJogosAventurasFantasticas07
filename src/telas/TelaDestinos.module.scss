@@ -1,0 +1,11 @@
+.destinos {
+    border: 1px green solid;
+
+    h5 {
+        text-align: center;
+    }
+
+    &_salvar {
+        align-content: end;
+    }
+}

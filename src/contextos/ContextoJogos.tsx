@@ -5,8 +5,11 @@ import {
     IPagina,
     IPaginaCampanha,
     IEfeito,
+    IDestino,
+    EJogoNivel,
     PAGINA_ZERADA,
     CriarJogoNulo,
+    AjustarSeForNovoJogo,
     ITotaisRoladosParaPanilhaNova,
     CriarPanilhaViaRolagens,
     ECampanhaCapitulo,
@@ -30,53 +33,85 @@ export type TContextoBaseJogos = {
     setPaginaAtual: Dispatch<SetStateAction<IPagina>>;
     paginaCampanha: IPaginaCampanha;
     setPaginaCampanha: Dispatch<SetStateAction<IPaginaCampanha>>;
+    padraoCapitulo: ECampanhaCapitulo;
+    setPadraoCapitulo: Dispatch<SetStateAction<ECampanhaCapitulo>>;
 };
 
 export const ContextoBaseJogos = createContext<TContextoBaseJogos>(null!);
 ContextoBaseJogos.displayName = "Jogos";
 
 export const ContextoJogos = () => {
-    const { jogoSalvo1, setJogoSalvo1, jogoSalvo2, setJogoSalvo2, jogoSalvo3, setJogoSalvo3, jogoAtual, setJogoAtual, paginaAtual, setPaginaAtual, paginaCampanha, setPaginaCampanha } =
-        useContext(ContextoBaseJogos);
+    const {
+        jogoSalvo1,
+        setJogoSalvo1,
+        jogoSalvo2,
+        setJogoSalvo2,
+        jogoSalvo3,
+        setJogoSalvo3,
+        jogoAtual,
+        setJogoAtual,
+        paginaAtual,
+        setPaginaAtual,
+        paginaCampanha,
+        setPaginaCampanha,
+        padraoCapitulo,
+        setPadraoCapitulo,
+    } = useContext(ContextoBaseJogos);
 
     const navegador = useNavigate();
 
     useEffect(() => {
         if (jogoAtual && jogoAtual.panilha && jogoAtual.panilha.auxEfeitos && jogoAtual.panilha.auxEfeitos.length) {
-            if (jogoAtual.panilha.auxProcessoEfeito === EProcesso._ZERO) {
-                jogoAtual.panilha.auxProcessoEfeito = EProcesso.INICIANDO;
-            } else if (jogoAtual.panilha.auxProcessoEfeito === EProcesso.INICIANDO) {
-                ImporEfeitosEmJogoAtual(jogoAtual.panilha.auxEfeitos);
-                jogoAtual.panilha.auxProcessoEfeito = EProcesso.PROCESSANDO;
-                setTimeout(() => {
-                    jogoAtual.panilha.auxProcessoEfeito = EProcesso.CONCLUIDO;
-                }, TEMPO_ANIMACAO);
-            } else if (jogoAtual.panilha.auxProcessoEfeito === EProcesso.PROCESSANDO) {
-            } else if (jogoAtual.panilha.auxProcessoEfeito === EProcesso.CONCLUIDO) {
-                jogoAtual.panilha.auxEfeitos = null!;
-                jogoAtual.panilha.auxProcessoEfeito = EProcesso._ZERO;
-            }
+            setJogoAtual((prevJogoAtual) => {
+                prevJogoAtual.panilha.auxEfeitos = prevJogoAtual.panilha.auxEfeitos.map((efeitoI) => {
+                    if (efeitoI.auxProcessoEfeito === EProcesso._ZERO) {
+                        efeitoI.auxProcessoEfeito = EProcesso.INICIANDO;
+                    } else if (efeitoI.auxProcessoEfeito === EProcesso.INICIANDO) {
+                        ImporEfeitoEmJogoAtual(efeitoI);
+                        efeitoI.auxProcessoEfeito = EProcesso.PROCESSANDO;
+                        setTimeout(() => {
+                            efeitoI.auxProcessoEfeito = EProcesso.CONCLUIDO;
+                        }, TEMPO_ANIMACAO);
+                    }
+                    return efeitoI;
+                });
+                prevJogoAtual.panilha.auxEfeitos = prevJogoAtual.panilha.auxEfeitos.filter((efeitoI) => efeitoI.auxProcessoEfeito !== EProcesso.CONCLUIDO);
+                return { ...prevJogoAtual };
+            });
         }
     }, [jogoAtual]);
 
-    function NavegarParaPaginaLivroJogoComJogoSalvo(jogoSalvo: IJogo) {
+    function ResetarJogoAtual() {
         setPaginaAtual(null!);
         setPaginaCampanha(null!);
         setJogoAtual(null!);
+        setPadraoCapitulo(ECampanhaCapitulo.PAGINAS_INICIAIS);
+    }
+
+    function NavegarParaPaginaLivroJogoComJogoSalvo(jogoSalvo: IJogo) {
+        ResetarJogoAtual();
         navegador("/" + jogoSalvo.idJogo);
     }
 
     function CarregarJogoSalvoOuNovo(idJogoSalvo: string) {
-        setPaginaAtual(null!);
-        setPaginaCampanha(null!);
+        ResetarJogoAtual();
         if (idJogoSalvo === "1") {
             setJogoAtual(AjustarSeForNovoJogo(jogoSalvo1));
+            if (jogoSalvo1.campanhaCapitulo && jogoSalvo1.campanhaCapitulo !== ECampanhaCapitulo._NULO) {
+                setPadraoCapitulo(jogoSalvo1.campanhaCapitulo);
+            }
             return !!(jogoSalvo1 && jogoSalvo1.panilha);
         } else if (idJogoSalvo === "2") {
             setJogoAtual(AjustarSeForNovoJogo(jogoSalvo2));
+            if (jogoSalvo2.campanhaCapitulo && jogoSalvo2.campanhaCapitulo !== ECampanhaCapitulo._NULO) {
+                setPadraoCapitulo(jogoSalvo2.campanhaCapitulo);
+            }
             return !!(jogoSalvo2 && jogoSalvo2.panilha);
         } else if (idJogoSalvo === "3") {
             setJogoAtual(AjustarSeForNovoJogo(jogoSalvo3));
+            if (jogoSalvo3.campanhaCapitulo && jogoSalvo3.campanhaCapitulo !== ECampanhaCapitulo._NULO) {
+                setPadraoCapitulo(jogoSalvo3.campanhaCapitulo);
+            }
             return !!(jogoSalvo3 && jogoSalvo3.panilha);
         } else if (!idJogoSalvo) {
             return false;
@@ -85,24 +120,6 @@ export const ContextoJogos = () => {
             navegador("/");
             return false;
         }
-    }
-
-    function AjustarSeForNovoJogo(jogoSalvo: IJogo) {
-        let _jogoRetorno = jogoSalvo;
-        if (!_jogoRetorno.dataCriacao) {
-            _jogoRetorno.dataCriacao = new Date();
-            _jogoRetorno.dataSalvo = _jogoRetorno.dataCriacao;
-        }
-        if (!_jogoRetorno.campanhaCapitulo) {
-            _jogoRetorno.campanhaCapitulo = ECampanhaCapitulo.PAGINAS_INICIAIS;
-            _jogoRetorno.campanhaIndice = 1;
-            _jogoRetorno.panilha = null!;
-        }
-        if (_jogoRetorno.campanhaCapitulo === ECampanhaCapitulo.PAGINAS_INICIAIS && _jogoRetorno.campanhaIndice < 1) {
-            _jogoRetorno.campanhaIndice = 1;
-            _jogoRetorno.panilha = null!;
-        }
-        return _jogoRetorno;
     }
 
     function ExcluirJogoSalvo(idJogoSalvo: string) {
@@ -134,35 +151,47 @@ export const ContextoJogos = () => {
 
     function ImporPadroesNaPaginaCampanhaDestinos() {
         setPaginaCampanha((prevPaginaCampanha) => {
-            prevPaginaCampanha.destinos.forEach((destinoI, indiceI) => {
+            prevPaginaCampanha.destinos = prevPaginaCampanha.destinos.map<IDestino>((destinoI) => {
+                if (!destinoI.idCapitulo || destinoI.idCapitulo === ECampanhaCapitulo._NULO) {
+                    destinoI.idCapitulo = padraoCapitulo;
+                }
                 destinoI.auxDestinoFuncao = () => {
-                    setPaginaCampanha((prevPaginaCampanha_IdPaginaDestino) => {
-                        return { ...prevPaginaCampanha_IdPaginaDestino, idPaginaDestino: destinoI.idPagina, idCapituloDestino: destinoI.idCapitulo };
+                    setPaginaCampanha((prevPaginaCampanha_Destino) => {
+                        return {
+                            ...prevPaginaCampanha_Destino,
+                            idPaginaDestino: destinoI.idPagina,
+                            idCapituloDestino: destinoI.idCapitulo,
+                            ehJogoCarregado: false,
+                        };
                     });
                 };
+                return destinoI;
             });
             return prevPaginaCampanha;
         });
     }
 
     function ImporPaginaAtualECampanha(pagina: IPagina, jogoCarregado: boolean) {
-        if (!pagina || (pagina.idPagina === PAGINA_ZERADA.idPagina && pagina.auxIdCapitulo === PAGINA_ZERADA.auxIdCapitulo)) {
+        if (!pagina || (pagina.idPagina === PAGINA_ZERADA.idPagina && pagina.idCapitulo === PAGINA_ZERADA.idCapitulo)) {
             setPaginaAtual(null!);
             setPaginaCampanha(null!);
             return jogoCarregado;
-        } else if (paginaAtual && paginaAtual.idPagina === pagina.idPagina && pagina.auxIdCapitulo === PAGINA_ZERADA.auxIdCapitulo) {
+        } else if (paginaAtual && paginaAtual.idPagina === pagina.idPagina && paginaAtual.idCapitulo === pagina.idCapitulo) {
             return jogoCarregado;
         } else {
             setPaginaAtual(pagina);
+            if (pagina.idCapitulo && pagina.idCapitulo !== padraoCapitulo) {
+                setPadraoCapitulo(pagina.idCapitulo);
+            }
             setPaginaCampanha(null!);
             setPaginaCampanha({
                 idPagina: pagina.idPagina,
-                auxIdCapitulo: pagina.auxIdCapitulo,
+                idCapitulo: padraoCapitulo,
                 titulo: pagina.titulo,
                 ehJogoCarregado: jogoCarregado,
                 estado: EPaginaCampanhaEstado._INICIO,
                 idPaginaDestino: PAGINA_ZERADA.idPagina,
-                idCapituloDestino: PAGINA_ZERADA.auxIdCapitulo,
+                idCapituloDestino: PAGINA_ZERADA.idCapitulo,
                 historias: null!,
                 combates: null!,
                 destinos: null!,
@@ -215,47 +244,70 @@ export const ContextoJogos = () => {
         }
     }
 
-    function CriarPanilhaNoJogoAtualViaRolagens(totaisRolados: ITotaisRoladosParaPanilhaNova) {
+    function CriarPanilhaNoJogoAtualViaRolagens(totaisRolados: ITotaisRoladosParaPanilhaNova, nome: string, nivel: EJogoNivel) {
         setJogoAtual((prevJogoAtual) => {
-            return { ...prevJogoAtual, panilha: CriarPanilhaViaRolagens(totaisRolados) };
+            return { ...prevJogoAtual, panilha: CriarPanilhaViaRolagens(totaisRolados, nome, nivel) };
         });
     }
 
     function AplicarEfeitosDaHistoria(efeitos: IEfeito[]) {
         setJogoAtual((prevJogoAtual) => {
-            return { ...prevJogoAtual, auxEfeitos: efeitos, auxProcessoEfeito: EProcesso._ZERO };
+            efeitos.forEach((efeitoI) => {
+                efeitoI.auxProcessoEfeito = EProcesso._ZERO;
+                prevJogoAtual.panilha.auxEfeitos = [...prevJogoAtual.panilha.auxEfeitos, efeitoI];
+            });
+            return { ...prevJogoAtual };
         });
     }
 
-    function ImporEfeitosEmJogoAtual(efeitos: IEfeito[]) {
-        if (!efeitos || !efeitos.length || !jogoAtual || !jogoAtual.panilha) {
+    function ImporEfeitoEmJogoAtual(efeito: IEfeito) {
+        if (!efeito || efeito.auxProcessoEfeito !== EProcesso.INICIANDO) {
             return;
         }
-        efeitos.forEach((efeitoI, indiceI) => {
-            if (TextosIguais(efeitoI.sobre, "HABILIDADE")) {
-                jogoAtual.panilha.habilidade += efeitoI.valor;
-                jogoAtual.panilha.habilidade = Math.max(jogoAtual.panilha.habilidade, 0);
-                jogoAtual.panilha.habilidade = Math.min(jogoAtual.panilha.habilidade, jogoAtual.panilha.habilidadeInicial);
-            } else if (TextosIguais(efeitoI.sobre, "ENERGIA")) {
-                jogoAtual.panilha.energia += efeitoI.valor;
-                jogoAtual.panilha.energia = Math.max(jogoAtual.panilha.energia, 0);
-                jogoAtual.panilha.energia = Math.min(jogoAtual.panilha.energia, jogoAtual.panilha.energiaInicial);
-            } else if (TextosIguais(efeitoI.sobre, "SORTE")) {
-                jogoAtual.panilha.sorte += efeitoI.valor;
-                jogoAtual.panilha.sorte = Math.max(jogoAtual.panilha.sorte, 0);
-                jogoAtual.panilha.sorte = Math.min(jogoAtual.panilha.sorte, jogoAtual.panilha.sorteInicial);
-            } else if (TextosIguais(efeitoI.sobre, "OURO")) {
-                jogoAtual.panilha.ouro += efeitoI.valor;
-                jogoAtual.panilha.ouro = Math.max(jogoAtual.panilha.ouro, 0);
-            } else if (TextosIguais(efeitoI.sobre, "PROVISAO")) {
-                jogoAtual.panilha.provisao += efeitoI.valor;
-                jogoAtual.panilha.provisao = Math.max(jogoAtual.panilha.provisao, 0);
-            } else if (ContemTexto("ENCANTOS:", efeitoI.sobre)) {
-                jogoAtual.panilha.encantos = RetornarPanilhaEncantosAtualizados(jogoAtual.panilha.encantos, efeitoI);
-            } else if (ContemTexto("ITENS:", efeitoI.sobre)) {
-                jogoAtual.panilha.itens = RetornarPanilhaItensAtualizados(jogoAtual.panilha.itens, efeitoI);
-            }
-        });
+        if (TextosIguais(efeito.sobre, "HABILIDADE")) {
+            setJogoAtual((prevJogoAtual) => {
+                prevJogoAtual.panilha.habilidade += efeito.quantidade;
+                prevJogoAtual.panilha.habilidade = Math.max(prevJogoAtual.panilha.habilidade, 0);
+                prevJogoAtual.panilha.habilidade = Math.min(prevJogoAtual.panilha.habilidade, prevJogoAtual.panilha.habilidadeInicial);
+                return { ...prevJogoAtual };
+            });
+        } else if (TextosIguais(efeito.sobre, "ENERGIA")) {
+            setJogoAtual((prevJogoAtual) => {
+                prevJogoAtual.panilha.energia += efeito.quantidade;
+                prevJogoAtual.panilha.energia = Math.max(prevJogoAtual.panilha.energia, 0);
+                prevJogoAtual.panilha.energia = Math.min(prevJogoAtual.panilha.energia, prevJogoAtual.panilha.energiaInicial);
+                return { ...prevJogoAtual };
+            });
+        } else if (TextosIguais(efeito.sobre, "SORTE")) {
+            setJogoAtual((prevJogoAtual) => {
+                prevJogoAtual.panilha.sorte += efeito.quantidade;
+                prevJogoAtual.panilha.sorte = Math.max(prevJogoAtual.panilha.sorte, 0);
+                prevJogoAtual.panilha.sorte = Math.min(prevJogoAtual.panilha.sorte, prevJogoAtual.panilha.sorteInicial);
+                return { ...prevJogoAtual };
+            });
+        } else if (TextosIguais(efeito.sobre, "OURO")) {
+            setJogoAtual((prevJogoAtual) => {
+                prevJogoAtual.panilha.ouro += efeito.quantidade;
+                prevJogoAtual.panilha.ouro = Math.max(prevJogoAtual.panilha.ouro, 0);
+                return { ...prevJogoAtual };
+            });
+        } else if (TextosIguais(efeito.sobre, "PROVISAO")) {
+            setJogoAtual((prevJogoAtual) => {
+                prevJogoAtual.panilha.provisao += efeito.quantidade;
+                prevJogoAtual.panilha.provisao = Math.max(prevJogoAtual.panilha.provisao, 0);
+                return { ...prevJogoAtual };
+            });
+        } else if (ContemTexto("ENCANTOS:", efeito.sobre)) {
+            setJogoAtual((prevJogoAtual) => {
+                prevJogoAtual.panilha.encantos = RetornarPanilhaEncantosAtualizados(prevJogoAtual.panilha.encantos, efeito);
+                return { ...prevJogoAtual };
+            });
+        } else if (ContemTexto("ITENS:", efeito.sobre)) {
+            setJogoAtual((prevJogoAtual) => {
+                prevJogoAtual.panilha.itens = RetornarPanilhaItensAtualizados(prevJogoAtual.panilha.itens, efeito);
+                return { ...prevJogoAtual };
+            });
+        }
     }
 
     return {
@@ -271,6 +323,7 @@ export const ContextoJogos = () => {
         setPaginaAtual,
         paginaCampanha,
         setPaginaCampanha,
+        ResetarJogoAtual,
         NavegarParaPaginaLivroJogoComJogoSalvo,
         CarregarJogoSalvoOuNovo,
         SalvarJogoAtualNoSalvo,

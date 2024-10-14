@@ -4,21 +4,29 @@ import { useState, useEffect } from "react";
 import { ContextoLivro, ContextoJogos } from "../contextos";
 import { TelaCampanha, TelaPanilha } from "../telas";
 import { isMobile } from "react-device-detect";
+import { ReprodutorAudio } from "../componentes";
 
 export const PaginaLivroJogo = () => {
     let { idJogo } = useParams();
 
     const [ehJogoCarregado, setEhJogoCarregado] = useState(false);
 
-    const { livro, ObterPagina } = ContextoLivro();
+    const { livro, audioMusica, ObterPagina } = ContextoLivro();
 
-    const { jogoAtual, paginaCampanha, CarregarJogoSalvoOuNovo, ImporPaginaAtualECampanha, ImporPaginaCampanhaViaAtual } = ContextoJogos();
+    const { jogoAtual, paginaCampanha, CarregarJogoSalvoOuNovo, ResetarJogoAtual, ImporPaginaAtualECampanha, ImporPaginaCampanhaViaAtual } = ContextoJogos();
 
     useEffect(() => {
         if (!jogoAtual) {
             setEhJogoCarregado(CarregarJogoSalvoOuNovo(idJogo!));
         }
     }, [idJogo]);
+
+    useEffect(() => {
+        window.addEventListener("beforeunload", ProcessarRefresh);
+        return () => {
+            window.removeEventListener("beforeunload", ProcessarRefresh);
+        };
+    }, []);
 
     useEffect(() => {
         if (jogoAtual) {
@@ -36,6 +44,7 @@ export const PaginaLivroJogo = () => {
                 <div className={styles.livroJogo_Desktop_panilha}>
                     <div className={styles.livroJogo_Desktop_panilha_2}>
                         <TelaPanilha />
+                        <ReprodutorAudio audio={"public/The Storyteller.mp3"} />
                     </div>
                 </div>
                 <div className={styles.livroJogo_Desktop_campanha}>
@@ -52,6 +61,7 @@ export const PaginaLivroJogo = () => {
                     <div className={styles.livroJogo_Celular_panilha}>
                         <div className={styles.livroJogo_Celular_panilha_2}>
                             <TelaPanilha />
+                            <ReprodutorAudio audio={"public/The Storyteller.mp3"} />
                         </div>
                     </div>
                     <div className={styles.livroJogo_Celular_campanha}>
@@ -62,6 +72,11 @@ export const PaginaLivroJogo = () => {
                 </div>
             </div>
         );
+    }
+
+    function ProcessarRefresh(evento: BeforeUnloadEvent) {
+        evento.preventDefault();
+        ResetarJogoAtual();
     }
 };
 

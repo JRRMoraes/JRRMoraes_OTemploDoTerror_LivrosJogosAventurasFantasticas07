@@ -20,7 +20,7 @@ export const PanilhaPopup = ({ efeitos }: IPanilhaPopupProps) => {
                                     //className={styles.historias_efeito}
                                 >
                                     <h5>{efeitoI.texto}</h5>
-                                    <h6>{efeitoI.valor + "  " + efeitoI.sobre}</h6>
+                                    <h6>{efeitoI.quantidade + "  " + efeitoI.sobre}</h6>
                                 </div>
                             );
                         })}

@@ -15,7 +15,7 @@ export function ContemTexto(textoBuscado: string, textoCompleto: string, ehCaseS
     if (ehCaseSensitive) {
         return textoCompleto.indexOf(textoBuscado) !== 0;
     } else {
-        return textoCompleto.toLocaleUpperCase().indexOf(textoBuscado.toLocaleUpperCase()) !== 0;
+        return textoCompleto.toLocaleUpperCase().indexOf(textoBuscado.toLocaleUpperCase()) >= 0;
     }
 }
 

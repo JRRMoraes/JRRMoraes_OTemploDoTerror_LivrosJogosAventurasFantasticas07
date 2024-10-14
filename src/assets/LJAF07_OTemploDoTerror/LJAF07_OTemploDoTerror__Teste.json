@@ -63,7 +63,7 @@
                         {
                             "texto": "Deu ruim, -4 energia",
                             "sobre": "ENERGIA",
-                            "valor": -4
+                            "quantidade": -4
                         }
                     ]
                 },
@@ -77,7 +77,7 @@
                         {
                             "texto": "Deu bom, 4 energia",
                             "sobre": "ENERGIA",
-                            "valor": 4
+                            "quantidade": 3
                         }
                     ]
                 }
@@ -112,7 +112,7 @@
             ],
             "combates": [
                 {
-                    "nome": "HOMEM-LAGARTO",
+                    "inimigo": "HOMEM-LAGARTO",
                     "habilidade": 9,
                     "energia": 8
                 }
@@ -142,7 +142,7 @@
                         {
                             "texto": "Deu bom, 4 energia",
                             "sobre": "ITENS:TesteX",
-                            "valor": 1
+                            "quantidade": 1
                         }
                     ]
                 }
@@ -191,7 +191,7 @@
                     "textos": [
                         "O seu índice de ENERGIA mudará muito durante a aventura, à medida que você lutar com monstros e empreender tarefas árduas. Quando estiver próximo de seu objetivo, seu índice de ENERGIA poderá estar perigosamente baixo, e os combates poderão ser particularmente arriscados; portanto, seja cuidadoso!",
                         "Sua mochila contém Provisões suficientes para 10 refeições. Você pode descansar e comer em qualquer momento, exceto quando estiver lutando, mas só poderá fazer una refeição a cada vez. Comer uma refeição restaura 4 pontos de ENERGIA. Quando fizer uma refeição, adicione 4 pontos em seu índice de ENERGIA e deduza um ponto de suas Provisões. Um quadro separado das Provisões Remanescentes faz parte da Folha de Aventuras para registro dos detalhes sobre Provisões. Lembre-se que você tem um longo caminho a seguir e que, portanto, deve usar suas Provisões de maneira sensata!",
-                        "Lembre-se também que seu índice de ENERGIA nunca poderá exceder seu valor Inicial, a menos que isso seja especificamente indicado numa página."
+                        "Lembre-se também que seu índice de ENERGIA nunca poderá exceder seu quantidade Inicial, a menos que isso seja especificamente indicado numa página."
                     ]
                 }
             ],
@@ -209,7 +209,7 @@
                 {
                     "textos": [
                         "Acréscimos em seu índice de SORTE podem ser permitidos durante a aventura, quando você tiver uma dose especial de sorte. Detalhes são fornecidos nas páginas do livro.",
-                        "Lembre-se que, assim como seus índices de HABILIDADE e de ENERGIA, seu índice de SORTE jamais poderá exceder seu valor Inicial."
+                        "Lembre-se que, assim como seus índices de HABILIDADE e de ENERGIA, seu índice de SORTE jamais poderá exceder seu quantidade Inicial."
                     ]
                 }
             ],
@@ -244,7 +244,7 @@
                 {
                     "textos": [
                         "Sua jornada será perigosa, e é provável que você venha a falhar na primeira tentativa.",
-                        "Tome notas e faça um mapa à medida que prosseguir na exploração - esse mapa terá valor inestimável em aventuras futuras, e o ajudará a progredir rapidamente para etapas inexploradas.",
+                        "Tome notas e faça um mapa à medida que prosseguir na exploração - esse mapa terá quantidade inestimável em aventuras futuras, e o ajudará a progredir rapidamente para etapas inexploradas.",
                         "Nem todas as áreas contêm tesouros; elas podem conter simplesmente armadilhas e criaturas pelas quais você será sem dúvida enganado. Pode acontecer que você faça opções erradas durante sua jornada, e, embora possa estar de fato progredindo para seu destino final, não é em absoluto certo que você encontre o que está procurando.",
                         "Você perceberá que os itens não farão sentido se forem lidos em ordem numérica. É essencial que você leia somente os itens que for instruído a ler. Ler outros itens somente causa confusão e pode diminuir a graça do jogo. O único caminho verdadeiro implica um mínimo de riscos, e qualquer jogador, por mais que seus índices iniciais sejam fracos, deverá ser capaz de chegar a seu destino com bastante facilidade.",
                         "Que a sorte dos deuses o acompanhe na aventura a seguir!"
@@ -363,7 +363,7 @@
                     "efeito": {
                         "texto": "Some 4 pontos de ENERGIA.",
                         "sobre": "ENERGIA",
-                        "valor": 4
+                        "quantidade": 4
                     }
                 },
                 {
@@ -426,7 +426,7 @@
             ],
             "combates": [
                 {
-                    "nome": "HOMEM-LAGARTO",
+                    "inimigo": "HOMEM-LAGARTO",
                     "habilidade": 9,
                     "energia": 8
                 }
@@ -477,7 +477,7 @@
             ],
             "combates": [
                 {
-                    "nome": "TROLL DA CAVERNA",
+                    "inimigo": "TROLL DA CAVERNA",
                     "habilidade": 8,
                     "energia": 9
                 }

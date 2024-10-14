@@ -1,3 +1,4 @@
+import { EProcesso } from "../uteis";
 import { ECampanhaCapitulo } from "./Jogo";
 
 export interface IApresentacao {
@@ -7,7 +8,8 @@ export interface IApresentacao {
 export interface IEfeito {
     texto: string;
     sobre: string;
-    valor: number;
+    quantidade: number;
+    auxProcessoEfeito: EProcesso;
 }
 
 export interface IHistoria {
@@ -21,25 +23,25 @@ export const HISTORIA_ZERADA: IHistoria = {
 };
 
 export interface ICombate {
-    nome: string;
+    inimigo: string;
     habilidade: number;
     energia: number;
 }
 
 export interface IDestino {
     idPagina: number;
-    idPaginaAzar: number;
     idCapitulo: ECampanhaCapitulo;
     destino: string;
-    //auxDestinoFuncao: () => void;
+    auxDestinoFuncao: () => void;
     bloqueioOperacao: string;
     bloqueioNegado: boolean;
     testaSorte: boolean;
+    idPaginaAzar: number;
 }
 
 export interface IPagina {
     idPagina: number;
-    auxIdCapitulo: ECampanhaCapitulo;
+    idCapitulo: ECampanhaCapitulo;
     titulo: string;
     historias: IHistoria[];
     combates: ICombate[];
@@ -48,8 +50,26 @@ export interface IPagina {
 
 export const PAGINA_ZERADA: IPagina = {
     idPagina: -999,
-    auxIdCapitulo: ECampanhaCapitulo.PAGINAS_INICIAIS,
+    idCapitulo: ECampanhaCapitulo._NULO,
     titulo: "",
+    historias: [],
+    combates: [],
+    destinos: [],
+};
+
+export const PAGINA_INICIAL: IPagina = {
+    idPagina: 1,
+    idCapitulo: ECampanhaCapitulo.PAGINAS_INICIAIS,
+    titulo: "No início",
+    historias: [],
+    combates: [],
+    destinos: [],
+};
+
+export const PAGINA_DETONADO: IPagina = {
+    idPagina: 9999,
+    idCapitulo: ECampanhaCapitulo.PAGINAS_CAMPANHA,
+    titulo: "Parabéns",
     historias: [],
     combates: [],
     destinos: [],

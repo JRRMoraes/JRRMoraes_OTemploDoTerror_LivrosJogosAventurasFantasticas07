@@ -2,7 +2,7 @@ import styles from "./TelaPanilhaNova.module.scss";
 import "../globais/CoresHES.scss";
 import { useState, useEffect, useRef } from "react";
 import { ContextoJogos } from "../contextos";
-import { IRolagensParaPanilhaNova, ITotaisRoladosParaPanilhaNova, COR_HABILIDADE, COR_ENERGIA, COR_SORTE } from "../tipos";
+import { IRolagensParaPanilhaNova, ITotaisRoladosParaPanilhaNova, COR_HABILIDADE, COR_ENERGIA, COR_SORTE, EJogoNivel } from "../tipos";
 import { Botao } from "../componentes";
 import ReactDice, { ReactDiceRef } from "react-dice-complete";
 
@@ -306,7 +306,7 @@ export const TelaPanilhaNova = () => {
     }
 
     function AceitarRolagem() {
-        CriarPanilhaNoJogoAtualViaRolagens(totaisRolados);
+        CriarPanilhaNoJogoAtualViaRolagens(totaisRolados, "", EJogoNivel.FACIL);
     }
 
     function ExecutarRolagem() {

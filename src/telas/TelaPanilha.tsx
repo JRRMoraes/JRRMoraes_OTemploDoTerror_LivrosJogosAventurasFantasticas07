@@ -18,27 +18,27 @@ export const TelaPanilha = () => {
             <div className={styles.panilha}>
                 <h3>{"Página X  -  Folha de Aventuras"}</h3>
                 <div>
-                    <table className={styles.panilha_tabela_hes}>
+                    <table>
                         <thead>
                             <tr>
-                                <th className={styles.panilha_habilidade}>Habilidade:</th>
-                                <th className={styles.panilha_energia}>Energia:</th>
-                                <th className={styles.panilha_sorte}>Sorte:</th>
+                                <th className="coresHES_habilidade">Habilidade:</th>
+                                <th className="coresHES_energia">Energia:</th>
+                                <th className="coresHES_sorte">Sorte:</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td className={styles.panilha_habilidade}>
+                                <td className="coresHES_habilidade">
                                     <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.habilidade}</span>
                                     <span className={styles.panilha_fonteNormal}>{" / "}</span>
                                     <span>{jogoAtual.panilha.habilidadeInicial}</span>
                                 </td>
-                                <td className={styles.panilha_energia}>
+                                <td className="coresHES_energia">
                                     <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.energia}</span>
                                     <span className={styles.panilha_fonteNormal}>{" / "}</span>
                                     <span>{jogoAtual.panilha.energiaInicial}</span>
                                 </td>
-                                <td className={styles.panilha_sorte}>
+                                <td className="coresHES_sorte">
                                     <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.sorte}</span>
                                     <span className={styles.panilha_fonteNormal}>{" / "}</span>
                                     <span>{jogoAtual.panilha.sorteInicial}</span>
@@ -99,7 +99,14 @@ export const TelaPanilha = () => {
             return (
                 <ul>
                     {jogoAtual.panilha.encantos.map((encantoI, indiceI) => {
-                        return <li key={indiceI}>{encantoI}</li>;
+                        return (
+                            <li
+                                key={indiceI}
+                                className={styles.panilha_encantos}
+                            >
+                                {encantoI}
+                            </li>
+                        );
                     })}
                 </ul>
             );
@@ -113,7 +120,14 @@ export const TelaPanilha = () => {
             return (
                 <ul>
                     {jogoAtual.panilha.itens.map((itemI, indiceI) => {
-                        return <li key={indiceI}>{itemI.quantidade + " x  " + itemI.idItem}</li>;
+                        return (
+                            <li
+                                key={indiceI}
+                                className={styles.panilha_itens}
+                            >
+                                {itemI.quantidade + " x  " + itemI.idItem}
+                            </li>
+                        );
                     })}
                 </ul>
             );
@@ -123,8 +137,16 @@ export const TelaPanilha = () => {
     }
 
     function MontarRetorno_PanilhaPopup() {
-        if (jogoAtual && jogoAtual.panilha && jogoAtual.panilha.auxEfeitos && jogoAtual.panilha.auxEfeitos.length && jogoAtual.panilha.auxProcessoEfeito !== EProcesso._ZERO) {
-            return <PanilhaPopup efeitos={jogoAtual.panilha.auxEfeitos} />;
+        if (jogoAtual && jogoAtual.panilha && jogoAtual.panilha.auxEfeitos) {
+            jogoAtual.panilha.auxEfeitos.map((efeitoI) => {
+                if (efeitoI.auxProcessoEfeito && [EProcesso.INICIANDO, EProcesso.PROCESSANDO].includes(efeitoI.auxProcessoEfeito)) {
+                    return <PanilhaPopup efeitos={jogoAtual.panilha.auxEfeitos} />;
+                } else {
+                    return <></>;
+                }
+            });
+        } else {
+            return <></>;
         }
     }
 };

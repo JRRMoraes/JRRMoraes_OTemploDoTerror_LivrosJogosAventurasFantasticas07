@@ -2,7 +2,7 @@ button {
     border-radius: 8px;
     border: 1px solid #646cff;
     padding: 0.6em 1.2em;
-    margin: 0;
+    margin: 16px 24px;
     font-size: 1.1rem;
     font-weight: 700;
     font-family: inherit;
@@ -18,7 +18,9 @@ button {
         border-color: #646cff;
         box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
         transition: 0.2s;
-        cursor: pointer;
+        -moz-transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
 
         &:active {
             -moz-transform: scale(1.2);
@@ -29,7 +31,7 @@ button {
 
     &:focus,
     &:focus-visible {
-        outline: 4px auto #646cff;
+        outline: 4px auto hsl(147, 75%, 62%);
     }
 
     &:disabled {

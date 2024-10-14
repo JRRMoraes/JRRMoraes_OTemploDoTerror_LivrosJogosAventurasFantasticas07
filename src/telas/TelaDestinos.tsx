@@ -1,7 +1,9 @@
+import styles from "./TelaDestinos.module.scss";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ContextoJogos, OperacoesJogoLivro } from "../contextos";
 import { Botao } from "../componentes";
-import { EPaginaCampanhaEstado, PAGINA_ZERADA } from "../tipos";
+import { ECampanhaCapitulo, EJogoNivel, EPaginaCampanhaEstado, PAGINA_ZERADA } from "../tipos";
 import { EProcesso } from "../uteis";
 
 export const TelaDestinos = () => {
@@ -11,28 +13,26 @@ export const TelaDestinos = () => {
 
     const { ObterOperacao } = OperacoesJogoLivro(jogoAtual, paginaCampanha);
 
+    const navegador = useNavigate();
+
     useEffect(() => {
         if (!jogoAtual || !paginaCampanha || !paginaCampanha.destinos || !paginaCampanha.destinos.length) {
             return;
         }
-        if (paginaCampanha.idPaginaDestino === PAGINA_ZERADA.idPagina && paginaCampanha.auxIdCapitulo === PAGINA_ZERADA.auxIdCapitulo) {
+        if (paginaCampanha.idPaginaDestino === PAGINA_ZERADA.idPagina && paginaCampanha.idCapituloDestino === PAGINA_ZERADA.idCapitulo) {
             return;
         } else {
-            ImporPaginaCampanhaEJogoAtualViaDestino(paginaCampanha.idPaginaDestino, paginaCampanha.auxIdCapitulo);
+            ImporPaginaCampanhaEJogoAtualViaDestino(paginaCampanha.idPaginaDestino, paginaCampanha.idCapituloDestino);
         }
     }, [paginaCampanha]);
 
     useEffect(() => {
-        if (salvando === EProcesso.INICIANDO) {
-            if (!paginaCampanha.ehJogoCarregado) {
-                setSalvando(EProcesso.PROCESSANDO);
-                SalvarJogoAtualNoSalvo();
-                setTimeout(() => {
-                    setSalvando(EProcesso.CONCLUIDO);
-                }, 2000);
-            } else {
+        if (salvando === EProcesso.INICIANDO && !paginaCampanha.ehJogoCarregado) {
+            setSalvando(EProcesso.PROCESSANDO);
+            SalvarJogoAtualNoSalvo();
+            setTimeout(() => {
                 setSalvando(EProcesso.CONCLUIDO);
-            }
+            }, 2000);
         }
     }, [salvando]);
 
@@ -45,24 +45,53 @@ export const TelaDestinos = () => {
     if (paginaCampanha.estado !== EPaginaCampanhaEstado.DESTINOS) {
         return <></>;
     }
-    return <div>{MontarRetorno()}</div>;
+    if (jogoAtual.panilha && jogoAtual.panilha.energia === 0 && jogoAtual.campanhaCapitulo === ECampanhaCapitulo.PAGINAS_CAMPANHA) {
+        return (
+            <div className={styles.destinos}>
+                <h5>VOCÊ MORREU - FIM DE JOGO</h5>
+                {MontarRetorno_SalvaJogoAtual()}
+                <div>
+                    <Botao aoClicar={() => Reiniciar()}>Voltar a página inicial</Botao>
+                </div>
+            </div>
+        );
+    } else {
+        return (
+            <div className={styles.destinos}>
+                <h5>Escolha o seu Destino:</h5>
+                {MontarRetorno_SalvaJogoAtual()}
+                {MontarRetorno_Destinos()}
+            </div>
+        );
+    }
 
-    function MontarRetorno() {
+    function MontarRetorno_SalvaJogoAtual() {
+        if (paginaCampanha.ehJogoCarregado) {
+            return <></>;
+        }
         switch (salvando) {
             case EProcesso._ZERO:
-                setSalvando(EProcesso.INICIANDO);
-                return <></>;
+                if (jogoAtual.panilha && jogoAtual.panilha.nivel === EJogoNivel._NORMAL) {
+                    AoSalvarJogoAtual();
+                    return <></>;
+                } else {
+                    return (
+                        <div className={styles.destinos_salvar}>
+                            <Botao aoClicar={() => AoSalvarJogoAtual()}>SALVAR JOGO ?</Botao>
+                        </div>
+                    );
+                }
             case (EProcesso.INICIANDO, EProcesso.PROCESSANDO):
-                return <>{MontarRetorno_SalvarJogoAtual()}</>;
+                return <div className={styles.destinos_salvar}>... SALVANDO O JOGO ...</div>;
             case EProcesso.CONCLUIDO:
-                return <>{MontarRetorno_Destinos()}</>;
+                return <div className={styles.destinos_salvar}>JOGO SALVO !</div>;
             default:
                 return <></>;
         }
     }
 
-    function MontarRetorno_SalvarJogoAtual() {
-        return <div>SALVANDO JOGO</div>;
+    function AoSalvarJogoAtual() {
+        setSalvando(EProcesso.INICIANDO);
     }
 
     function MontarRetorno_Destinos() {
@@ -82,6 +111,10 @@ export const TelaDestinos = () => {
                 })}
             </div>
         );
+    }
+
+    function Reiniciar() {
+        navegador("/");
     }
 };
 
