@@ -56,9 +56,16 @@ export const TextosDatilografados = ({ textos, velocidade, aoConcluir }: ITextos
 
     if (!textos || !textos.length) return <></>;
     return (
-        <div>
+        <div className="datilografados_container">
             {datilografados.map((datilografadoI, indiceI) => {
-                return <p key={indiceI}>{datilografadoI}</p>;
+                return (
+                    <p
+                        key={indiceI}
+                        className="datilografados_paragrafo"
+                    >
+                        {datilografadoI}
+                    </p>
+                );
             })}
         </div>
     );

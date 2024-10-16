@@ -99,13 +99,13 @@ export const TelaPanilhaNova = () => {
     }
     return (
         <div className={styles.panilhaNova}>
-            <h3>
+            <h2>
                 Role os dados para determinar sua
                 <br />
                 <span className="coresHES_habilidade">HABILIDADE</span>, <span className="coresHES_energia">ENERGIA</span>
                 {" e "}
                 <span className="coresHES_sorte">SORTE</span>
-            </h3>
+            </h2>
             <div>
                 {MontarRetorno_BoasVindas()}
                 {MontarRetorno_PrimeiraRolagem()}

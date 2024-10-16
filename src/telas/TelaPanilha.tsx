@@ -16,7 +16,7 @@ export const TelaPanilha = () => {
     } else {
         return (
             <div className={styles.panilha}>
-                <h3>{"Página X  -  Folha de Aventuras"}</h3>
+                <h2>{"Página X  -  Folha de Aventuras"}</h2>
                 <div>
                     <table>
                         <thead>

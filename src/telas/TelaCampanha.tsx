@@ -19,9 +19,9 @@ export const TelaCampanha = () => {
 
     function MontarRetorno_IndiceTitulo() {
         if (paginaCampanha.titulo) {
-            return <h3 className={styles.campanha_titulo}>{paginaCampanha.titulo}</h3>;
+            return <h1 className={styles.campanha_titulo}>{paginaCampanha.titulo}</h1>;
         } else if (paginaCampanha.idPagina > 0) {
-            return <h3 className={styles.campanha_indice}>{paginaCampanha.idPagina}</h3>;
+            return <h1 className={styles.campanha_indice}>{paginaCampanha.idPagina}</h1>;
         } else {
             return <></>;
         }

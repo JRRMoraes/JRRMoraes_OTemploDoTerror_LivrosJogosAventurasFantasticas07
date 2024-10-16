@@ -5,19 +5,33 @@
     letter-spacing: 0.5px;
 
     &_texto {
-        width: 100%;
+        text-align: justify;
     }
 
-    &_efeito {
-        width: 100%;
+    &_efeito_bom {
         border-radius: 8px;
-        border: 1px solid #646cff;
-        padding: 0.6em 1.2em;
-        margin: 0;
+        border: 2px solid #646cff;
+        padding: 8px 16px;
+        margin: 16px 32px;
+        background-color: #646cff;
+        text-align: center;
+        font-weight: 700;
+        font-size: 1.2rem;
     }
 
-    &_finalizarHistoria {
-        align-items: center;
-        justify-items: center;
+    &_efeito_ruim {
+        border-radius: 8px;
+        border: 2px solid #ff8888;
+        padding: 8px 16px;
+        margin: 16px 32px;
+        background-color: #ff8888;
+        text-align: center;
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    &_pularHistoria {
+        display: flex;
+        justify-content: flex-end;
     }
 }

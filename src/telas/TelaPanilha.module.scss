@@ -1,6 +1,6 @@
 .panilha {
     table {
-        width: 90%;
+        width: 100%;
         margin: auto;
         table-layout: fixed;
         text-align: center;
@@ -8,8 +8,9 @@
         border: 2px groove #213547;
     }
 
-    h3 {
+    h2 {
         text-align: center;
+        margin: 0 0 20px 0;
     }
 
     th,

@@ -48,19 +48,29 @@ export const TelaDestinos = () => {
     if (jogoAtual.panilha && jogoAtual.panilha.energia === 0 && jogoAtual.campanhaCapitulo === ECampanhaCapitulo.PAGINAS_CAMPANHA) {
         return (
             <div className={styles.destinos}>
-                <h5>VOCÊ MORREU - FIM DE JOGO</h5>
-                {MontarRetorno_SalvaJogoAtual()}
-                <div>
-                    <Botao aoClicar={() => Reiniciar()}>Voltar a página inicial</Botao>
+                <div className={styles.destinos_morte}>
+                    <div className={styles.destinos_tituloESalvar}>
+                        <h3>VOCÊ MORREU - FIM DE JOGO</h3>
+                        {MontarRetorno_SalvaJogoAtual()}
+                    </div>
+                    <div className={styles.destinos_conteudo}>
+                        <div className={styles.destinos_conteudo_pagina}>
+                            <Botao aoClicar={() => Reiniciar()}>Voltar a página inicial</Botao>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
     } else {
         return (
             <div className={styles.destinos}>
-                <h5>Escolha o seu Destino:</h5>
-                {MontarRetorno_SalvaJogoAtual()}
-                {MontarRetorno_Destinos()}
+                <div className={styles.destinos_normal}>
+                    <div className={styles.destinos_tituloESalvar}>
+                        <h3>Escolha o seu Destino:</h3>
+                        {MontarRetorno_SalvaJogoAtual()}
+                    </div>
+                    {MontarRetorno_Destinos()}
+                </div>
             </div>
         );
     }
@@ -76,15 +86,15 @@ export const TelaDestinos = () => {
                     return <></>;
                 } else {
                     return (
-                        <div className={styles.destinos_salvar}>
+                        <div className={styles.destinos_tituloESalvar_salvar}>
                             <Botao aoClicar={() => AoSalvarJogoAtual()}>SALVAR JOGO ?</Botao>
                         </div>
                     );
                 }
             case (EProcesso.INICIANDO, EProcesso.PROCESSANDO):
-                return <div className={styles.destinos_salvar}>... SALVANDO O JOGO ...</div>;
+                return <p className={styles.destinos_tituloESalvar_salvar}>... SALVANDO O JOGO ...</p>;
             case EProcesso.CONCLUIDO:
-                return <div className={styles.destinos_salvar}>JOGO SALVO !</div>;
+                return <p className={styles.destinos_tituloESalvar_salvar}>JOGO SALVO !</p>;
             default:
                 return <></>;
         }
@@ -96,15 +106,18 @@ export const TelaDestinos = () => {
 
     function MontarRetorno_Destinos() {
         return (
-            <div>
+            <div className={styles.destinos_conteudo}>
                 {paginaCampanha.destinos.map((destinoI, indiceI) => {
                     return (
-                        <div key={indiceI}>
+                        <div
+                            key={indiceI}
+                            className={styles.destinos_conteudo_pagina}
+                        >
                             <Botao
                                 aoClicar={() => destinoI.auxDestinoFuncao()}
                                 desativado={ObterOperacao(destinoI.bloqueioOperacao)}
                             >
-                                {destinoI.destino + " - " + destinoI.idPagina}
+                                {destinoI.destino}
                             </Botao>
                         </div>
                     );

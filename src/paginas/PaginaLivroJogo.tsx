@@ -43,9 +43,11 @@ export const PaginaLivroJogo = () => {
             <div className={styles.livroJogo_Desktop}>
                 <div className={styles.livroJogo_Desktop_panilha}>
                     <div className={styles.livroJogo_Desktop_panilha_2}>
-                        <TelaPanilha />
-                        <ReprodutorAudio audio={"public/The Storyteller.mp3"} />
+                        <div className={styles.livroJogo_Desktop_panilha_3}>
+                            <TelaPanilha />
+                        </div>
                     </div>
+                    <ReprodutorAudio audio={"/The Storyteller.mp3"} />
                 </div>
                 <div className={styles.livroJogo_Desktop_campanha}>
                     <div className={styles.livroJogo_Desktop_campanha_2}>
@@ -61,7 +63,6 @@ export const PaginaLivroJogo = () => {
                     <div className={styles.livroJogo_Celular_panilha}>
                         <div className={styles.livroJogo_Celular_panilha_2}>
                             <TelaPanilha />
-                            <ReprodutorAudio audio={"public/The Storyteller.mp3"} />
                         </div>
                     </div>
                     <div className={styles.livroJogo_Celular_campanha}>
@@ -70,6 +71,7 @@ export const PaginaLivroJogo = () => {
                         </div>
                     </div>
                 </div>
+                <ReprodutorAudio audio={"/The Storyteller.mp3"} />
             </div>
         );
     }

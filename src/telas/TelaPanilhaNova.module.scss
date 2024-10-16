@@ -1,12 +1,18 @@
 .panilhaNova {
     table {
-        width: 90%;
+        //width: 90%;
         margin: auto;
         table-layout: fixed;
     }
 
-    h3 {
+    h2 {
         text-align: center;
+        margin: 0 0 20px 0;
+    }
+
+    h4,
+    p {
+        margin: 0 0 4px 0;
     }
 
     &_rolagem_titulo {

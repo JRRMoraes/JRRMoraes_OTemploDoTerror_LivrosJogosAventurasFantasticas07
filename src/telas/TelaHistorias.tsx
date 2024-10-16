@@ -166,11 +166,13 @@ export const TelaHistorias = () => {
                     if (conclusoes[indiceI] && [EProcesso.PROCESSANDO, EProcesso.CONCLUIDO].includes(conclusoes[indiceI].processo)) {
                         return (
                             <div key={indiceI}>
-                                <TextosDatilografados
-                                    textos={historiaI.textos}
-                                    velocidade={velocidade}
-                                    aoConcluir={() => FuncaoAoConcluirTexto()}
-                                />
+                                <div className={styles.historias_texto}>
+                                    <TextosDatilografados
+                                        textos={historiaI.textos}
+                                        velocidade={velocidade}
+                                        aoConcluir={() => FuncaoAoConcluirTexto()}
+                                    />
+                                </div>
                                 {MontarRetorno_Botao(conclusoes[indiceI])}
                                 {MontarRetorno_Efeitos(conclusoes[indiceI], historiaI.efeitos!)}
                             </div>
@@ -185,7 +187,11 @@ export const TelaHistorias = () => {
 
     function MontarRetorno_Botao(conclusao: ITelaHistoriasConclusao) {
         if (conclusao.processoTexto !== EProcesso.CONCLUIDO && exibeBotao) {
-            return <Botao aoClicar={() => FinalizarHistoria()}>Finalizar história</Botao>;
+            return (
+                <div className={styles.historias_pularHistoria}>
+                    <Botao aoClicar={() => PularHistoria()}>Pular História</Botao>
+                </div>
+            );
         } else {
             return <></>;
         }
@@ -197,13 +203,12 @@ export const TelaHistorias = () => {
                 <div>
                     {efeitos?.map((efeitoI, indiceI) => {
                         return (
-                            <div
+                            <p
                                 key={indiceI}
-                                className={styles.historias_efeito}
+                                className={efeitoI.quantidade >= 1 ? styles.historias_efeito_bom : styles.historias_efeito_ruim}
                             >
-                                <h5>{efeitoI.texto}</h5>
-                                <h6>{efeitoI.quantidade + "  " + efeitoI.sobre}</h6>
-                            </div>
+                                {efeitoI.texto}
+                            </p>
                         );
                     })}
                 </div>
@@ -213,7 +218,7 @@ export const TelaHistorias = () => {
         }
     }
 
-    function FinalizarHistoria() {
+    function PularHistoria() {
         setVelocidade(VELOCIDADES.rapido);
         setExibeBotao(false);
     }

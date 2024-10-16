@@ -55,8 +55,11 @@ export const PaginaInicial = () => {
             <div className={styles.paginaInicial_total}>
                 <div className={styles.paginaInicial_espaco}></div>
                 <div className={styles.paginaInicial_conteudo}>
-                    {MontarRetorno_AberturaOuMenu()}
-                    <ReprodutorAudio audio="/The Storyteller.mp3" />
+                    <div className={styles.paginaInicial_conteudo_1}>
+                        <ReprodutorAudio audio="/The Storyteller.mp3" />
+                    </div>
+                    <div className={styles.paginaInicial_conteudo_2}>{MontarRetorno_AberturaOuMenu()}</div>
+                    <div className={styles.paginaInicial_conteudo_1}></div>
                 </div>
             </div>
         </MontarRetorno>
@@ -68,7 +71,9 @@ export const PaginaInicial = () => {
                 setIndiceApresentacoes((prevIndiceApresentacoes) => prevIndiceApresentacoes + 1);
             }, TEMPO_ANIMACAO);
         } else {
-            ExibirMenu();
+            setTimeout(() => {
+                ExibirMenu();
+            }, TEMPO_ANIMACAO);
         }
     }
 
@@ -80,17 +85,23 @@ export const PaginaInicial = () => {
         if (estado === "ABERTURA") {
             if (livro.apresentacoes[indiceApresentacoes] && livro.apresentacoes[indiceApresentacoes].textos) {
                 return (
-                    <TextosDatilografados
-                        textos={livro.apresentacoes[indiceApresentacoes].textos}
-                        velocidade={50}
-                        aoConcluir={() => ProcessarApresentacoes()}
-                    />
+                    <div className={styles.paginaInicial_conteudo_2_apresentacao}>
+                        <TextosDatilografados
+                            textos={livro.apresentacoes[indiceApresentacoes].textos}
+                            velocidade={50}
+                            aoConcluir={() => ProcessarApresentacoes()}
+                        />
+                    </div>
                 );
             } else {
                 return <></>;
             }
         } else {
-            return <TelaListaJogosSalvos />;
+            return (
+                <div className={styles.paginaInicial_conteudo_2_jogosSalvos}>
+                    <TelaListaJogosSalvos />
+                </div>
+            );
         }
     }
 };

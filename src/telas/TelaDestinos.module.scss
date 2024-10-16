@@ -1,11 +1,69 @@
 .destinos {
-    border: 1px green solid;
-
-    h5 {
-        text-align: center;
+    &_normal {
+        border: 4px green solid;
+        border-radius: 8px;
+        padding: 8px 16px;
+        margin: 16px 0;
+        background-color: #b1eb9b;
+        transition: border-color 0.25s;
     }
 
-    &_salvar {
-        align-content: end;
+    &_morte {
+        border: 4px #ff6666 solid;
+        border-radius: 8px;
+        padding: 8px 16px;
+        margin: 16px 0;
+        background-color: #ff6666;
+        transition: border-color 0.25s;
+    }
+
+    &_tituloESalvar {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        margin: 0 0 12px 0;
+        font-style: italic;
+
+        h3 {
+            text-align: left;
+            margin: 0;
+            width: 70%;
+        }
+
+        &_salvar {
+            display: flex;
+            justify-content: flex-end;
+            width: 30%;
+            margin: 0 6px 0 0;
+
+            p {
+                font-weight: 700;
+                font-size: 1.2rem;
+                margin: 0;
+                text-align: center;
+            }
+
+            button {
+                margin: 0;
+            }
+        }
+    }
+
+    &_conteudo {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin: 8px;
+
+        &_pagina {
+            flex: 1 1 45%;
+        }
+        @media (max-width: 768px) {
+            &_pagina {
+                flex: 1 1 90%;
+            }
+        }
     }
 }

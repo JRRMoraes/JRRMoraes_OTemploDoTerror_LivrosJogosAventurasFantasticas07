@@ -7,14 +7,13 @@
     min-height: 100vh;
     width: 100vw;
     min-width: 100vw;
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 
     &_total {
-        height: 100vh;
-        width: 100vw;
-        margin: 0;
-        padding: 0;
+        height: 100%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -22,22 +21,50 @@
     }
 
     &_espaco {
-        height: 40vh;
-        min-height: 40vh;
-        max-height: 40vh;
-        width: 100vw;
+        height: 40%;
+        min-height: 40%;
+        max-height: 40%;
+        width: 100%;
     }
 
     &_conteudo {
-        height: 60vh;
-        min-height: 60vh;
-        max-height: 60vh;
-        width: 80vw;
+        height: 60%;
+        min-height: 60%;
+        max-height: 60%;
+        width: 100%;
         color: #fefefe;
-        text-shadow: 2rem;
         font-size: larger;
         line-height: normal;
-        align-items: center;
-        justify-content: center;
+        display: flex;
+        flex-direction: row;
+
+        &_1 {
+            height: 100%;
+            width: 20%;
+            display: flex;
+            align-items: end;
+        }
+
+        &_2 {
+            height: 100%;
+            width: 60%;
+
+            &_apresentacao {
+                display: flex;
+                align-items: start;
+                justify-content: start;
+                text-shadow: 4px 4px 8px #000000;
+
+                p {
+                    margin: 8px;
+                }
+            }
+
+            &_jogosSalvos {
+                display: flex;
+                align-items: start;
+                justify-content: center;
+            }
+        }
     }
 }
