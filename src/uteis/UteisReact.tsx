@@ -35,4 +35,5 @@ export enum EProcesso {
     INICIANDO = "Iniciando",
     PROCESSANDO = "Processando",
     CONCLUIDO = "Concluído",
+    DESTRUIDO = "Destruido",
 }

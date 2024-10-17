@@ -2,7 +2,7 @@ import styles from "./TelaPanilhaNova.module.scss";
 import "../globais/CoresHES.scss";
 import { useState, useEffect, useRef } from "react";
 import { ContextoJogos } from "../contextos";
-import { IRolagensParaPanilhaNova, ITotaisRoladosParaPanilhaNova, COR_HABILIDADE, COR_ENERGIA, COR_SORTE, EJogoNivel } from "../tipos";
+import { IRolagensParaPanilhaNova, ITotaisRoladosParaPanilhaNova, EJogoNivel, COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_ENERGIA, COR_ENERGIA_DOTS, COR_SORTE, COR_SORTE_DOTS } from "../tipos";
 import { Botao } from "../componentes";
 import ReactDice, { ReactDiceRef } from "react-dice-complete";
 
@@ -132,7 +132,7 @@ export const TelaPanilhaNova = () => {
                                         ref={reactDiceHabilidade}
                                         rollDone={rolagemHabilidadeConcluida}
                                         faceColor={COR_HABILIDADE}
-                                        dotColor="#000000"
+                                        dotColor={COR_HABILIDADE_DOTS}
                                         defaultRoll={1}
                                     />
                                 </td>
@@ -154,7 +154,7 @@ export const TelaPanilhaNova = () => {
                                         ref={reactDiceEnergia}
                                         rollDone={rolagemEnergiaConcluida}
                                         faceColor={COR_ENERGIA}
-                                        dotColor="#000000"
+                                        dotColor={COR_ENERGIA_DOTS}
                                         defaultRoll={1}
                                     />
                                 </td>
@@ -176,7 +176,7 @@ export const TelaPanilhaNova = () => {
                                         ref={reactDiceSorte}
                                         rollDone={rolagemSorteConcluida}
                                         faceColor={COR_SORTE}
-                                        dotColor="#ffffff"
+                                        dotColor={COR_SORTE_DOTS}
                                         defaultRoll={1}
                                     />
                                 </td>
@@ -200,7 +200,7 @@ export const TelaPanilhaNova = () => {
                             aoClicar={() => ExecutarRolagem()}
                             desativado={rolandoDados.rolando}
                         >
-                            CLIQUE AQUI, para fazer a primeira rolagem
+                            <h4>CLIQUE AQUI, para fazer a primeira rolagem</h4>
                         </Botao>
                     </div>
                 </div>
@@ -218,16 +218,19 @@ export const TelaPanilhaNova = () => {
                     {MontarRetorno_Rolagens()}
                     <div className={styles.panilhaNova_botoes}>
                         <Botao
-                            aoClicar={() => AceitarRolagem()}
-                            desativado={rolandoDados.rolando}
-                        >
-                            Você ACEITA essas rolagens?
-                        </Botao>
-                        <Botao
                             aoClicar={() => ExecutarRolagem()}
                             desativado={rolandoDados.rolando}
                         >
-                            Você quer ROLAR novamente? Ainda tem 2 tentativas
+                            <>
+                                <h4>Você quer ROLAR novamente?</h4>
+                                <p>Ainda tem 2 tentativas</p>
+                            </>
+                        </Botao>
+                        <Botao
+                            aoClicar={() => AceitarRolagem()}
+                            desativado={rolandoDados.rolando}
+                        >
+                            <h4>Você ACEITA essas rolagens?</h4>
                         </Botao>
                     </div>
                 </div>
@@ -245,16 +248,19 @@ export const TelaPanilhaNova = () => {
                     {MontarRetorno_Rolagens()}
                     <div className={styles.panilhaNova_botoes}>
                         <Botao
-                            aoClicar={() => AceitarRolagem()}
-                            desativado={rolandoDados.rolando}
-                        >
-                            Você ACEITA essas rolagens?
-                        </Botao>
-                        <Botao
                             aoClicar={() => ExecutarRolagem()}
                             desativado={rolandoDados.rolando}
                         >
-                            Você quer ROLAR novamente? Ainda tem 1 tentativas
+                            <>
+                                <h4>Você quer ROLAR novamente?</h4>
+                                <p>Ainda tem 1 tentativa</p>
+                            </>
+                        </Botao>
+                        <Botao
+                            aoClicar={() => AceitarRolagem()}
+                            desativado={rolandoDados.rolando}
+                        >
+                            <h4>Você ACEITA essas rolagens?</h4>
                         </Botao>
                     </div>
                 </div>
@@ -275,7 +281,7 @@ export const TelaPanilhaNova = () => {
                             aoClicar={() => AceitarRolagem()}
                             desativado={rolandoDados.rolando}
                         >
-                            Você DEVE ACEITAR essas rolagens
+                            <h4>Você DEVE ACEITAR essas rolagens</h4>
                         </Botao>
                     </div>
                 </div>

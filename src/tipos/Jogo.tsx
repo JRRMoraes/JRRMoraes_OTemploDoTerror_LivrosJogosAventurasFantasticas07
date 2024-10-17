@@ -1,5 +1,5 @@
-import { SubstituirTexto, TextosIguais } from "../uteis";
-import { IEfeito, PAGINA_INICIAL, PAGINA_ZERADA } from "./Livro";
+import { EProcesso, TextosIguais } from "../uteis";
+import { IEfeito, IDestino, PAGINA_INICIAL, PAGINA_ZERADA } from "./Livro";
 
 export interface IItem {
     idItem: string;
@@ -7,8 +7,8 @@ export interface IItem {
 }
 
 export enum EJogoNivel {
-    _NORMAL,
-    FACIL,
+    _NORMAL = "Normal",
+    FACIL = "Fácil",
 }
 
 export interface IPanilha {
@@ -67,9 +67,26 @@ export interface ITotaisRoladosParaPanilhaNova {
     sorte: number;
 }
 
+export interface IRolagensParaDestino {
+    processoRolagem: EProcesso;
+    quantidade: number;
+    total: number;
+    destino: IDestino;
+}
+
+export const ROLAGEM_PARA_DESTINO_ZERADA: IRolagensParaDestino = {
+    processoRolagem: EProcesso._ZERO,
+    quantidade: 0,
+    total: 0,
+    destino: null!,
+};
+
 export const COR_HABILIDADE = "#87ceeb";
+export const COR_HABILIDADE_DOTS = "#000000";
 export const COR_ENERGIA = "#008000";
+export const COR_ENERGIA_DOTS = "#000000";
 export const COR_SORTE = "#800080";
+export const COR_SORTE_DOTS = "#ffffff";
 
 export function AjustarSeForNovoJogo(jogoSalvo: IJogo) {
     if (!jogoSalvo.dataCriacao) {
@@ -107,37 +124,35 @@ export function CriarPanilhaViaRolagens(totaisRolados: ITotaisRoladosParaPanilha
 }
 
 export function RetornarPanilhaEncantosAtualizados(encantos: string[], efeito: IEfeito): string[] {
-    const _encantoNome = SubstituirTexto(efeito.sobre, "ENCANTOS:", "", true);
-    if (!_encantoNome) {
+    if (!efeito.nomeEfeito) {
         return encantos;
     }
-    if (encantos.find((encantoI) => TextosIguais(encantoI, _encantoNome))) {
+    if (encantos.find((encantoI) => TextosIguais(encantoI, efeito.nomeEfeito))) {
         encantos = encantos.map((encantoI) => {
-            if (TextosIguais(encantoI, _encantoNome)) {
-                return efeito.quantidade >= 1 ? _encantoNome : "";
+            if (TextosIguais(encantoI, efeito.nomeEfeito)) {
+                return efeito.quantidade >= 1 ? efeito.nomeEfeito : "";
             }
             return encantoI;
         });
     } else if (efeito.quantidade > 0) {
-        encantos = [...encantos, _encantoNome];
+        encantos = [...encantos, efeito.nomeEfeito];
     }
     return encantos.filter((encantoI) => !TextosIguais(encantoI, ""));
 }
 
 export function RetornarPanilhaItensAtualizados(itens: IItem[], efeito: IEfeito): IItem[] {
-    const _itemNome = SubstituirTexto(efeito.sobre, "ITENS:", "", true);
-    if (!_itemNome) {
+    if (!efeito.nomeEfeito) {
         return itens;
     }
-    if (itens.find((itemI) => TextosIguais(itemI.idItem, _itemNome))) {
+    if (itens.find((itemI) => TextosIguais(itemI.idItem, efeito.nomeEfeito))) {
         itens = itens.map((itemI) => {
-            if (TextosIguais(itemI.idItem, _itemNome)) {
+            if (TextosIguais(itemI.idItem, efeito.nomeEfeito)) {
                 return { ...itemI, quantidade: Math.max(0, itemI.quantidade + efeito.quantidade) };
             }
             return itemI;
         });
     } else if (efeito.quantidade > 0) {
-        itens = [...itens, { idItem: _itemNome, quantidade: efeito.quantidade }];
+        itens = [...itens, { idItem: efeito.nomeEfeito, quantidade: efeito.quantidade }];
     }
     return itens.filter((itemI) => itemI.quantidade > 0);
 }

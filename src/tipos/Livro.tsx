@@ -2,40 +2,82 @@ import { EProcesso } from "../uteis";
 import { ECampanhaCapitulo } from "./Jogo";
 
 export interface IApresentacao {
-    textos: string[];
+    textosApresentacao: string[];
+}
+
+export enum EAtributo {
+    _FUNCAO = "FUNCAO",
+    HABILIDADE = "HABILIDADE",
+    ENERGIA = "ENERGIA",
+    SORTE = "SORTE",
+    OURO = "OURO",
+    PROVISAO = "PROVISAO",
+    ENCANTOS = "ENCANTOS",
+    ITENS = "ITENS",
+}
+
+export enum EComparacao {
+    _POSSUIR = "POSSUIR",
+    NAO_POSSUIR = "NAO_POSSUIR",
+    MAIOR_IGUAL = "MAIOR_IGUAL",
+    MAIOR = "MAIOR",
+    MENOR_IGUAL = "MENOR_IGUAL",
+    MENOR = "MENOR",
 }
 
 export interface IEfeito {
-    texto: string;
-    sobre: string;
+    textoEfeito: string;
+    atributoEfeito: EAtributo;
+    nomeEfeito: string;
     quantidade: number;
     auxProcessoEfeito: EProcesso;
 }
 
 export interface IHistoria {
-    textos: string[];
+    textosHistoria: string[];
     efeitos: IEfeito[];
+    imagem: string;
 }
 
 export const HISTORIA_ZERADA: IHistoria = {
-    textos: [],
+    textosHistoria: [],
     efeitos: [],
+    imagem: "",
 };
 
-export interface ICombate {
+export interface IInimigoCombate {
     inimigo: string;
     habilidade: number;
     energia: number;
 }
 
+export interface ICombate {
+    inimigos: IInimigoCombate[];
+    textoDerrota: string;
+    aprovacaoDerrota: string;
+}
+
+export interface IAprovacaoDestino {
+    atributoAprovacao: EAtributo;
+    nomeAprovacao: string;
+    comparacao: EComparacao;
+    quantidade: number;
+}
+
+export enum EAtributoDestinoTeste {
+    _NULO = "_",
+    HABILIDADE = "HABILIDADE",
+    SORTE = "SORTE",
+}
+
 export interface IDestino {
     idPagina: number;
     idCapitulo: ECampanhaCapitulo;
-    destino: string;
-    auxDestinoFuncao: () => void;
-    bloqueioOperacao: string;
-    bloqueioNegado: boolean;
-    testaSorte: boolean;
+    textoDestino: string;
+    textosDestino: string[];
+    aprovacoes: IAprovacaoDestino[];
+    testeAtributo: EAtributoDestinoTeste;
+    testeSomarDados: number;
     idPaginaAzar: number;
 }
 
@@ -44,7 +86,7 @@ export interface IPagina {
     idCapitulo: ECampanhaCapitulo;
     titulo: string;
     historias: IHistoria[];
-    combates: ICombate[];
+    combate: ICombate;
     destinos: IDestino[];
 }
 
@@ -53,7 +95,7 @@ export const PAGINA_ZERADA: IPagina = {
     idCapitulo: ECampanhaCapitulo._NULO,
     titulo: "",
     historias: [],
-    combates: [],
+    combate: null!,
     destinos: [],
 };
 
@@ -62,7 +104,7 @@ export const PAGINA_INICIAL: IPagina = {
     idCapitulo: ECampanhaCapitulo.PAGINAS_INICIAIS,
     titulo: "No início",
     historias: [],
-    combates: [],
+    combate: null!,
     destinos: [],
 };
 
@@ -71,7 +113,7 @@ export const PAGINA_DETONADO: IPagina = {
     idCapitulo: ECampanhaCapitulo.PAGINAS_CAMPANHA,
     titulo: "Parabéns",
     historias: [],
-    combates: [],
+    combate: null!,
     destinos: [],
 };
 
@@ -88,10 +130,10 @@ export interface ILivro {
 }
 
 export enum EPaginaCampanhaEstado {
-    _INICIO,
-    HISTORIAS,
-    COMBATES,
-    DESTINOS,
+    _INICIO = "INICIO",
+    HISTORIAS = "HISTORIAS",
+    COMBATES = "COMBATES",
+    DESTINOS = "DESTINOS",
 }
 
 export interface IPaginaCampanha extends IPagina {

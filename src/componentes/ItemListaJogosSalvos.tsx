@@ -3,6 +3,8 @@ import { useState } from "react";
 import { ContextoJogos } from "../contextos";
 import { IJogo, ECampanhaCapitulo } from "../tipos";
 import { Botao } from "./Botao";
+import SportsEsportsOutlinedIcon from "@mui/icons-material/SportsEsportsOutlined";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 
 interface IItemListaJogosSalvosProps {
     jogoSalvo: IJogo;
@@ -12,6 +14,32 @@ export const ItemListaJogosSalvos = ({ jogoSalvo }: IItemListaJogosSalvosProps) 
     const { NavegarParaPaginaLivroJogoComJogoSalvo, ExcluirJogoSalvo } = ContextoJogos();
 
     const [focado, setFocado] = useState<boolean>(false);
+
+    return (
+        <li
+            key={jogoSalvo.idJogo}
+            className={EstiloItemSalvoOuNovo()}
+        >
+            <div
+                className={styles.itemLista}
+                onFocus={() => AoFocar()}
+                onMouseEnter={() => AoFocar()}
+                onBlur={() => AoDesfocar()}
+                onMouseLeave={() => AoDesfocar()}
+            >
+                <div className={styles.itemLista_indice}>{jogoSalvo.idJogo + ":"}</div>
+                <div className={styles.itemLista_detalhes}>{MontarRetorno_JogoSalvoOuNovo()}</div>
+            </div>
+        </li>
+    );
+
+    function EstiloItemSalvoOuNovo() {
+        if (jogoSalvo && jogoSalvo.panilha) {
+            return styles.itemSalvo;
+        } else {
+            return styles.itemNovo;
+        }
+    }
 
     function AoFocar() {
         setFocado(true);
@@ -30,7 +58,7 @@ export const ItemListaJogosSalvos = ({ jogoSalvo }: IItemListaJogosSalvosProps) 
                     <div className={styles.itemLista_infos}>
                         <p>{"Habilidade: " + jogoSalvo.panilha?.habilidade + ", Energia: " + jogoSalvo.panilha?.energia + " e Sorte: " + jogoSalvo.panilha?.sorte}</p>
                     </div>
-                    <div>
+                    <div className={styles.itemLista_comandos}>
                         {MontarRetorno_BotaoJogar()}
                         <p>{_pagina + _campanha}</p>
                         {MontarRetorno_BotaoExcluirJogo()}
@@ -41,7 +69,7 @@ export const ItemListaJogosSalvos = ({ jogoSalvo }: IItemListaJogosSalvosProps) 
             return (
                 <div>
                     <div className={styles.itemLista_novoJogo}>Iniciar novo jogo</div>
-                    <div>{MontarRetorno_BotaoJogar()}</div>
+                    <div className={styles.itemLista_comandos}>{MontarRetorno_BotaoJogar()}</div>
                 </div>
             );
         }
@@ -53,7 +81,14 @@ export const ItemListaJogosSalvos = ({ jogoSalvo }: IItemListaJogosSalvosProps) 
 
     function MontarRetorno_BotaoJogar() {
         if (focado) {
-            return <Botao aoClicar={() => AoJogarJogoSalvo()}>JOGAR</Botao>;
+            return (
+                <Botao aoClicar={() => AoJogarJogoSalvo()}>
+                    <div>
+                        <SportsEsportsOutlinedIcon />
+                        <p>JOGAR</p>
+                    </div>
+                </Botao>
+            );
         } else {
             return <></>;
         }
@@ -65,45 +100,17 @@ export const ItemListaJogosSalvos = ({ jogoSalvo }: IItemListaJogosSalvosProps) 
 
     function MontarRetorno_BotaoExcluirJogo() {
         if (focado) {
-            return <Botao aoClicar={() => AoExcluirJogoSalvo()}>EXCLUIR</Botao>;
+            return (
+                <Botao aoClicar={() => AoExcluirJogoSalvo()}>
+                    <div>
+                        <DeleteForeverOutlinedIcon />
+                        <p>EXCLUIR</p>
+                    </div>
+                </Botao>
+            );
         } else {
             return <></>;
         }
-    }
-
-    function MontarRetorno() {
-        return (
-            <div
-                className={styles.itemLista}
-                onFocus={() => AoFocar()}
-                onMouseEnter={() => AoFocar()}
-                onBlur={() => AoDesfocar()}
-                onMouseLeave={() => AoDesfocar()}
-            >
-                <div className={styles.itemLista_indice}>{jogoSalvo.idJogo + ":"}</div>
-                <div className={styles.itemLista_detalhes}>{MontarRetorno_JogoSalvoOuNovo()}</div>
-            </div>
-        );
-    }
-
-    if (jogoSalvo && jogoSalvo.panilha) {
-        return (
-            <li
-                key={jogoSalvo.idJogo}
-                className={styles.itemSalvo}
-            >
-                {MontarRetorno()}
-            </li>
-        );
-    } else {
-        return (
-            <li
-                key={jogoSalvo.idJogo}
-                className={styles.itemNovo}
-            >
-                {MontarRetorno()}
-            </li>
-        );
     }
 };
 

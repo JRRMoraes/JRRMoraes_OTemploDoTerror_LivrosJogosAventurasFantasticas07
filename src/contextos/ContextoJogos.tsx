@@ -16,8 +16,9 @@ import {
     EPaginaCampanhaEstado,
     RetornarPanilhaEncantosAtualizados,
     RetornarPanilhaItensAtualizados,
+    EAtributo,
 } from "../tipos";
-import { EProcesso, TextosIguais, ContemTexto } from "../uteis";
+import { EProcesso } from "../uteis";
 import { TEMPO_ANIMACAO } from "../globais/Constantes";
 
 export type TContextoBaseJogos = {
@@ -72,10 +73,12 @@ export const ContextoJogos = () => {
                         setTimeout(() => {
                             efeitoI.auxProcessoEfeito = EProcesso.CONCLUIDO;
                         }, TEMPO_ANIMACAO);
+                    } else if (efeitoI.auxProcessoEfeito === EProcesso.CONCLUIDO) {
+                        efeitoI.auxProcessoEfeito = EProcesso.DESTRUIDO;
                     }
                     return efeitoI;
                 });
-                prevJogoAtual.panilha.auxEfeitos = prevJogoAtual.panilha.auxEfeitos.filter((efeitoI) => efeitoI.auxProcessoEfeito !== EProcesso.CONCLUIDO);
+                prevJogoAtual.panilha.auxEfeitos = prevJogoAtual.panilha.auxEfeitos.filter((efeitoI) => efeitoI.auxProcessoEfeito !== EProcesso.DESTRUIDO);
                 return { ...prevJogoAtual };
             });
         }
@@ -155,16 +158,6 @@ export const ContextoJogos = () => {
                 if (!destinoI.idCapitulo || destinoI.idCapitulo === ECampanhaCapitulo._NULO) {
                     destinoI.idCapitulo = padraoCapitulo;
                 }
-                destinoI.auxDestinoFuncao = () => {
-                    setPaginaCampanha((prevPaginaCampanha_Destino) => {
-                        return {
-                            ...prevPaginaCampanha_Destino,
-                            idPaginaDestino: destinoI.idPagina,
-                            idCapituloDestino: destinoI.idCapitulo,
-                            ehJogoCarregado: false,
-                        };
-                    });
-                };
                 return destinoI;
             });
             return prevPaginaCampanha;
@@ -193,7 +186,7 @@ export const ContextoJogos = () => {
                 idPaginaDestino: PAGINA_ZERADA.idPagina,
                 idCapituloDestino: PAGINA_ZERADA.idCapitulo,
                 historias: null!,
-                combates: null!,
+                combate: null!,
                 destinos: null!,
             });
             if (jogoCarregado) {
@@ -202,7 +195,7 @@ export const ContextoJogos = () => {
                         ...prevPaginaCampanha,
                         estado: EPaginaCampanhaEstado.DESTINOS,
                         historias: pagina.historias ? pagina.historias : [],
-                        combates: pagina.combates ? pagina.combates : [],
+                        combate: pagina.combate,
                         destinos: pagina.destinos ? pagina.destinos : [],
                     };
                 });
@@ -232,10 +225,16 @@ export const ContextoJogos = () => {
             setPaginaCampanha((prevPaginaCampanha) => {
                 return { ...prevPaginaCampanha, historias: paginaAtual.historias ? paginaAtual.historias : [] };
             });
-        } else if (paginaCampanha.estado === EPaginaCampanhaEstado.COMBATES && !paginaCampanha.combates) {
-            setPaginaCampanha((prevPaginaCampanha) => {
-                return { ...prevPaginaCampanha, combates: paginaAtual.combates ? paginaAtual.combates : [] };
-            });
+        } else if (paginaCampanha.estado === EPaginaCampanhaEstado.COMBATES && !paginaCampanha.combate) {
+            if (paginaAtual.combate) {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    return { ...prevPaginaCampanha, combates: paginaAtual.combate };
+                });
+            } else {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    return { ...prevPaginaCampanha, estado: EPaginaCampanhaEstado.DESTINOS };
+                });
+            }
         } else if (paginaCampanha.estado === EPaginaCampanhaEstado.DESTINOS && !paginaCampanha.destinos) {
             setPaginaCampanha((prevPaginaCampanha) => {
                 return { ...prevPaginaCampanha, destinos: paginaAtual.destinos ? paginaAtual.destinos : [] };
@@ -264,50 +263,68 @@ export const ContextoJogos = () => {
         if (!efeito || efeito.auxProcessoEfeito !== EProcesso.INICIANDO) {
             return;
         }
-        if (TextosIguais(efeito.sobre, "HABILIDADE")) {
-            setJogoAtual((prevJogoAtual) => {
-                prevJogoAtual.panilha.habilidade += efeito.quantidade;
-                prevJogoAtual.panilha.habilidade = Math.max(prevJogoAtual.panilha.habilidade, 0);
-                prevJogoAtual.panilha.habilidade = Math.min(prevJogoAtual.panilha.habilidade, prevJogoAtual.panilha.habilidadeInicial);
-                return { ...prevJogoAtual };
-            });
-        } else if (TextosIguais(efeito.sobre, "ENERGIA")) {
-            setJogoAtual((prevJogoAtual) => {
-                prevJogoAtual.panilha.energia += efeito.quantidade;
-                prevJogoAtual.panilha.energia = Math.max(prevJogoAtual.panilha.energia, 0);
-                prevJogoAtual.panilha.energia = Math.min(prevJogoAtual.panilha.energia, prevJogoAtual.panilha.energiaInicial);
-                return { ...prevJogoAtual };
-            });
-        } else if (TextosIguais(efeito.sobre, "SORTE")) {
-            setJogoAtual((prevJogoAtual) => {
-                prevJogoAtual.panilha.sorte += efeito.quantidade;
-                prevJogoAtual.panilha.sorte = Math.max(prevJogoAtual.panilha.sorte, 0);
-                prevJogoAtual.panilha.sorte = Math.min(prevJogoAtual.panilha.sorte, prevJogoAtual.panilha.sorteInicial);
-                return { ...prevJogoAtual };
-            });
-        } else if (TextosIguais(efeito.sobre, "OURO")) {
-            setJogoAtual((prevJogoAtual) => {
-                prevJogoAtual.panilha.ouro += efeito.quantidade;
-                prevJogoAtual.panilha.ouro = Math.max(prevJogoAtual.panilha.ouro, 0);
-                return { ...prevJogoAtual };
-            });
-        } else if (TextosIguais(efeito.sobre, "PROVISAO")) {
-            setJogoAtual((prevJogoAtual) => {
-                prevJogoAtual.panilha.provisao += efeito.quantidade;
-                prevJogoAtual.panilha.provisao = Math.max(prevJogoAtual.panilha.provisao, 0);
-                return { ...prevJogoAtual };
-            });
-        } else if (ContemTexto("ENCANTOS:", efeito.sobre)) {
-            setJogoAtual((prevJogoAtual) => {
-                prevJogoAtual.panilha.encantos = RetornarPanilhaEncantosAtualizados(prevJogoAtual.panilha.encantos, efeito);
-                return { ...prevJogoAtual };
-            });
-        } else if (ContemTexto("ITENS:", efeito.sobre)) {
-            setJogoAtual((prevJogoAtual) => {
-                prevJogoAtual.panilha.itens = RetornarPanilhaItensAtualizados(prevJogoAtual.panilha.itens, efeito);
-                return { ...prevJogoAtual };
-            });
+        switch (efeito.atributoEfeito) {
+            case EAtributo.HABILIDADE:
+                setJogoAtual((prevJogoAtual) => {
+                    prevJogoAtual.panilha.habilidade += efeito.quantidade;
+                    prevJogoAtual.panilha.habilidade = Math.max(prevJogoAtual.panilha.habilidade, 0);
+                    prevJogoAtual.panilha.habilidade = Math.min(prevJogoAtual.panilha.habilidade, prevJogoAtual.panilha.habilidadeInicial);
+                    return { ...prevJogoAtual };
+                });
+                break;
+            case EAtributo.ENERGIA:
+                setJogoAtual((prevJogoAtual) => {
+                    prevJogoAtual.panilha.energia += efeito.quantidade;
+                    prevJogoAtual.panilha.energia = Math.max(prevJogoAtual.panilha.energia, 0);
+                    prevJogoAtual.panilha.energia = Math.min(prevJogoAtual.panilha.energia, prevJogoAtual.panilha.energiaInicial);
+                    return { ...prevJogoAtual };
+                });
+                break;
+            case EAtributo.SORTE:
+                setJogoAtual((prevJogoAtual) => {
+                    prevJogoAtual.panilha.sorte += efeito.quantidade;
+                    prevJogoAtual.panilha.sorte = Math.max(prevJogoAtual.panilha.sorte, 0);
+                    prevJogoAtual.panilha.sorte = Math.min(prevJogoAtual.panilha.sorte, prevJogoAtual.panilha.sorteInicial);
+                    return { ...prevJogoAtual };
+                });
+                break;
+            case EAtributo.OURO:
+                setJogoAtual((prevJogoAtual) => {
+                    prevJogoAtual.panilha.ouro += efeito.quantidade;
+                    prevJogoAtual.panilha.ouro = Math.max(prevJogoAtual.panilha.ouro, 0);
+                    return { ...prevJogoAtual };
+                });
+                break;
+            case EAtributo.PROVISAO:
+                setJogoAtual((prevJogoAtual) => {
+                    prevJogoAtual.panilha.provisao += efeito.quantidade;
+                    prevJogoAtual.panilha.provisao = Math.max(prevJogoAtual.panilha.provisao, 0);
+                    return { ...prevJogoAtual };
+                });
+                break;
+            case EAtributo.ENCANTOS:
+                setJogoAtual((prevJogoAtual) => {
+                    prevJogoAtual.panilha.encantos = RetornarPanilhaEncantosAtualizados(prevJogoAtual.panilha.encantos, efeito);
+                    return { ...prevJogoAtual };
+                });
+                break;
+            case EAtributo.ITENS:
+                setJogoAtual((prevJogoAtual) => {
+                    prevJogoAtual.panilha.itens = RetornarPanilhaItensAtualizados(prevJogoAtual.panilha.itens, efeito);
+                    return { ...prevJogoAtual };
+                });
+                break;
+            case EAtributo._FUNCAO:
+            default:
+                break;
         }
+    }
+
+    function AplicarPenalidadeDeTestarSorte() {
+        setJogoAtual((prevJogoAtual) => {
+            prevJogoAtual.panilha.sorte = Math.max(prevJogoAtual.panilha.sorte - 1, 0);
+            return { ...prevJogoAtual };
+        });
     }
 
     return {
@@ -333,6 +350,7 @@ export const ContextoJogos = () => {
         ImporPaginaCampanhaViaAtual,
         CriarPanilhaNoJogoAtualViaRolagens,
         AplicarEfeitosDaHistoria,
+        AplicarPenalidadeDeTestarSorte,
     };
 };
 

@@ -5,20 +5,20 @@
     "capa": "Capa.png",
     "apresentacoes": [
         {
-            "textosHistoria": [
+            "textosApresentacao": [
                 "O sombrio poder do jovem Malbordus está chegando a seu ápice. Os elfos que o criaram atribuíram-lhe uma tarefa final:",
                 "Reaver os cinco artefatos do Dragão escondidos por séculos na cidade perdida de Vatos, em algum lugar no Deserto dos Crânios.",
                 "Somente quando os tiver em seu poder ele será capaz de rebelar-se e submeter Allansia. Cada dia que passa o aproxima mais desse objetivo, e somente VOCÊ pode detê-lo!"
             ]
         },
         {
-            "textosHistoria": [
+            "textosApresentacao": [
                 "SUA missão é atravessar as areias escaldantes do deserto, encontrar a misteriosa cidade perdida e destruir os tesouros que Malbordus está procurando, antes que ele possa alcançá-los.",
                 "Mas cuidado! Cada passo que você dá o aproxima mais de sua perdição..."
             ]
         },
         {
-            "textosHistoria": [
+            "textosApresentacao": [
                 "Ian Livingstone, co-fundador da Games Workshop, um sucesso absoluto, e editor de White Dwarf, criou uma aventura emocionante de espada e feitiçaria para você, com um elaborado sistema de combate e uma Folha de Aventuras para registrar seus ganhos e perdas.",
                 "Tudo o que você precisa é de dois dados, um lápis e uma borracha.",
                 "Há muitos perigos à sua frente, e seu sucesso não está de forma alguma garantido.",
@@ -46,7 +46,7 @@
             "destinos": [
                 {
                     "idPagina": 2,
-                    "textoDestino": "Próximo >>",
+                    "textoDestino": "Role os dados primeiro para continuar o jogo >>",
                     "aprovacoes": [
                         {
                             "atributoAprovacao": "FUNCAO",
@@ -588,15 +588,15 @@
                 },
                 {
                     "idPagina": 284,
-                    "destinos": ["Se você não estiver usando, Teste a sua Sorte.", "Se você tiver Sorte, vá para 284.", "Se você não tiver Sorte, vá para 71."],
+                    "textosDestino": ["Se você não estiver usando, Teste a sua Sorte.", "Se você tiver Sorte, vá para 284.", "Se você não tiver Sorte, vá para 71."],
                     "aprovacoes": [
                         {
                             "atributoAprovacao": "ITENS",
                             "nomeAprovacao": "Medalhão de Ouro",
-                            "comparacao": "NÃO_POSSUIR"
+                            "comparacao": "NAO_POSSUIR"
                         }
                     ],
-                    "testarHES": "SORTE",
+                    "testeAtributo": "SORTE",
                     "idPaginaAzar": 71
                 }
             ]
@@ -2787,15 +2787,20 @@
             "idPagina": 132,
             "historias": [
                 {
-                    "textosHistoria": [
-                        "O Pterodáctilo em mergulho é um alvo difícil de atingir, e você mira cuidadosamente antes de soltar a flecha. Jogue dois dados e some 3 ao total obtido. Se o total for igual ou menor do que sua HABILIIDADE, volte para 104. Se o total for maior que sua HABILIDADE, vá para 254."
-                    ]
+                    "textosHistoria": ["O Pterodáctilo em mergulho é um alvo difícil de atingir, e você mira cuidadosamente antes de soltar a flecha."]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 104,
+                    "textosDestino": [
+                        "Jogue dois dados e some 3 ao total obtido.",
+                        "Se o total for igual ou menor do que sua HABILIIDADE, volte para 104.",
+                        "Se o total for maior que sua HABILIDADE, vá para 254."
+                    ],
+                    "testeAtributo": "HABILIDADE",
+                    "testeSomarDados": 3,
+                    "idPaginaAzar": 254
                 }
             ]
         },

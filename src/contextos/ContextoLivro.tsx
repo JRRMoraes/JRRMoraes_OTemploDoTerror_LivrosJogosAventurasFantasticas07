@@ -13,7 +13,6 @@ ContextoBaseLivro.displayName = "Livro";
 
 export const ContextoLivro = () => {
     const { livro, setLivro, audioMusica, setAudioMusica } = useContext(ContextoBaseLivro);
-    //setAudioMusica("public/The Storyteller.mp3");
 
     function ObterPagina(jogo: IJogo): IPagina {
         if (!livro || !livro.paginasIniciais || !livro.paginasCampanha) {

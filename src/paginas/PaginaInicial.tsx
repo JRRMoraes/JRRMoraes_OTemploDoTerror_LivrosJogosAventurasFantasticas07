@@ -83,11 +83,11 @@ export const PaginaInicial = () => {
 
     function MontarRetorno_AberturaOuMenu() {
         if (estado === "ABERTURA") {
-            if (livro.apresentacoes[indiceApresentacoes] && livro.apresentacoes[indiceApresentacoes].textos) {
+            if (livro.apresentacoes[indiceApresentacoes] && livro.apresentacoes[indiceApresentacoes].textosApresentacao) {
                 return (
                     <div className={styles.paginaInicial_conteudo_2_apresentacao}>
                         <TextosDatilografados
-                            textos={livro.apresentacoes[indiceApresentacoes].textos}
+                            textos={livro.apresentacoes[indiceApresentacoes].textosApresentacao}
                             velocidade={50}
                             aoConcluir={() => ProcessarApresentacoes()}
                         />

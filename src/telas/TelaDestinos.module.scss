@@ -20,31 +20,33 @@
     &_tituloESalvar {
         display: flex;
         flex-direction: row;
-        width: 100%;
+        align-items: center;
+        justify-content: space-between;
         margin: 0 0 12px 0;
         font-style: italic;
 
         h3 {
             text-align: left;
             margin: 0;
-            width: 70%;
         }
 
         &_salvar {
             display: flex;
             justify-content: flex-end;
-            width: 30%;
             margin: 0 6px 0 0;
 
             p {
-                font-weight: 700;
+                font-weight: 500;
                 font-size: 1.2rem;
-                margin: 0;
-                text-align: center;
+                margin: 0 0 0 4px;
             }
 
             button {
                 margin: 0;
+            }
+
+            &_2 {
+                display: flex;
             }
         }
     }
@@ -54,15 +56,56 @@
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        width: 100%;
-        margin: 8px;
+        object-fit: cover;
 
         &_pagina {
-            flex: 1 1 45%;
+            width: 100%;
+
+            button {
+                margin: 8px 16px;
+            }
+
+            p {
+                margin: 0;
+            }
+
+            &_rolagem {
+                table {
+                    width: 100%;
+                    table-layout: fixed;
+                }
+
+                &_dados {
+                    width: 40%;
+
+                    p {
+                        margin: 0;
+                    }
+                }
+
+                &_total {
+                    width: 10%;
+                    font-weight: 700;
+                    font-size: 1.6rem;
+                }
+
+                &_texto {
+                    width: auto;
+                    font-size: 1rem;
+                }
+
+                &_atributo {
+                    width: 10%;
+                    font-weight: 700;
+                    font-size: 1.2rem;
+                }
+            }
         }
         @media (max-width: 768px) {
             &_pagina {
-                flex: 1 1 90%;
+                button {
+                    margin: 8px 16px;
+                }
             }
         }
     }

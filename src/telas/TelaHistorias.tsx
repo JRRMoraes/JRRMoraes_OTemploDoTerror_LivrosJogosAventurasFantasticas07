@@ -168,7 +168,7 @@ export const TelaHistorias = () => {
                             <div key={indiceI}>
                                 <div className={styles.historias_texto}>
                                     <TextosDatilografados
-                                        textos={historiaI.textos}
+                                        textos={historiaI.textosHistoria}
                                         velocidade={velocidade}
                                         aoConcluir={() => FuncaoAoConcluirTexto()}
                                     />
@@ -202,12 +202,13 @@ export const TelaHistorias = () => {
             return (
                 <div>
                     {efeitos?.map((efeitoI, indiceI) => {
+                        let _className = efeitoI.quantidade >= 1 ? styles.historias_efeito_bom : styles.historias_efeito_ruim;
                         return (
                             <p
                                 key={indiceI}
-                                className={efeitoI.quantidade >= 1 ? styles.historias_efeito_bom : styles.historias_efeito_ruim}
+                                className={_className}
                             >
-                                {efeitoI.texto}
+                                {efeitoI.textoEfeito}
                             </p>
                         );
                     })}

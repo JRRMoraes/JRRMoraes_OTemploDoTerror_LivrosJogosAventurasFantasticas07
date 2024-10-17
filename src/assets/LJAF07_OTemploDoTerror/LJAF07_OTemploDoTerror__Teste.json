@@ -5,20 +5,20 @@
     "capa": "Capa.png",
     "apresentacoes": [
         {
-            "textos": [
+            "textosApresentacao": [
                 "O sombrio poder do jovem Malbordus está chegando a seu ápice. Os elfos que o criaram atribuíram-lhe uma tarefa final:",
                 "Reaver os cinco artefatos do Dragão escondidos por séculos na cidade perdida de Vatos, em algum lugar no Deserto dos Crânios.",
                 "Somente quando os tiver em seu poder ele será capaz de rebelar-se e submeter Allansia. Cada dia que passa o aproxima mais desse objetivo, e somente VOCÊ pode detê-lo!"
             ]
         },
         {
-            "textos": [
+            "textosApresentacao": [
                 "SUA missão é atravessar as areias escaldantes do deserto, encontrar a misteriosa cidade perdida e destruir os tesouros que Malbordus está procurando, antes que ele possa alcançá-los.",
                 "Mas cuidado! Cada passo que você dá o aproxima mais de sua perdição..."
             ]
         },
         {
-            "textos": [
+            "textosApresentacao": [
                 "Ian Livingstone, co-fundador da Games Workshop, um sucesso absoluto, e editor de White Dwarf, criou uma aventura emocionante de espada e feitiçaria para você, com um elaborado sistema de combate e uma Folha de Aventuras para registrar seus ganhos e perdas.",
                 "Tudo o que você precisa é de dois dados, um lápis e uma borracha.",
                 "Há muitos perigos à sua frente, e seu sucesso não está de forma alguma garantido.",
@@ -34,18 +34,26 @@
             "titulo": "LUTA CONTRA OS MONSTROS",
             "historias": [
                 {
-                    "textos": [
-                        "Antes de embarcar em sua aventura, é preciso, em primeiro lugar, que você determine suas próprias forças e debilidades. Você tem em seu poder uma espada e um escudo, assim como uma mochila contendo provisões. (comida e bebida) para a viagem.",
-                        "Você precisa usar os dados para determinar seus índices iniciais de HABILIDADE e de ENERGIA. Na página X, há uma Folha de Aventuras, na qual você pode registrar os detalhes de uma aventura. Nela você encontrará quadros para registrar seus índices de HABILIDADE e de ENERGIA.",
-                        "Aconselhamos que você ou anote seus índices na Folha de Aventuras a lápis, ou faça fotocópias da página, para poder utilizá-las em aventuras posteriores."
+                    "textosHistoria": [
+                        "Antes de embarcar em sua aventura, é preciso, em primeiro lugar, que você determine suas próprias forças e debilidades.",
+                        "Você tem em seu poder uma espada e um escudo, assim como uma mochila contendo provisões (comida e bebida) para a viagem.",
+                        "Você precisa usar os dados para determinar seus índices iniciais de HABILIDADE e de ENERGIA.",
+                        "Na página X, há uma Folha de Aventuras, na qual você pode registrar os detalhes de uma aventura.",
+                        "Nela você encontrará quadros para registrar seus índices de HABILIDADE e de ENERGIA."
                     ]
                 }
             ],
             "destinos": [
                 {
                     "idPagina": 2,
-                    "bloqueioOperacao": "JogoAtual_Panilha_Invalida",
-                    "destino": "Próximo >>"
+                    "textoDestino": "Role os dados primeiro para continuar o jogo >>",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "FUNCAO",
+                            "nomeAprovacao": "JogoAtual_Panilha",
+                            "comparacao": "POSSUIR"
+                        }
+                    ]
                 }
             ]
         },
@@ -54,29 +62,30 @@
             "titulo": "Habilidade, Energia e Sorte",
             "historias": [
                 {
-                    "textos": [
-                        "Por motivos que serão explicados adiante, os índices de HABILIDADE, ENERGIA e SORTE mudam constantemente durante a aventura. Você deve fazer um registro preciso desses índices e, por este motivo, é aconselhável que escreva números pequenos ou que tenha uma borracha sempre à mão. Mas nunca apague seus índices Iniciais.",
-                        "Embora você possa conquistar pontos adicionais de HABILIDADE, ENERGIA e SORTE, esses totais nunca poderão exceder seus índices Iniciais, a não ser em raríssimas ocasiões, quando haverá instruções específicas para você numa determinada página.",
-                        "Seu índice de HABILIDADE reflete a sua capacidade como espadachim e sua aptidão geral como lutador. O seu índice de ENERGIA reflete sua constituição física geral, vontade de sobreviver, determinação e condição física como um todo; quanto mais alto for seu índice de ENERGIA, mais tempo você conseguirá sobreviver. O seu índice de SORTE indica o quanto você é uma pessoa naturalmente de sorte. Sorte - e magia - é um fato da vida no reino da fantasia que você está prestes a explorar."
+                    "textosHistoria": [
+                        "Seu índice de HABILIDADE reflete a sua capacidade como espadachim e sua aptidão geral como lutador.",
+                        "O seu índice de ENERGIA reflete sua constituição física geral, vontade de sobreviver, determinação e condição física como um todo; quanto mais alto for seu índice de ENERGIA, mais tempo você conseguirá sobreviver.",
+                        "O seu índice de SORTE indica o quanto você é uma pessoa naturalmente de sorte. Sorte - e magia - é um fato da vida no reino da fantasia que você está prestes a explorar.",
+                        "Embora você possa conquistar pontos adicionais de HABILIDADE, ENERGIA e SORTE, esses totais nunca poderão exceder seus índices Iniciais, a não ser em raríssimas ocasiões, quando haverá instruções específicas para você numa determinada página."
                     ],
                     "efeitos": [
                         {
-                            "texto": "Deu ruim, -4 energia",
-                            "sobre": "ENERGIA",
+                            "textoEfeito": "Deu ruim, -4 energia",
+                            "atributoEfeito": "ENERGIA",
                             "quantidade": -4
                         }
                     ]
                 },
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "Por motivos que serão explicados adiante, os índices de HABILIDADE, ENERGIA e SORTE mudam constantemente durante a aventura. Você deve fazer um registro preciso desses índices e, por este motivo, é aconselhável que escreva números pequenos ou que tenha uma borracha sempre à mão. Mas nunca apague seus índices Iniciais.",
                         "Embora você possa conquistar pontos adicionais de HABILIDADE, ENERGIA e SORTE, esses totais nunca poderão exceder seus índices Iniciais, a não ser em raríssimas ocasiões, quando haverá instruções específicas para você numa determinada página.",
                         "Seu índice de HABILIDADE reflete a sua capacidade como espadachim e sua aptidão geral como lutador. O seu índice de ENERGIA reflete sua constituição física geral, vontade de sobreviver, determinação e condição física como um todo; quanto mais alto for seu índice de ENERGIA, mais tempo você conseguirá sobreviver. O seu índice de SORTE indica o quanto você é uma pessoa naturalmente de sorte. Sorte - e magia - é um fato da vida no reino da fantasia que você está prestes a explorar."
                     ],
                     "efeitos": [
                         {
-                            "texto": "Deu bom, 4 energia",
-                            "sobre": "ENERGIA",
+                            "textoEfeito": "Deu bom, 4 energia",
+                            "atributoEfeito": "ENERGIA",
                             "quantidade": 3
                         }
                     ]
@@ -85,7 +94,12 @@
             "destinos": [
                 {
                     "idPagina": 3,
-                    "destino": "Próximo >>"
+                    "textoDestino": "Próximo >>"
+                },
+                {
+                    "idPagina": 1,
+                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
         },
@@ -94,15 +108,16 @@
             "titulo": "Combates",
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "Freqüentemente você encontrará páginas no livro que o instruirão para que lute com algum tipo de criatura: Talvez você tenha a alternativa de fugir, mas, se não houver - ou se você decidir atacar a criatura ainda assim -, você terá que resolver o combate conforme descrito abaixo.",
-                        "Primeiro, registre os índices de HABILIDADE e de ENERGIA da criatura no primeiro quadro vazio de Encontro com Monstros na sua Folha de Aventuras. Os índices de cada criatura são dados no livro a cada vez que você tem um encontro. A sequência de combate é a seguinte:",
+                        "Primeiro, registre os índices de HABILIDADE e de ENERGIA da criatura no primeiro quadro vazio de Encontro com Monstros na sua Folha de Aventuras. Os índices de cada criatura são dados no livro a cada vez que você tem um encontro.",
+                        "A sequência de combate é a seguinte:",
                         "1. Jogue os dois dados uma vez para a criatura. Some ao índice de HABILIDADE dela. Esse total é a Força de Ataque da criatura.",
                         "2. Jogue ambos os dados uma vez para você. Some o número obtido a seu índice atual de HABILIDADE. Esse total é sua Força de Ataque.",
-                        "3. Se sua Força de Ataque for maior que a da criatura, você a feriu. Prossiga para o item 4. Se a Força de Ataque da criatura for maior que a sua, ela o feriu.",
-                        "Prossiga para o item 5. Se os dois totais de Força de Ataque forem iguais, vocês se defenderam dos golpes um do outro - comece a próxima Série de Ataque a partir do item 1 acima.",
-                        "4. Você feriu a criatura, portanto subtraia 2 pontos do índice de ENERGIA dela.",
-                        "Você pode usar sua SORTE aqui para causar maiores danos (veja adiante).",
+                        "3. Se sua Força de Ataque for maior que a da criatura, você a feriu. Prossiga para o item 4.",
+                        "- Se a Força de Ataque da criatura for maior que a sua, ela o feriu. Prossiga para o item 5.",
+                        "- Se os dois totais de Força de Ataque forem iguais, vocês se defenderam dos golpes um do outro - comece a próxima Série de Ataque a partir do item 1 acima.",
+                        "4. Você feriu a criatura, portanto subtraia 2 pontos do índice de ENERGIA dela. Você pode usar sua SORTE aqui para causar maiores danos (veja adiante).",
                         "5. Se a criatura tiver ferido você, subtraia 2 pontos de seu próprio índice de ENERGIA. Também nesse momento você pode usar a sua SORTE (veja adiante).",
                         "6. Faça os ajustes apropriados nos índices de ENERGIA, seu ou da criatura (e no seu índice de SORTE, se você tiver usado a sorte veja adiante).",
                         "7. Comece a próxima Série de Ataque (repita os itens de 1 a 6). Essa sequência continua até que um índice de ENERGIA, seu ou da criatura que você está enfrentando, tenha sido reduzido a zero (morte).",
@@ -110,17 +125,26 @@
                     ]
                 }
             ],
-            "combates": [
-                {
-                    "inimigo": "HOMEM-LAGARTO",
-                    "habilidade": 9,
-                    "energia": 8
-                }
-            ],
+            "combate": {
+                "inimigos": [
+                    {
+                        "inimigo": "HOMEM-LAGARTO",
+                        "habilidade": 9,
+                        "energia": 8
+                    }
+                ],
+                "textoDerrota": "Você se afogará se não matar o monstro aquático em menos Séries de Ataque do que o índice atual de sua HABILIDADE.",
+                "aprovacaoDerrota": "TurnoDoCombateEhMenorQueHabilidade"
+            },
             "destinos": [
                 {
                     "idPagina": 4,
-                    "destino": "Próximo >>"
+                    "textoDestino": "Próximo >>"
+                },
+                {
+                    "idPagina": 1,
+                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
         },
@@ -129,19 +153,28 @@
             "titulo": "Sorte",
             "historias": [
                 {
-                    "textos": [
-                        "Em diversos momentos da sua aventura, tanto durante os combates quanto durante as situações em que você pode ter ou não sorte (detalhes sobre elas são dados nas próprias páginas), você pode apelar para sua sorte para tornar o resultado mais favorável. Mas tome cuidado! Usar a sorte é um negócio arriscado e, se você não tiver sorte, os resultados podem ser desastrosos.",
-                        "O procedimento para usar a sorte é o seguinte: jogue dois dados. Se o número obtido for igual ou menor do que seu índice de SORTE atual, você teve sorte, e o resultado será a seu favor. Se o número obtido for maior do que o seu índice de SORTE atual, você não teve sorte e sofrerá as consequências.",
+                    "textosHistoria": [
+                        "Em diversos momentos da sua aventura, tanto durante os combates quanto durante as situações em que você pode ter ou não sorte (detalhes sobre elas são dados nas próprias páginas), você pode apelar para sua sorte para tornar o resultado mais favorável.",
+                        "Mas tome cuidado! Usar a sorte é um negócio arriscado e, se você não tiver sorte, os resultados podem ser desastrosos.",
+                        "O procedimento para usar a sorte é o seguinte: jogue dois dados.",
+                        "- Se o número obtido for igual ou menor do que seu índice de SORTE atual, você teve sorte, e o resultado será a seu favor.",
+                        "- Se o número obtido for maior do que o seu índice de SORTE atual, você não teve sorte e sofrerá as consequências.",
                         "Esse procedimento é conhecido como Testar a sua Sorte. A cada vez que 'Testar a sua Sorte', você terá que subtrair um ponto do seu índice de SORTE atual. Portanto, você logo compreenderá que, quanto mais confiar na sua sorte, mais arriscado isso se tornará.",
-                        "O Uso da Sorte nos Combates",
-                        "Em certas páginas do livro, você será orientado a Testar a sua Sorte e será comunicado quanto às consequências de ter ou não ter sorte. Porém, nos combates, você tem sempre a opção de usar a sorte, seja para causar um ferimento mais grave numa criatura que você acabou de ferir, seja para minimizar os efeitos de um ferimento que a criatura acabou de causar em você.",
-                        "Se você tiver acabado de ferir a criatura, pode Testar a sua Sorte conforme descrito acima. Se tiver sorte, terá causado um ferimento grave e poderá subtrair 2 pontos extras do índice de ENERGIA da criatura. Porém, se não tiver sorte, o ferimento será um mero arranhão, e você terá que devolver 1 ponto à ENERGIA da criatura (isto é, em vez dos 2 pontos normais de danos, você terá conseguido apenas 1).",
-                        "Se a criatura tiver acabado de feri-lo, você poderá Testar a sua Sorte para tentar minimizar o ferimento. Se tiver sorte, conseguiu evitar que o golpe o atingisse com toda força. Você recupera 1 ponto de ENERGIA (isto é, em lugar de causar os 2 pontos de danos, o golpe causa apenas 1). Se não tiver sorte, você recebeu um ferimento mais grave. Subtraia 1 ponto extra de sua ENERGIA. Lembre-se que você tem que subtrair um ponto da sua própria SORTE sempre que Testar a sua Sorte."
+                        "Em certas páginas do livro, você será orientado a Testar a sua Sorte e será comunicado quanto às consequências de ter ou não ter sorte.",
+                        "Porém, nos combates, você tem sempre a opção de usar a sorte, seja para causar um ferimento mais grave numa criatura que você acabou de ferir, seja para minimizar os efeitos de um ferimento que a criatura acabou de causar em você.",
+                        "Se você tiver acabado de ferir a criatura, pode Testar a sua Sorte conforme descrito acima.",
+                        "- Se tiver sorte, terá causado um ferimento grave e poderá subtrair 2 pontos extras do índice de ENERGIA da criatura.",
+                        "- Porém, se não tiver sorte, o ferimento será um mero arranhão, e você terá que devolver 1 ponto à ENERGIA da criatura (isto é, em vez dos 2 pontos normais de danos, você terá conseguido apenas 1).",
+                        "Se a criatura tiver acabado de feri-lo, você poderá Testar a sua Sorte para tentar minimizar o ferimento.",
+                        "- Se tiver sorte, conseguiu evitar que o golpe o atingisse com toda força. Você recupera 1 ponto de ENERGIA (isto é, em lugar de causar os 2 pontos de danos, o golpe causa apenas 1).",
+                        "- Se não tiver sorte, você recebeu um ferimento mais grave. Subtraia 1 ponto extra de sua ENERGIA.",
+                        "Lembre-se que você tem que subtrair um ponto da sua própria SORTE sempre que Testar a sua Sorte."
                     ],
                     "efeitos": [
                         {
-                            "texto": "Deu bom, 4 energia",
-                            "sobre": "ITENS:TesteX",
+                            "textoEfeito": "Você obteve 1 TesteX",
+                            "atributoEfeito": "ITENS",
+                            "nomeEfeito": "TesteX",
                             "quantidade": 1
                         }
                     ]
@@ -150,8 +183,32 @@
             "destinos": [
                 {
                     "idPagina": 5,
-                    "destino": "Próximo >>",
-                    "bloqueioOperacao": "ITENS:TesteX"
+                    "textoDestino": "Só com TesteX - Próximo >>",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ITENS",
+                            "nomeAprovacao": "TesteX",
+                            "comparacao": "POSSUIR"
+                        }
+                    ]
+                },
+                {
+                    "idPagina": 5,
+                    "textosDestino": ["Sem TesteX - Próximo >>", "Se você tiver Sorte, vá para 5.", "Se você não tiver Sorte, vá para 6."],
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ITENS",
+                            "nomeAprovacao": "TesteX",
+                            "comparacao": "NAO_POSSUIR"
+                        }
+                    ],
+                    "testeAtributo": "SORTE",
+                    "idPaginaAzar": 6
+                },
+                {
+                    "idPagina": 1,
+                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
         },
@@ -159,7 +216,7 @@
             "idPagina": 5,
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "Se você estiver usando um medalhão de ouro com um coração gravado, vá para 258.",
                         "Se você não estiver usando, Teste a sua Sorte.",
                         "Se você tiver Sorte, vá para 284. Se você não tiver Sorte, vá para 71."
@@ -169,16 +226,26 @@
             "destinos": [
                 {
                     "idPagina": 6,
-                    "destino": "Se você estiver usando um medalhão de ouro com um coração gravado, vá para 6.",
-                    "bloqueioOperacao": "Possui_Item_MedalhaoDeOuro",
-                    "bloqueioNegado": true
+                    "textoDestino": "Se você estiver usando um medalhão de ouro com um coração gravado, vá para 6.",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ITENS",
+                            "nomeAprovacao": "Medalhão de Ouro",
+                            "comparacao": "POSSUIR"
+                        }
+                    ]
                 },
                 {
                     "idPagina": 7,
-                    "destino": "Se você não estiver usando, Teste a sua Sorte. Se você tiver Sorte, vá para 7. Se você não tiver Sorte, vá para 8.",
-                    "bloqueioOperacao": "Possui_Item_MedalhaoDeOuro",
-                    "bloqueioNegado": false,
-                    "testaSorte": true,
+                    "textosDestino": ["Teste sua HABILIDADE", "Se você tiver Sorte, vá para 7.", "Se você não tiver HABILIDADE, vá para 8."],
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ITENS",
+                            "nomeAprovacao": "Medalhão de Ouro",
+                            "comparacao": "NAO_POSSUIR"
+                        }
+                    ],
+                    "testeAtributo": "HABILIDADE",
                     "idPaginaAzar": 8
                 }
             ]
@@ -188,7 +255,7 @@
             "titulo": "Recuperação de Energia e Provisões",
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "O seu índice de ENERGIA mudará muito durante a aventura, à medida que você lutar com monstros e empreender tarefas árduas. Quando estiver próximo de seu objetivo, seu índice de ENERGIA poderá estar perigosamente baixo, e os combates poderão ser particularmente arriscados; portanto, seja cuidadoso!",
                         "Sua mochila contém Provisões suficientes para 10 refeições. Você pode descansar e comer em qualquer momento, exceto quando estiver lutando, mas só poderá fazer una refeição a cada vez. Comer uma refeição restaura 4 pontos de ENERGIA. Quando fizer uma refeição, adicione 4 pontos em seu índice de ENERGIA e deduza um ponto de suas Provisões. Um quadro separado das Provisões Remanescentes faz parte da Folha de Aventuras para registro dos detalhes sobre Provisões. Lembre-se que você tem um longo caminho a seguir e que, portanto, deve usar suas Provisões de maneira sensata!",
                         "Lembre-se também que seu índice de ENERGIA nunca poderá exceder seu quantidade Inicial, a menos que isso seja especificamente indicado numa página."
@@ -198,7 +265,7 @@
             "destinos": [
                 {
                     "idPagina": 7,
-                    "destino": "Próximo >>"
+                    "textoDestino": "Próximo >>"
                 }
             ]
         },
@@ -207,7 +274,7 @@
             "titulo": "Recuperação de Sorte",
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "Acréscimos em seu índice de SORTE podem ser permitidos durante a aventura, quando você tiver uma dose especial de sorte. Detalhes são fornecidos nas páginas do livro.",
                         "Lembre-se que, assim como seus índices de HABILIDADE e de ENERGIA, seu índice de SORTE jamais poderá exceder seu quantidade Inicial."
                     ]
@@ -216,7 +283,7 @@
             "destinos": [
                 {
                     "idPagina": 8,
-                    "destino": "Próximo >>"
+                    "textoDestino": "Próximo >>"
                 }
             ]
         },
@@ -225,7 +292,7 @@
             "titulo": "Equipamento",
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "Você começará sua aventura com o mínimo estritamente necessário de equipamento, mas poderá encontrar novos itens durante suas viagens. Está armado com uma espada e trajado com uma armadura de couro. Você tem uma mochila ou coisa semelhante nas costas para guardar suas Provisões e qualquer tesouro que vier a encontrar. Também leva uma lanterna para iluminar-lhe o caminho."
                     ]
                 }
@@ -233,7 +300,7 @@
             "destinos": [
                 {
                     "idPagina": 9,
-                    "destino": "Próximo >>"
+                    "textoDestino": "Próximo >>"
                 }
             ]
         },
@@ -242,7 +309,7 @@
             "titulo": "DICAS PARA O JOGO",
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "Sua jornada será perigosa, e é provável que você venha a falhar na primeira tentativa.",
                         "Tome notas e faça um mapa à medida que prosseguir na exploração - esse mapa terá quantidade inestimável em aventuras futuras, e o ajudará a progredir rapidamente para etapas inexploradas.",
                         "Nem todas as áreas contêm tesouros; elas podem conter simplesmente armadilhas e criaturas pelas quais você será sem dúvida enganado. Pode acontecer que você faça opções erradas durante sua jornada, e, embora possa estar de fato progredindo para seu destino final, não é em absoluto certo que você encontre o que está procurando.",
@@ -255,7 +322,7 @@
                 {
                     "idPagina": 0,
                     "idCapitulo": "PAGINAS_CAMPANHA",
-                    "destino": "INICIAR O JOGO"
+                    "textoDestino": "INICIAR O JOGO"
                 }
             ]
         }
@@ -265,7 +332,7 @@
             "idPagina": 0,
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "Talvez por Malbordus ter nascido em noite de lua cheia, com os lobos uivando ao redor da cabana de sua mãe na floresta, sua natureza era maligna. Talvez fosse algo mais sinistro do que isso. Mas é certo que, depois que sua mãe o abandonou, Malbordus cresceu na Floresta de Darkwood aos cuidados dos Elfos do Darkside. Ensinaram-lhe os malvados estratagemas dos Elfos, e ele também descobriu poderes próprios. Ele podia fazer plantas murcharem ou morrerem simplesmente estalando os dedos; podia fazer se obedecer pelos animais com seu olhar fixo e penetrante. Os Elfos o estimularam e ajudaram-no a desenvolver seus poderes, para que pudesse ensinar-lhe a magia milenar e maligna dos antigos Senhores Elfos - magia tão vil e poderosa que mata os usuários despreparados. Foi na busca de tais poderes malignos que Malbordus tornou-se um homem. Para provar que estava pronto para receber os conhecimentos dos Senhores Elfos, ele deveria, primeiro, passar por um teste. Ordenaram-lhe viajar em direção ao sul, para o Deserto dos Crânios, a fim de encontrar a cidade perdida de Vatos. Na cidade estavam escondidos os cinco artefatos do Dragão, que ele deveria localizar e recolher.",
                         "Um simples encanto poderia trazer os Dragões de volta à vida para servir às forças do mal. Malbordus os instruiria então para que voassem com ele de volta para a Floresta de Darkwood, onde um grande exército estaria reunido. Ele receberia os poderes milenares e conduziria as hordas do caos por toda a Allansia, numa onda irresistível de morte e destruição.",
                         "Foi graças unicamente a um golpe de sorte que esses planos terríveis foram descobertos.",
@@ -281,7 +348,7 @@
             "destinos": [
                 {
                     "idPagina": 1,
-                    "destino": "Vá para 1."
+                    "textoDestino": "Vá para 1."
                 }
             ]
         },
@@ -289,7 +356,7 @@
             "idPagina": 1,
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "Para um homem velho, Yaztromo é surpreendentemente vivaz.",
                         "Você atravessa Red River e os campos arados além, e logo chega ao limite da floresta.",
                         "Yaztromo continua.",
@@ -310,7 +377,7 @@
             "destinos": [
                 {
                     "idPagina": 4,
-                    "destino": "Para fazer sua escolha, vá para 4."
+                    "textoDestino": "Para fazer sua escolha, vá para 4."
                 }
             ]
         },
@@ -318,7 +385,7 @@
             "idPagina": 2,
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "O quarto é pequeno e esparsamente mobiliado, contando apenas com uma mesa e uma cadeira.",
                         "Um cinzel e uma marreta estão sobre a cadeira, e o chão está coberto de farpas.",
                         "Na parede, à esquerda, há uma grande talha de madeira, medindo 2 por 3 metros.",
@@ -329,11 +396,11 @@
             "destinos": [
                 {
                     "idPagina": 3,
-                    "destino": "Se você desejar olhar mais de perto o entalhe, vá para 3."
+                    "textoDestino": "Se você desejar olhar mais de perto o entalhe, vá para 3."
                 },
                 {
                     "idPagina": 5,
-                    "destino": "Se preferir passar pela porta na parede oposta, vá para 5."
+                    "textoDestino": "Se preferir passar pela porta na parede oposta, vá para 5."
                 }
             ]
         },
@@ -341,17 +408,17 @@
             "idPagina": 3,
             "historias": [
                 {
-                    "textos": ["A porta dá para um outro corredor bem iluminado e que parece ser regularmente utilizado."]
+                    "textosHistoria": ["A porta dá para um outro corredor bem iluminado e que parece ser regularmente utilizado."]
                 }
             ],
             "destinos": [
                 {
                     "idPagina": 7,
-                    "destino": "Se você quiser ir para a esquerda, vá para 7."
+                    "textoDestino": "Se você quiser ir para a esquerda, vá para 7."
                 },
                 {
                     "idPagina": 8,
-                    "destino": "Se quiser ir para a direita, vá para 8."
+                    "textoDestino": "Se quiser ir para a direita, vá para 8."
                 }
             ]
         },
@@ -359,21 +426,21 @@
             "idPagina": 4,
             "historias": [
                 {
-                    "textos": ["A água fresca sacia sua sede. Você se sente imediatamente revigorado, já que a água contém raras substâncias fortificantes."],
+                    "textosHistoria": ["A água fresca sacia sua sede. Você se sente imediatamente revigorado, já que a água contém raras substâncias fortificantes."],
                     "efeito": {
-                        "texto": "Some 4 pontos de ENERGIA.",
-                        "sobre": "ENERGIA",
+                        "textoEfeito": "Some 4 pontos de ENERGIA.",
+                        "atributoEfeito": "ENERGIA",
                         "quantidade": 4
                     }
                 },
                 {
-                    "textos": ["Com a água ainda escorrendo pelo queixo, sua procura continua."]
+                    "textosHistoria": ["Com a água ainda escorrendo pelo queixo, sua procura continua."]
                 }
             ],
             "destinos": [
                 {
                     "idPagina": 2,
-                    "destino": "Vá para 2."
+                    "textoDestino": "Vá para 2."
                 }
             ]
         },
@@ -381,7 +448,7 @@
             "idPagina": 5,
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "Você pega uma de suas facas e a coloca na mochila.",
                         "Seguindo o corredor, você chega rapidamente a um beco sem saída, e não tem outra escolha a não ser refazer seus passos e caminhar sob a chuva dourada."
                     ]
@@ -390,7 +457,7 @@
             "destinos": [
                 {
                     "idPagina": 8,
-                    "destino": "Vá para 8."
+                    "textoDestino": "Vá para 8."
                 }
             ]
         },
@@ -398,7 +465,7 @@
             "idPagina": 6,
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "É impossível evitar pisar nas centenas de conchas de mariscos.",
                         "E, ao fazê-lo, elas repentinamente se aglutinam formando uma figura humanóide, que o ataca.",
                         "Você se sente como se estivesse sendo apedrejado até a morte.",
@@ -409,11 +476,11 @@
             "destinos": [
                 {
                     "idPagina": 8,
-                    "destino": "Fugirá? Vá para 8."
+                    "textoDestino": "Fugirá? Vá para 8."
                 },
                 {
                     "idPagina": 9,
-                    "destino": "Pulará no mar? Vá para 9."
+                    "textoDestino": "Pulará no mar? Vá para 9."
                 }
             ]
         },
@@ -421,7 +488,7 @@
             "idPagina": 8,
             "historias": [
                 {
-                    "textos": ["Ao vê-lo, o Homem-Lagarto sibila com força e avança na sua direção, espada erguida sobre a cabeça."]
+                    "textosHistoria": ["Ao vê-lo, o Homem-Lagarto sibila com força e avança na sua direção, espada erguida sobre a cabeça."]
                 }
             ],
             "combates": [
@@ -434,7 +501,7 @@
             "destinos": [
                 {
                     "idPagina": 9,
-                    "destino": "Se você vencer, vá para 9."
+                    "textoDestino": "Se você vencer, vá para 9."
                 }
             ]
         },
@@ -442,7 +509,7 @@
             "idPagina": 9,
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "As escadas levam do alçapão para o negrume lá embaixo. Um cheiro forte de mofo sobe da escuridão, e a emanação dá uma sensação de frio no seu rosto.",
                         "Você caminha pela escada irregular até não conseguir ver mais nada.",
                         "Você:"
@@ -452,16 +519,16 @@
             "destinos": [
                 {
                     "idPagina": 12,
-                    "destino": "Lançará um encanto da Luz (se você souber)?",
+                    "textoDestino": "Lançará um encanto da Luz (se você souber)?",
                     "depende": "Item=Encanto da Luz"
                 },
                 {
                     "idPagina": 2,
-                    "destino": "Caminhará mais para dentro da escuridão?"
+                    "textoDestino": "Caminhará mais para dentro da escuridão?"
                 },
                 {
                     "idPagina": 10,
-                    "destino": "Subirá de volta pelas escadas e abrirá a outra porta?"
+                    "textoDestino": "Subirá de volta pelas escadas e abrirá a outra porta?"
                 }
             ]
         },
@@ -469,7 +536,7 @@
             "idPagina": 10,
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": [
                         "No meio da noite, você é acordado pelo som de passos pesados que marcham sobre o chão. A lua está quase cheia e dá luz suficiente para que você veja um grande vulto que se avoluma, vindo na sua direção.",
                         "Apanhando sua espada, você se levanta para se defender do Troll da Caverna, que o descobriu durante a caçada noturna."
                     ]
@@ -493,13 +560,13 @@
             "idPagina": 12,
             "historias": [
                 {
-                    "textos": ["Incapaz de abrir a porta, você recua para caminhar de volta pelo corredor, passando pela última encruzilhada."]
+                    "textosHistoria": ["Incapaz de abrir a porta, você recua para caminhar de volta pelo corredor, passando pela última encruzilhada."]
                 }
             ],
             "destinos": [
                 {
                     "idPagina": 13,
-                    "destino": "Volte para 13."
+                    "textoDestino": "Volte para 13."
                 }
             ]
         },
@@ -507,7 +574,28 @@
             "idPagina": 13,
             "historias": [
                 {
-                    "textos": [
+                    "textosHistoria": ["O Pterodáctilo em mergulho é um alvo difícil de atingir, e você mira cuidadosamente antes de soltar a flecha."]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 99,
+                    "textosDestino": [
+                        "Jogue dois dados e some 3 ao total obtido.",
+                        "Se o total for igual ou menor do que sua HABILIIDADE, volte para 99.",
+                        "Se o total for maior que sua HABILIDADE, vá para 254."
+                    ],
+                    "testeAtributo": "HABILIDADE",
+                    "testeSomarDados": 3,
+                    "idPaginaAzar": 254
+                }
+            ]
+        },
+        {
+            "idPagina": 99,
+            "historias": [
+                {
+                    "textosHistoria": [
                         "Malbordus está morto, e os artefatos do Dragão remanescentes estão esperando para ser destruídos.",
                         "Você descarrega o martelo de guerra sobre eles repetidas vezes, de modo que nenhum ser possa algum dia ter novamente a oportunidade de usar o poder deles.",
                         "Com o tempo, os Elfos Negros da Floresta de Darkwood saberão da derrota do líder e recuarão de volta para as profundezas da floresta.",
@@ -520,7 +608,7 @@
             "destinos": [
                 {
                     "idPagina": "#FIM_DETONADO#",
-                    "destino": "Parabéns"
+                    "textoDestino": "Parabéns"
                 }
             ]
         }
