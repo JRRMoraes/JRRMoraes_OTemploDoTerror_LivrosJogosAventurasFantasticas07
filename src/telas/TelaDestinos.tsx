@@ -248,8 +248,8 @@ export const TelaDestinos = () => {
         } else if (destino.textosDestino && destino.textosDestino.length) {
             return (
                 <div>
-                    {destino.textosDestino.map((textoI) => {
-                        return <p>{textoI}</p>;
+                    {destino.textosDestino.map((textoI, indiceI) => {
+                        return <p key={indiceI}>{textoI}</p>;
                     })}
                 </div>
             );
@@ -264,7 +264,7 @@ export const TelaDestinos = () => {
         } else {
             let _soma = "";
             if (destino.testeSomarDados) {
-                _soma = destino.testeSomarDados.toString + " + ";
+                _soma = destino.testeSomarDados.toString() + " + ";
             }
             let _total = "?";
             if ([EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(rolandoDados.processoRolagem)) {
@@ -303,13 +303,15 @@ export const TelaDestinos = () => {
                                 </td>
                                 <td className={styles.destinos_conteudo_pagina_rolagem_total}>{" = " + _total}</td>
                                 <td className={styles.destinos_conteudo_pagina_rolagem_texto}>
-                                    {_texto}
+                                    <span>{_texto}</span>
                                     <br />
-                                    {"se os dados forem"}
+                                    <span>{" se os dados forem "}</span>
                                     <br />
-                                    {"MENOR OU IGUAL a"}
+                                    <span>
+                                        {" MENOR OU IGUAL a "}
+                                        <span className={styles.destinos_conteudo_pagina_rolagem_texto_atributo}>{_atributo}</span>
+                                    </span>
                                 </td>
-                                <td className={styles.destinos_conteudo_pagina_rolagem_atributo}>{_atributo}</td>
                             </tr>
                         </tbody>
                     </table>

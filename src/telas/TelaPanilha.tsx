@@ -2,7 +2,7 @@ import styles from "./TelaPanilha.module.scss";
 import "../globais/CoresHES.scss";
 import { ContextoJogos } from "../contextos";
 import TelaPanilhaNova from "./TelaPanilhaNova";
-import { PanilhaPopup } from "../componentes";
+import { IEfeito, EAtributo } from "../tipos";
 import { EProcesso } from "../uteis";
 
 export const TelaPanilha = () => {
@@ -71,9 +71,7 @@ export const TelaPanilha = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>{MontarRetorno_Encantos()}</td>
-                            </tr>
+                            <tr>{MontarRetorno_Encantos()}</tr>
                         </tbody>
                     </table>
                     <table className={styles.panilha_tabela_itens}>
@@ -83,70 +81,63 @@ export const TelaPanilha = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>{MontarRetorno_Itens()}</td>
-                            </tr>
+                            <tr>{MontarRetorno_Itens()}</tr>
                         </tbody>
                     </table>
                 </div>
-                <div>{MontarRetorno_PanilhaPopup()}</div>
             </div>
         );
+    }
+
+    function ObterEfeito(atributo: EAtributo): IEfeito {
+        return jogoAtual.panilha.auxEfeitos.find((efeitoI) => {
+            efeitoI.atributoEfeito === atributo && [EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO].includes(efeitoI.auxProcessoEfeito);
+        })!;
     }
 
     function MontarRetorno_Encantos() {
         if (jogoAtual && jogoAtual.panilha && jogoAtual.panilha.encantos) {
             return (
-                <ul>
-                    {jogoAtual.panilha.encantos.map((encantoI, indiceI) => {
-                        return (
-                            <li
-                                key={indiceI}
-                                className={styles.panilha_encantos}
-                            >
-                                {encantoI}
-                            </li>
-                        );
-                    })}
-                </ul>
+                <td>
+                    <ul>
+                        {jogoAtual.panilha.encantos.map((encantoI, indiceI) => {
+                            return (
+                                <li
+                                    key={indiceI}
+                                    className={styles.panilha_encantos}
+                                >
+                                    {encantoI}
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </td>
             );
         } else {
-            return <></>;
+            return <td></td>;
         }
     }
 
     function MontarRetorno_Itens() {
         if (jogoAtual && jogoAtual.panilha && jogoAtual.panilha.itens) {
             return (
-                <ul>
-                    {jogoAtual.panilha.itens.map((itemI, indiceI) => {
-                        return (
-                            <li
-                                key={indiceI}
-                                className={styles.panilha_itens}
-                            >
-                                {itemI.quantidade + " x  " + itemI.idItem}
-                            </li>
-                        );
-                    })}
-                </ul>
+                <td>
+                    <ul>
+                        {jogoAtual.panilha.itens.map((itemI, indiceI) => {
+                            return (
+                                <li
+                                    key={indiceI}
+                                    className={styles.panilha_itens}
+                                >
+                                    {itemI.quantidade + " x  " + itemI.idItem}
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </td>
             );
         } else {
-            return <></>;
-        }
-    }
-
-    function MontarRetorno_PanilhaPopup() {
-        if (jogoAtual && jogoAtual.panilha && jogoAtual.panilha.auxEfeitos) {
-            jogoAtual.panilha.auxEfeitos.map((efeitoI) => {
-                if (efeitoI.auxProcessoEfeito && [EProcesso.INICIANDO, EProcesso.PROCESSANDO].includes(efeitoI.auxProcessoEfeito)) {
-                    return <PanilhaPopup efeitos={jogoAtual.panilha.auxEfeitos} />;
-                } else {
-                    return <></>;
-                }
-            });
-        } else {
-            return <></>;
+            return <td></td>;
         }
     }
 };

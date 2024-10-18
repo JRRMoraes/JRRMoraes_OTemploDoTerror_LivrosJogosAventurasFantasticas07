@@ -31,6 +31,7 @@
     "paginasIniciais": [
         {
             "idPagina": 1,
+            "idCapitulo": "PAGINAS_INICIAIS",
             "titulo": "LUTA CONTRA OS MONSTROS",
             "historias": [
                 {
@@ -84,9 +85,9 @@
                     ],
                     "efeitos": [
                         {
-                            "textoEfeito": "Deu bom, 4 energia",
+                            "textoEfeito": "Deu bom, 6 energia mas vai ser 4 na verdade",
                             "atributoEfeito": "ENERGIA",
-                            "quantidade": 3
+                            "quantidade": 6
                         }
                     ]
                 }
@@ -98,7 +99,7 @@
                 },
                 {
                     "idPagina": 1,
-                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
@@ -143,7 +144,7 @@
                 },
                 {
                     "idPagina": 1,
-                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
@@ -207,7 +208,7 @@
                 },
                 {
                     "idPagina": 1,
-                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
@@ -246,6 +247,7 @@
                         }
                     ],
                     "testeAtributo": "HABILIDADE",
+                    "testeSomarDados": 3,
                     "idPaginaAzar": 8
                 }
             ]
@@ -330,6 +332,7 @@
     "paginasCampanha": [
         {
             "idPagina": 0,
+            "idCapitulo": "PAGINAS_CAMPANHA",
             "historias": [
                 {
                     "textosHistoria": [
@@ -354,6 +357,7 @@
         },
         {
             "idPagina": 1,
+            "idCapitulo": "PAGINAS_CAMPANHA",
             "historias": [
                 {
                     "textosHistoria": [
@@ -371,7 +375,8 @@
                         "Ele põe a mão no bolso e tira dali um delicado par de óculos de armação de ouro.",
                         "Depois de colocá-los no nariz, ele observa você furtivamente por sobre eles, e você se sente bastante intimidado com aquele olhar penetrante.",
                         "Finalmente, ele diz: 'Qualquer um que espere derrotar Malbordus tem que conhecer um mínimo de magia. Você parece bastante inteligente para aprender mas não acho que tenha tempo suficiente para absorver os dez encantos que gostaria de ensinar a você. Falando nisso, gostaria que você compreendesse o quanto é privilegiado por poder aprender minha magia. Mas uma crise é uma crise. Agora, vamos começar. Que encantos devo ensinar? Você pode optar pelo encanto de Abrir Portas, do Sono das Criaturas, da Flecha Mágica, do Idioma, de Ler Símbolos, da Luz, do Fogo, de Saltar, de Detectar Armadilha e de Criar Água.'"
-                    ]
+                    ],
+                    "imagem": "Mago Yaztromo"
                 }
             ],
             "destinos": [
@@ -481,6 +486,28 @@
                 {
                     "idPagina": 9,
                     "textoDestino": "Pulará no mar? Vá para 9."
+                }
+            ]
+        },
+        {
+            "idPagina": 7,
+            "historias": [
+                {
+                    "textosHistoria": ["You died. Um meteoro caiu em cima de você"],
+                    "efeito": {
+                        "textoEfeito": "999 pontos de dano em ENERGIA.",
+                        "atributoEfeito": "ENERGIA",
+                        "quantidade": -999
+                    }
+                },
+                {
+                    "textosHistoria": ["'O menino de vô vai deixar vovó, menino de vô vai deixar vovó.''"]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 8,
+                    "textoDestino": "Vá para 8.  Pegadinha, não deve aparecer esse cara."
                 }
             ]
         },

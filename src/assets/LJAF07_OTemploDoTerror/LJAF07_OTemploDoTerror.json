@@ -31,6 +31,7 @@
     "paginasIniciais": [
         {
             "idPagina": 1,
+            "idCapitulo": "PAGINAS_INICIAIS",
             "titulo": "LUTA CONTRA OS MONSTROS",
             "historias": [
                 {
@@ -77,7 +78,7 @@
                 },
                 {
                     "idPagina": 1,
-                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
@@ -111,7 +112,7 @@
                 },
                 {
                     "idPagina": 1,
-                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
@@ -147,7 +148,7 @@
                 },
                 {
                     "idPagina": 1,
-                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
@@ -172,7 +173,7 @@
                 },
                 {
                     "idPagina": 1,
-                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
@@ -200,7 +201,7 @@
                 },
                 {
                     "idPagina": 1,
-                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
@@ -224,7 +225,7 @@
                 },
                 {
                     "idPagina": 1,
-                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
@@ -249,7 +250,7 @@
                 },
                 {
                     "idPagina": 1,
-                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
@@ -273,12 +274,12 @@
             "destinos": [
                 {
                     "idPagina": 0,
-                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "INICIAR O JOGO"
                 },
                 {
                     "idPagina": 1,
-                    "idCampanha": "PAGINAS_CAMPANHA",
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
@@ -287,6 +288,7 @@
     "paginasCampanha": [
         {
             "idPagina": 0,
+            "idCapitulo": "PAGINAS_CAMPANHA",
             "historias": [
                 {
                     "textosHistoria": [
@@ -317,6 +319,7 @@
         },
         {
             "idPagina": 1,
+            "idCapitulo": "PAGINAS_CAMPANHA",
             "historias": [
                 {
                     "textosHistoria": [
@@ -1118,49 +1121,174 @@
             "destinos": [
                 {
                     "idPagina": 12,
-                    "textoDestino": "De Abrir Portas, volte para 12"
+                    "textoDestino": "De Abrir Portas, volte para 12",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Abrir Portas",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
                 },
                 {
                     "idPagina": 58,
-                    "textoDestino": "Do Sono das Criaturas, vá para 58"
+                    "textoDestino": "Do Sono das Criaturas, vá para 58",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Sono das Criaturas",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
                 },
                 {
                     "idPagina": 136,
-                    "textoDestino": "Da Flecha Mágica, vá para 136"
+                    "textoDestino": "Da Flecha Mágica, vá para 136",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Flecha Mágica",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
                 },
                 {
                     "idPagina": 194,
-                    "textoDestino": "Do Idioma, vá para 194"
+                    "textoDestino": "Do Idioma, vá para 194",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Idioma",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
                 },
                 {
                     "idPagina": 391,
-                    "textoDestino": "De Ler Símbolos, vá para 391"
+                    "textoDestino": "De Ler Símbolos, vá para 391",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Ler Símbolos",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
                 },
                 {
                     "idPagina": 223,
-                    "textoDestino": "Da Luz, vá para 223"
+                    "textoDestino": "Da Luz, vá para 223",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Luz",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
                 },
                 {
                     "idPagina": 264,
-                    "textoDestino": "Do Fogo, vá para 264"
+                    "textoDestino": "Do Fogo, vá para 264",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Fogo",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
                 },
                 {
                     "idPagina": 301,
-                    "textoDestino": "De Saltar, vá para 301"
+                    "textoDestino": "De Saltar, vá para 301",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Saltar",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
                 },
                 {
                     "idPagina": 342,
-                    "textoDestino": "De Detectar Armadilha, vá para 342"
+                    "textoDestino": "De Detectar Armadilha, vá para 342",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Detectar Armadilha",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
                 },
                 {
                     "idPagina": 367,
                     "textoDestino": "De Criar Água, vá para 367.",
-                    "aprovacoes": ["ENCANTOS|<|4", "ENCANTOS|Criar Água|!="]
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Criar Água",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
                 },
                 {
                     "idPagina": 180,
                     "textoDestino": "Quando tiver aprendido quatro encantos, vá para 180.",
-                    "aprovacoes": ["ENCANTOS|>=|4"]
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MAIOR_IGUAL",
+                            "quantidade": 4
+                        }
+                    ]
                 }
             ]
         },

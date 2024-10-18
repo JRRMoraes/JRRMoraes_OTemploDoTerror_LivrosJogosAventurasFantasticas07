@@ -3,9 +3,13 @@
         border: 4px green solid;
         border-radius: 8px;
         padding: 8px 16px;
-        margin: 16px 0;
+        margin: 16px 0 0 0;
         background-color: #b1eb9b;
         transition: border-color 0.25s;
+
+        @media screen and (max-width: var(--CELULAR_MAX_WIDTH)) {
+            padding: 8px;
+        }
     }
 
     &_morte {
@@ -47,6 +51,8 @@
 
             &_2 {
                 display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
     }
@@ -56,7 +62,6 @@
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        object-fit: cover;
 
         &_pagina {
             width: 100%;
@@ -77,8 +82,14 @@
 
                 &_dados {
                     width: 40%;
+                    //display: flex;
+                    //flex-direction: row;
+                    //justify-content: center;
+                    align-items: center;
 
                     p {
+                        font-size: 1.2rem;
+                        font-weight: 600;
                         margin: 0;
                     }
                 }
@@ -92,12 +103,12 @@
                 &_texto {
                     width: auto;
                     font-size: 1rem;
-                }
+                    font-weight: 400;
 
-                &_atributo {
-                    width: 10%;
-                    font-weight: 700;
-                    font-size: 1.2rem;
+                    &_atributo {
+                        font-weight: 700;
+                        font-size: 1.4rem;
+                    }
                 }
             }
         }
@@ -107,6 +118,14 @@
                     margin: 8px 16px;
                 }
             }
+        }
+    }
+}
+
+@media screen and (max-width: var(--CELULAR_MAX_WIDTH)) {
+    .destinos {
+        &_normal {
+            padding: 8px;
         }
     }
 }

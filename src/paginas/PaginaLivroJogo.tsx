@@ -47,7 +47,9 @@ export const PaginaLivroJogo = () => {
                             <TelaPanilha />
                         </div>
                     </div>
-                    <ReprodutorAudio audio={"/The Storyteller.mp3"} />
+                    <div className={styles.livroJogo_Desktop_panilha_audio}>
+                        <ReprodutorAudio audio={"/The Storyteller.mp3"} />
+                    </div>
                 </div>
                 <div className={styles.livroJogo_Desktop_campanha}>
                     <div className={styles.livroJogo_Desktop_campanha_2}>
