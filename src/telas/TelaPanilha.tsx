@@ -33,11 +33,7 @@ export const TelaPanilha = () => {
                                     <span className={styles.panilha_fonteNormal}>{" / "}</span>
                                     <span>{jogoAtual.panilha.habilidadeInicial}</span>
                                 </td>
-                                <td className="coresHES_energia">
-                                    <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.energia}</span>
-                                    <span className={styles.panilha_fonteNormal}>{" / "}</span>
-                                    <span>{jogoAtual.panilha.energiaInicial}</span>
-                                </td>
+                                {MontarRetorno_Energia()}
                                 <td className="coresHES_sorte">
                                     <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.sorte}</span>
                                     <span className={styles.panilha_fonteNormal}>{" / "}</span>
@@ -93,6 +89,22 @@ export const TelaPanilha = () => {
         return jogoAtual.panilha.auxEfeitos.find((efeitoI) => {
             efeitoI.atributoEfeito === atributo && [EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO].includes(efeitoI.auxProcessoEfeito);
         })!;
+    }
+
+    function MontarRetorno_Energia() {
+        const _efeito = ObterEfeito(EAtributo.ENERGIA);
+        let _quantidade = "";
+        if (_efeito) {
+            _quantidade = _efeito.quantidade.toString();
+        }
+        return (
+            <td className="coresHES_energia">
+                <span>{_quantidade}</span>
+                <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.energia}</span>
+                <span className={styles.panilha_fonteNormal}>{" / "}</span>
+                <span>{jogoAtual.panilha.energiaInicial}</span>
+            </td>
+        );
     }
 
     function MontarRetorno_Encantos() {
