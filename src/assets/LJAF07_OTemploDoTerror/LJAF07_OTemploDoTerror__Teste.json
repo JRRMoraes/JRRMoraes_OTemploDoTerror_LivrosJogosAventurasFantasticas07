@@ -494,11 +494,13 @@
             "historias": [
                 {
                     "textosHistoria": ["You died. Um meteoro caiu em cima de você"],
-                    "efeito": {
-                        "textoEfeito": "999 pontos de dano em ENERGIA.",
-                        "atributoEfeito": "ENERGIA",
-                        "quantidade": -999
-                    }
+                    "efeitos": [
+                        {
+                            "textoEfeito": "999 pontos de dano em ENERGIA.",
+                            "atributoEfeito": "ENERGIA",
+                            "quantidade": -999
+                        }
+                    ]
                 },
                 {
                     "textosHistoria": ["'O menino de vô vai deixar vovó, menino de vô vai deixar vovó.''"]
