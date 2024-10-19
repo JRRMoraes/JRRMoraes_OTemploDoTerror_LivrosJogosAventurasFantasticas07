@@ -1,7 +1,8 @@
 {
     "name": "jrrmoraes-otemplodoterror-livrosjogosaventurasfantasticas07",
     "private": true,
-    "version": "0.0.0",
+    "version": "0.4.0",
+    "homepage": "https://github.com/JRRMoraes/JRRMoraes_OTemploDoTerror_LivrosJogosAventurasFantasticas07.git",
     "type": "module",
     "scripts": {
         "dev": "vite",

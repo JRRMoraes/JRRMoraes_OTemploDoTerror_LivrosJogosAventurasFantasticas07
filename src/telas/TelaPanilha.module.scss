@@ -28,8 +28,14 @@
         color: #213547;
     }
 
+    &_efeito {
+        font-size: 1.2rem;
+        transition: all 0.5s ease;
+    }
+
     &_numeroAtual {
         font-size: 1.6rem;
+        transition: all 1s ease;
     }
 
     &_encantos {

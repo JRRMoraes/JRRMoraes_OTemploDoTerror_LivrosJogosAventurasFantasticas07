@@ -25,3 +25,4 @@ dist-ssr
 
 src/assets/LJAF07_OTemploDoTerror/imagens/originais/*
 public/originais/*
+.vercel

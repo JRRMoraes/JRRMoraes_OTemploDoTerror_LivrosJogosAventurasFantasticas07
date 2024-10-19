@@ -1669,14 +1669,23 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Yaztromo explica que seu encanto do Sono das Criaturas fará dormir qualquer criatura humanóide. Ele conta para você as palavras necessárias para lançar o encanto e diz que ele praticamente nada exigirá de suas forças, somente 1 ponto de ENERGIA a cada vez que você o utilizar. Volte para 34, depois de ter anotado o encanto e seu custo em ENERGIA na sua Folha de Aventuras."
+                        "Yaztromo explica que seu encanto do Sono das Criaturas fará dormir qualquer criatura humanóide.",
+                        "Ele conta para você as palavras necessárias para lançar o encanto e diz que ele praticamente nada exigirá de suas forças, somente 1 ponto de ENERGIA a cada vez que você o utilizar."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Sono das Criaturas",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Sono das Criaturas",
+                            "quantidade": 1
+                        }
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 34,
+                    "textoDestino": "Volte para 34, depois de ter anotado o encanto e seu custo em ENERGIA na sua Folha de Aventuras."
                 }
             ]
         },
@@ -2987,14 +2996,22 @@
                 {
                     "textosHistoria": [
                         "Yaztromo explica que o encanto da Flecha Mágica fará com que um pequeno e brilhante dardo seja disparado da ponta de seu dedo com precisão mortal contra qualquer alvo.",
-                        "Ele lhe ensina as palavras necessárias para lançar o encanto e diz que isso não exigirá muito de suas forças: somente 2 pontos de ENERGIA a cada vez que usá-lo. Volte para 34, depois de anotar o encanto e seu custo em ENERGIA na sua Folha de Aventuras."
+                        "Ele lhe ensina as palavras necessárias para lançar o encanto e diz que isso não exigirá muito de suas forças: somente 2 pontos de ENERGIA a cada vez que usá-lo."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Flecha Mágica",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Flecha Mágica",
+                            "quantidade": 1
+                        }
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 34,
+                    "textoDestino": "Volte para 34, depois de anotar o encanto e seu custo em ENERGIA na sua Folha de Aventuras."
                 }
             ]
         },
@@ -4043,15 +4060,24 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Yaztromo explica que seu encanto do Idioma permitirá que você compreenda qualquer criatura com a qual tente se comunicar, qualquer que seja a língua que ela fale. Ele diz a você as palavras necessárias para lançar o encanto e conta que a energia perdida ao usá-",
-                        "lo é insignificante. Perde-se meramente 1 ponto de ENERGIA a cada vez que ele é lançado. Volte para 34, depois de anotar o encanto e seu custo em ENERGIA na sua Folha de Aventuras."
+                        "Yaztromo explica que seu encanto do Idioma permitirá que você compreenda qualquer criatura com a qual tente se comunicar, qualquer que seja a língua que ela fale.",
+                        "Ele diz a você as palavras necessárias para lançar o encanto e conta que a energia perdida ao usá-lo é insignificante.",
+                        "Perde-se meramente 1 ponto de ENERGIA a cada vez que ele é lançado."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Idioma",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Idioma",
+                            "quantidade": 1
+                        }
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 34,
+                    "textoDestino": "Volte para 34, depois de anotar o encanto e seu custo em ENERGIA na sua Folha de Aventuras."
                 }
             ]
         },
@@ -4593,14 +4619,23 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Yaztromo explica que seu encanto da luz iluminará qualquer aposento, caverna ou área, seja sua escuridão natural ou mágica. Ele lhe ensina as palavras necessárias para lançar o encanto e diz que a energia gasta para lançá-lo, não é muita: só 2 pontos de ENERGIA a cada vez que você o usa. Volte para 34 depois de anotar o encanto e seu custo em ENERGIA na sua Folha de Aventuras."
+                        "Yaztromo explica que seu encanto da Luz iluminará qualquer aposento, caverna ou área, seja sua escuridão natural ou mágica.",
+                        "Ele lhe ensina as palavras necessárias para lançar o encanto e diz que a energia gasta para lançá-lo, não é muita: só 2 pontos de ENERGIA a cada vez que você o usa."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Luz",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Luz",
+                            "quantidade": 1
+                        }
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 34,
+                    "textoDestino": "Volte para 34 depois de anotar o encanto e seu custo em ENERGIA na sua Folha de Aventuras."
                 }
             ]
         },
@@ -5310,14 +5345,23 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Yaztromo explica que esse encanto do Fogo pode ser usado tanto para criar uma parede defensiva em torno de quem o lança quanto para simplesmente acender uma tocha. ou lanterna com a ponta dos dedos. Ele lhe ensina as palavras necessárias para que o encanto seja lançado e diz que a energia perdida ao lançar o encanto varia de acordo com a intensidade de fogo exigida, mas que serão gastos 1 ou 2 pontos de ENERGIA a cada vez. Depois de anotar o encanto e seu custo em ENERGIA na sua Folha de Aventuras, volte para 34."
+                        "Yaztromo explica que esse encanto do Fogo pode ser usado tanto para criar uma parede defensiva em torno de quem o lança quanto para simplesmente acender uma tocha ou lanterna com a ponta dos dedos.",
+                        "Ele lhe ensina as palavras necessárias para que o encanto seja lançado e diz que a energia perdida ao lançar o encanto varia de acordo com a intensidade de fogo exigida, mas que serão gastos 1 ou 2 pontos de ENERGIA a cada vez."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Fogo",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Fogo",
+                            "quantidade": 1
+                        }
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 34,
+                    "textoDestino": "Depois de anotar o encanto e seu custo em ENERGIA na sua Folha de Aventuras, volte para 34."
                 }
             ]
         },
@@ -5946,14 +5990,23 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Yaztromo explica que o encanto de Saltar permitirá que você pule por cima de muralhas ou fossos quando quiser. Ele lhe ensina as palavras necessárias para lançar o encanto e avisa que a força exigida para usar o encanto custa 3 pontos de ENERGIA. Depois de anotar o encanto e o desconto em ENERGIA na sua Folha de Aventuras, volte para 34."
+                        "Yaztromo explica que o encanto de Saltar permitirá que você pule por cima de muralhas ou fossos quando quiser.",
+                        "Ele lhe ensina as palavras necessárias para lançar o encanto e avisa que a força exigida para usar o encanto custa 3 pontos de ENERGIA."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Saltar",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Saltar",
+                            "quantidade": 1
+                        }
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 34,
+                    "textoDestino": "Depois de anotar o encanto e o desconto em ENERGIA na sua Folha de Aventuras, volte para 34."
                 }
             ]
         },
@@ -6761,15 +6814,23 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Yaztromo explica que o encanto de Detectar Armadilha o advertirá com antecedência de qualquer armadilha perigosa que possa estar colocada em seu caminho, embora você ainda tenha que superar o problema usando sua própria iniciativa. Ele lhe ensina as palavras necessárias para lançar o encanto e diz que, a cada vez que você usá-lo, perderá 2 pontos de ENERGIA. Depois de anotar o encanto e o custo em ENERGIA na sua Folha de Aventuras,",
-                        "volte para 34."
+                        "Yaztromo explica que o encanto de Detectar Armadilha o advertirá com antecedência de qualquer armadilha perigosa que possa estar colocada em seu caminho, embora você ainda tenha que superar o problema usando sua própria iniciativa.",
+                        "Ele lhe ensina as palavras necessárias para lançar o encanto e diz que, a cada vez que você usá-lo, perderá 2 pontos de ENERGIA."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Detectar Armadilha",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Detectar Armadilha",
+                            "quantidade": 1
+                        }
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 34,
+                    "textoDestino": "Depois de anotar o encanto e o custo em ENERGIA na sua Folha de Aventuras, volte para 34."
                 }
             ]
         },
@@ -7193,14 +7254,23 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Yaztromo explica que o encanto de Criar Água encherá suas mãos de água potável a cada vez que você as juntar em concha. Ele lhe diz as palavras necessárias para lançar o encanto e conta que, curiosamente, esse encanto não requer energia alguma para ser lançado. Depois de anotar o encanto na sua Folha de Aventuras, volte para 34."
+                        "Yaztromo explica que o encanto de Criar Água encherá suas mãos de água potável a cada vez que você as juntar em concha.",
+                        "Ele lhe diz as palavras necessárias para lançar o encanto e conta que, curiosamente, esse encanto não requer energia alguma para ser lançado."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Criar Água",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Criar Água",
+                            "quantidade": 1
+                        }
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 34,
+                    "textoDestino": "Depois de anotar o encanto na sua Folha de Aventuras, volte para 34."
                 }
             ]
         },

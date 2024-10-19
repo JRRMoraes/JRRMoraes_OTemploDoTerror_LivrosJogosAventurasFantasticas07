@@ -99,7 +99,7 @@ export const TelaPanilha = () => {
         }
         return (
             <td className="coresHES_energia">
-                <span>{_quantidade}</span>
+                <span className={styles.panilha_efeito}>{_quantidade}</span>
                 <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.energia}</span>
                 <span className={styles.panilha_fonteNormal}>{" / "}</span>
                 <span>{jogoAtual.panilha.energiaInicial}</span>

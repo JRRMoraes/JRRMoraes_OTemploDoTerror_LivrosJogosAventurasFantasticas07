@@ -381,8 +381,8 @@
             ],
             "destinos": [
                 {
-                    "idPagina": 4,
-                    "textoDestino": "Para fazer sua escolha, vá para 4."
+                    "idPagina": 34,
+                    "textoDestino": "Para fazer sua escolha, vá para 34."
                 }
             ]
         },
@@ -608,7 +608,7 @@
             ],
             "destinos": [
                 {
-                    "idPagina": 99,
+                    "idPagina": 999,
                     "textosDestino": [
                         "Jogue dois dados e some 3 ao total obtido.",
                         "Se o total for igual ou menor do que sua HABILIIDADE, volte para 99.",
@@ -620,8 +620,396 @@
                 }
             ]
         },
+
         {
-            "idPagina": 99,
+            "idPagina": 32,
+            "historias": [
+                {
+                    "textosHistoria": [
+                        "Yaztromo explica que seu encanto de Abrir Portas abrirá qualquer porta trancada.",
+                        "Ele lhe revela as palavras necessárias para lançar o encanto, e diz que ele não consumirá demasiadamente as suas forças;",
+                        "somente 2 pontos de ENERGIA serão perdidos a cada vez que você usar o encanto."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Abrir Portas",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Abrir Portas",
+                            "quantidade": 1
+                        }
+                    ]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 34,
+                    "textoDestino": "Volte para 34 depois de ter registrado o encanto e seu custo em ENERGIA na sua Folha de Aventuras."
+                }
+            ]
+        },
+        {
+            "idPagina": 34,
+            "historias": [
+                {
+                    "textosHistoria": [
+                        "Escolha qualquer um dos seguintes encantos. Você será mandado de volta a esta referência depois de ter aprendido um encanto.",
+                        "Quando tiver aprendido quatro encantos, vá para 180.",
+                        "Pense sobre a tarefa à sua frente antes de dizer a Yaztromo qual foi sua escolha:"
+                    ]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 32,
+                    "textoDestino": "De Abrir Portas, volte para 12",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Abrir Portas",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
+                },
+                {
+                    "idPagina": 58,
+                    "textoDestino": "Do Sono das Criaturas, vá para 58",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Sono das Criaturas",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
+                },
+                {
+                    "idPagina": 136,
+                    "textoDestino": "Da Flecha Mágica, vá para 136",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Flecha Mágica",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
+                },
+                {
+                    "idPagina": 194,
+                    "textoDestino": "Do Idioma, vá para 194",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Idioma",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
+                },
+                {
+                    "idPagina": 391,
+                    "textoDestino": "De Ler Símbolos, vá para 391",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Ler Símbolos",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
+                },
+                {
+                    "idPagina": 223,
+                    "textoDestino": "Da Luz, vá para 223",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Luz",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
+                },
+                {
+                    "idPagina": 264,
+                    "textoDestino": "Do Fogo, vá para 264",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Fogo",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
+                },
+                {
+                    "idPagina": 301,
+                    "textoDestino": "De Saltar, vá para 301",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Saltar",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
+                },
+                {
+                    "idPagina": 342,
+                    "textoDestino": "De Detectar Armadilha, vá para 342",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Detectar Armadilha",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
+                },
+                {
+                    "idPagina": 367,
+                    "textoDestino": "De Criar Água, vá para 367.",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "nomeAprovacao": "Criar Água",
+                            "comparacao": "NAO_POSSUIR"
+                        },
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MENOR",
+                            "quantidade": 4
+                        }
+                    ]
+                },
+                {
+                    "idPagina": 2,
+                    "textoDestino": "Quando tiver aprendido quatro encantos, vá para 2.",
+                    "aprovacoes": [
+                        {
+                            "atributoAprovacao": "ENCANTOS",
+                            "comparacao": "MAIOR_IGUAL",
+                            "quantidade": 4
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "idPagina": 58,
+            "historias": [
+                {
+                    "textosHistoria": [
+                        "Yaztromo explica que seu encanto do Sono das Criaturas fará dormir qualquer criatura humanóide.",
+                        "Ele conta para você as palavras necessárias para lançar o encanto e diz que ele praticamente nada exigirá de suas forças, somente 1 ponto de ENERGIA a cada vez que você o utilizar."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Sono das Criaturas",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Sono das Criaturas",
+                            "quantidade": 1
+                        }
+                    ]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 34,
+                    "textoDestino": "Volte para 34, depois de ter anotado o encanto e seu custo em ENERGIA na sua Folha de Aventuras."
+                }
+            ]
+        },
+        {
+            "idPagina": 136,
+            "historias": [
+                {
+                    "textosHistoria": [
+                        "Yaztromo explica que o encanto da Flecha Mágica fará com que um pequeno e brilhante dardo seja disparado da ponta de seu dedo com precisão mortal contra qualquer alvo.",
+                        "Ele lhe ensina as palavras necessárias para lançar o encanto e diz que isso não exigirá muito de suas forças: somente 2 pontos de ENERGIA a cada vez que usá-lo."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Flecha Mágica",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Flecha Mágica",
+                            "quantidade": 1
+                        }
+                    ]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 34,
+                    "textoDestino": "Volte para 34, depois de anotar o encanto e seu custo em ENERGIA na sua Folha de Aventuras."
+                }
+            ]
+        },
+        {
+            "idPagina": 194,
+            "historias": [
+                {
+                    "textosHistoria": [
+                        "Yaztromo explica que seu encanto do Idioma permitirá que você compreenda qualquer criatura com a qual tente se comunicar, qualquer que seja a língua que ela fale.",
+                        "Ele diz a você as palavras necessárias para lançar o encanto e conta que a energia perdida ao usá-lo é insignificante.",
+                        "Perde-se meramente 1 ponto de ENERGIA a cada vez que ele é lançado."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Idioma",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Idioma",
+                            "quantidade": 1
+                        }
+                    ]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 34,
+                    "textoDestino": "Volte para 34, depois de anotar o encanto e seu custo em ENERGIA na sua Folha de Aventuras."
+                }
+            ]
+        },
+        {
+            "idPagina": 264,
+            "historias": [
+                {
+                    "textosHistoria": [
+                        "Yaztromo explica que esse encanto do Fogo pode ser usado tanto para criar uma parede defensiva em torno de quem o lança quanto para simplesmente acender uma tocha ou lanterna com a ponta dos dedos.",
+                        "Ele lhe ensina as palavras necessárias para que o encanto seja lançado e diz que a energia perdida ao lançar o encanto varia de acordo com a intensidade de fogo exigida, mas que serão gastos 1 ou 2 pontos de ENERGIA a cada vez."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Fogo",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Fogo",
+                            "quantidade": 1
+                        }
+                    ]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 34,
+                    "textoDestino": "Depois de anotar o encanto e seu custo em ENERGIA na sua Folha de Aventuras, volte para 34."
+                }
+            ]
+        },
+        {
+            "idPagina": 301,
+            "historias": [
+                {
+                    "textosHistoria": [
+                        "Yaztromo explica que o encanto de Saltar permitirá que você pule por cima de muralhas ou fossos quando quiser.",
+                        "Ele lhe ensina as palavras necessárias para lançar o encanto e avisa que a força exigida para usar o encanto custa 3 pontos de ENERGIA."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Saltar",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Saltar",
+                            "quantidade": 1
+                        }
+                    ]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 34,
+                    "textoDestino": "Depois de anotar o encanto e o desconto em ENERGIA na sua Folha de Aventuras, volte para 34."
+                }
+            ]
+        },
+        {
+            "idPagina": 342,
+            "historias": [
+                {
+                    "textosHistoria": [
+                        "Yaztromo explica que o encanto de Detectar Armadilha o advertirá com antecedência de qualquer armadilha perigosa que possa estar colocada em seu caminho, embora você ainda tenha que superar o problema usando sua própria iniciativa.",
+                        "Ele lhe ensina as palavras necessárias para lançar o encanto e diz que, a cada vez que você usá-lo, perderá 2 pontos de ENERGIA."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Detectar Armadilha",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Detectar Armadilha",
+                            "quantidade": 1
+                        }
+                    ]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 34,
+                    "textoDestino": "Depois de anotar o encanto e o custo em ENERGIA na sua Folha de Aventuras, volte para 34."
+                }
+            ]
+        },
+        {
+            "idPagina": 367,
+            "historias": [
+                {
+                    "textosHistoria": [
+                        "Yaztromo explica que o encanto de Criar Água encherá suas mãos de água potável a cada vez que você as juntar em concha.",
+                        "Ele lhe diz as palavras necessárias para lançar o encanto e conta que, curiosamente, esse encanto não requer energia alguma para ser lançado."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Criar Água",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Criar Água",
+                            "quantidade": 1
+                        }
+                    ]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 34,
+                    "textoDestino": "Depois de anotar o encanto na sua Folha de Aventuras, volte para 34."
+                }
+            ]
+        },
+        {
+            "idPagina": 999,
             "historias": [
                 {
                     "textosHistoria": [
