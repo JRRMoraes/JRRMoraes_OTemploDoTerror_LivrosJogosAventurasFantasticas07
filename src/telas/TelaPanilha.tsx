@@ -3,6 +3,7 @@ import "../globais/CoresHES.scss";
 import { ContextoJogos } from "../contextos";
 import TelaPanilhaNova from "./TelaPanilhaNova";
 import { EAtributo } from "../tipos";
+import { FormatarNumberInteiro } from "../uteis";
 
 export const TelaPanilha = () => {
     const { jogoAtual, ObterEfeitoAtualDoAtributo } = ContextoJogos();
@@ -86,13 +87,14 @@ export const TelaPanilha = () => {
 
     function MontarRetorno_Energia() {
         const _efeito = ObterEfeitoAtualDoAtributo(EAtributo.ENERGIA);
-        let _quantidade = "";
+        let _efeitoElemento = <span className={styles.panilha_efeito}></span>;
         if (_efeito) {
-            _quantidade = _efeito.quantidade.toString();
+            const _quantidade = FormatarNumberInteiro(_efeito.quantidade);
+            _efeitoElemento = <span className={styles.panilha_efeito + " " + styles.panilha_efeitoPopup_Energia}>{_quantidade}</span>;
         }
         return (
             <td className="coresHES_energia">
-                <span className={styles.panilha_efeito}>{_quantidade}</span>
+                {_efeitoElemento}
                 <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.energia}</span>
                 <span className={styles.panilha_fonteNormal}>{" / "}</span>
                 <span>{jogoAtual.panilha.energiaInicial}</span>

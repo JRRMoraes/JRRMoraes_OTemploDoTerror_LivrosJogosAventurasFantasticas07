@@ -29,13 +29,40 @@
     }
 
     &_efeito {
+        display: none;
+        //position: fixed;
+        //top: 50%;
+        //left: 50%;
+        //transform: translate(-50%, -50%);
+        height: 20px;
+        width: 32px;
+        padding: 4px;
+        background-color: white;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
         font-size: 1.2rem;
-        transition: all 0.5s ease;
+        text-align: center;
+        animation: efeitoPopup 0.5s ease-out forwards;
+    }
+
+    &_efeitoPopup_Energia {
+        display: flex;
+    }
+
+    @keyframes efeitoPopup {
+        0% {
+            opacity: 0;
+            //transform: translate(-50%, -60%);
+        }
+        100% {
+            opacity: 1;
+            //transform: translate(-50%, -50%);
+        }
     }
 
     &_numeroAtual {
         font-size: 1.6rem;
-        transition: all 1s ease;
+        //        transition: all 1s ease;
     }
 
     &_encantos {

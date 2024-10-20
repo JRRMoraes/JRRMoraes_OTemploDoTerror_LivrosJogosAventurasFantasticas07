@@ -6,6 +6,7 @@
         margin: 16px 0 0 0;
         background-color: #b1eb9b;
         transition: border-color 0.25s;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 
         @media screen and (max-width: var(--CELULAR_MAX_WIDTH)) {
             padding: 8px;

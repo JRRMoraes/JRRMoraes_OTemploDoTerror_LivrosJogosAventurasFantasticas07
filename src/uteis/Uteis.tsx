@@ -29,3 +29,11 @@ export function SubstituirTexto(textoTratado: string, textoBuscado: string, text
     let _regex = new RegExp(textoBuscado, _regexTexto);
     return textoTratado.replace(_regex, textoSubstituto);
 }
+
+export function FormatarNumberInteiro(numero: number) {
+    if (numero >= 1) {
+        return "+" + numero.toString();
+    } else {
+        return numero.toString();
+    }
+}
