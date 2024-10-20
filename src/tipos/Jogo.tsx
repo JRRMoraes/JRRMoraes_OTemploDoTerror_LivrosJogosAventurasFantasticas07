@@ -24,7 +24,6 @@ export interface IPanilha {
     provisao: number;
     encantos: string[];
     itens: IItem[];
-    auxEfeitos: IEfeito[];
 }
 
 export enum ECampanhaCapitulo {
@@ -54,7 +53,7 @@ export function CriarJogoNulo(idJogo: number): IJogo {
     return retorno;
 }
 
-export interface IRolagensParaPanilhaNova {
+export interface IDadosRoladosParaPanilhaNova {
     habilidade1: number;
     energia1: number;
     energia2: number;
@@ -67,19 +66,41 @@ export interface ITotaisRoladosParaPanilhaNova {
     sorte: number;
 }
 
-export interface IRolagensParaDestino {
+export interface IRolagemParaPanilhaNova {
     processoRolagem: EProcesso;
-    quantidade: number;
+    rolagens: IDadosRoladosParaPanilhaNova;
+    totais: ITotaisRoladosParaPanilhaNova;
+}
+
+export const ROLAGEM_PARA_PANILHA_NOVA_ZERADA: IRolagemParaPanilhaNova = {
+    processoRolagem: EProcesso._ZERO,
+    rolagens: {
+        habilidade1: 0,
+        energia1: 0,
+        energia2: 0,
+        sorte1: 0,
+    },
+    totais: {
+        habilidade: 0,
+        energia: 0,
+        sorte: 0,
+    },
+};
+
+export interface IRolagemParaDestino {
+    processoRolagem: EProcesso;
     total: number;
     destino: IDestino;
 }
 
-export const ROLAGEM_PARA_DESTINO_ZERADA: IRolagensParaDestino = {
+export const ROLAGEM_PARA_DESTINO_ZERADA: IRolagemParaDestino = {
     processoRolagem: EProcesso._ZERO,
-    quantidade: 0,
     total: 0,
     destino: null!,
 };
+
+export const DADOS_TEMPO_ROLANDO_SEGUNDOS = 2;
+export const DADOS_TEMPO_ROLANDO_MILESIMOS = DADOS_TEMPO_ROLANDO_SEGUNDOS * 1000;
 
 export const COR_HABILIDADE = "#87ceeb";
 export const COR_HABILIDADE_DOTS = "#000000";
@@ -119,7 +140,6 @@ export function CriarPanilhaViaRolagens(totaisRolados: ITotaisRoladosParaPanilha
         provisao: 0,
         encantos: [],
         itens: [],
-        auxEfeitos: [],
     };
 }
 

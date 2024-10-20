@@ -1,3 +1,4 @@
+import { RefObject, useRef } from "react";
 import { EProcesso } from "../uteis";
 import { ECampanhaCapitulo } from "./Jogo";
 
@@ -141,4 +142,13 @@ export interface IPaginaCampanha extends IPagina {
     estado: EPaginaCampanhaEstado;
     idPaginaDestino: number;
     idCapituloDestino: ECampanhaCapitulo;
+}
+
+export interface IAudioExecutor {
+    audioRef: RefObject<HTMLAudioElement>;
+    mudo: boolean;
+    volume: number;
+    musicaAtual: string;
+    tipoAtual: string;
+    loopAtual: boolean;
 }

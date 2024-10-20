@@ -1,4 +1,5 @@
 import styles from "./TelaDestinos.module.scss";
+import "../componentes/Botao.module.scss";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ContextoJogos, OperacoesJogoLivro } from "../contextos";
@@ -9,13 +10,15 @@ import {
     EJogoNivel,
     EPaginaCampanhaEstado,
     IDestino,
-    IRolagensParaDestino,
+    IRolagemParaDestino,
     PAGINA_ZERADA,
     ROLAGEM_PARA_DESTINO_ZERADA,
     COR_SORTE,
     COR_SORTE_DOTS,
     COR_HABILIDADE,
     COR_HABILIDADE_DOTS,
+    DADOS_TEMPO_ROLANDO_SEGUNDOS,
+    DADOS_TEMPO_ROLANDO_MILESIMOS,
 } from "../tipos";
 import { EProcesso } from "../uteis";
 import ReactDice, { ReactDiceRef } from "react-dice-complete";
@@ -33,9 +36,9 @@ export const TelaDestinos = () => {
 
     const navegador = useNavigate();
 
-    const reactDados = useRef<ReactDiceRef>(null);
+    const dados = useRef<ReactDiceRef>(null);
 
-    const [rolandoDados, setRolandoDados] = useState<IRolagensParaDestino>(ROLAGEM_PARA_DESTINO_ZERADA);
+    const [rolagemDados, setRolagemDados] = useState<IRolagemParaDestino>(ROLAGEM_PARA_DESTINO_ZERADA);
 
     useEffect(() => {
         if (!jogoAtual || !paginaCampanha || !paginaCampanha.destinos || !paginaCampanha.destinos.length) {
@@ -60,43 +63,45 @@ export const TelaDestinos = () => {
     }, [salvando]);
 
     useEffect(() => {
-        if (rolandoDados.processoRolagem === EProcesso.INICIANDO) {
-            reactDados.current?.rollAll();
-            setRolandoDados((prevRolandoDados) => {
+        if (rolagemDados.processoRolagem === EProcesso.INICIANDO) {
+            dados.current?.rollAll();
+            setRolagemDados((prevRolandoDados) => {
                 return { ...prevRolandoDados, processoRolagem: EProcesso.PROCESSANDO };
             });
-        } else if (rolandoDados.processoRolagem === EProcesso.PROCESSANDO && rolandoDados.quantidade >= 1) {
-            setRolandoDados((prevRolandoDados) => {
-                return { ...prevRolandoDados, processoRolagem: EProcesso.CONCLUIDO };
-            });
-        } else if (rolandoDados.processoRolagem === EProcesso.CONCLUIDO) {
-            let _rolado = rolandoDados.total;
-            if (rolandoDados.destino.testeSomarDados) {
-                _rolado += rolandoDados.destino.testeSomarDados;
+        } else if (rolagemDados.processoRolagem === EProcesso.PROCESSANDO) {
+            setTimeout(() => {
+                setRolagemDados((prevRolandoDados) => {
+                    return { ...prevRolandoDados, processoRolagem: EProcesso.CONCLUIDO };
+                });
+            }, DADOS_TEMPO_ROLANDO_MILESIMOS);
+        } else if (rolagemDados.processoRolagem === EProcesso.CONCLUIDO) {
+            let _rolado = rolagemDados.total;
+            if (rolagemDados.destino.testeSomarDados) {
+                _rolado += rolagemDados.destino.testeSomarDados;
             }
             let _teveSorte = false;
-            if (rolandoDados.destino.testeAtributo === EAtributoDestinoTeste.HABILIDADE) {
+            if (rolagemDados.destino.testeAtributo === EAtributoDestinoTeste.HABILIDADE) {
                 _teveSorte = _rolado <= jogoAtual.panilha.habilidade;
-            } else if (rolandoDados.destino.testeAtributo === EAtributoDestinoTeste.SORTE) {
+            } else if (rolagemDados.destino.testeAtributo === EAtributoDestinoTeste.SORTE) {
                 _teveSorte = _rolado <= jogoAtual.panilha.sorte;
                 AplicarPenalidadeDeTestarSorte();
             }
-            let _idPagina = _teveSorte ? rolandoDados.destino.idPagina : rolandoDados.destino.idPaginaAzar;
+            let _idPagina = _teveSorte ? rolagemDados.destino.idPagina : rolagemDados.destino.idPaginaAzar;
             setTimeout(() => {
                 setPaginaCampanha((prevPaginaCampanha_Destino) => {
                     return {
                         ...prevPaginaCampanha_Destino,
                         idPaginaDestino: _idPagina,
-                        idCapituloDestino: rolandoDados.destino.idCapitulo,
+                        idCapituloDestino: rolagemDados.destino.idCapitulo,
                         ehJogoCarregado: false,
                     };
                 });
             }, TEMPO_ANIMACAO * 4);
-            setRolandoDados((prevRolandoDados) => {
+            setRolagemDados((prevRolandoDados) => {
                 return { ...prevRolandoDados, processoRolagem: EProcesso.DESTRUIDO };
             });
         }
-    }, [rolandoDados]);
+    }, [rolagemDados]);
 
     if (!jogoAtual) {
         return <></>;
@@ -211,7 +216,7 @@ export const TelaDestinos = () => {
                     };
                 });
             } else {
-                setRolandoDados({ processoRolagem: EProcesso.INICIANDO, quantidade: 0, total: 0, destino: destino });
+                setRolagemDados({ processoRolagem: EProcesso.INICIANDO, total: 0, destino: destino });
             }
         };
         return _aoClicar;
@@ -267,8 +272,8 @@ export const TelaDestinos = () => {
                 _soma = destino.testeSomarDados.toString() + " + ";
             }
             let _total = "?";
-            if ([EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(rolandoDados.processoRolagem)) {
-                _total = rolandoDados.total.toString();
+            if ([EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(rolagemDados.processoRolagem)) {
+                _total = rolagemDados.total.toString();
             }
             let _cor = "";
             let _corDot = "";
@@ -294,11 +299,13 @@ export const TelaDestinos = () => {
                                     <p>{_soma}</p>
                                     <ReactDice
                                         numDice={2}
-                                        ref={reactDados}
+                                        ref={dados}
                                         rollDone={AoConcluirRolagem}
                                         faceColor={_cor}
                                         dotColor={_corDot}
                                         defaultRoll={1}
+                                        disableIndividual={true}
+                                        rollTime={DADOS_TEMPO_ROLANDO_SEGUNDOS}
                                     />
                                 </td>
                                 <td className={styles.destinos_conteudo_pagina_rolagem_total}>{" = " + _total}</td>
@@ -321,8 +328,8 @@ export const TelaDestinos = () => {
     }
 
     function AoConcluirRolagem(totalValue: number, values: number[]) {
-        setRolandoDados((prevRolandoDados) => {
-            return { ...prevRolandoDados, quantidade: prevRolandoDados.quantidade + 1, total: totalValue };
+        setRolagemDados((prevRolandoDados) => {
+            return { ...prevRolandoDados, total: totalValue };
         });
     }
 };

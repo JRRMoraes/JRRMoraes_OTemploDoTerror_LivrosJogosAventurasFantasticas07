@@ -7675,14 +7675,23 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Yaztromo explica que o encanto de Ler Símbolos permite ao usuário ler quaisquer runas ou símbolos mágicos. Ele lhe diz as palavras necessárias para lançar o encanto e conta que praticamente nenhuma energia é exigida para lançá-lo; só se perde 1 ponto de ENERGIA a cada vez que ele é usado. Volte para 34, depois de anotar o encanto e o custo em ENERGIA na sua Folha de Aventuras."
+                        "Yaztromo explica que o encanto de Ler Símbolos permite ao usuário ler quaisquer runas ou símbolos mágicos.",
+                        "Ele lhe diz as palavras necessárias para lançar o encanto e conta que praticamente nenhuma energia é exigida para lançá-lo; só se perde 1 ponto de ENERGIA a cada vez que ele é usado."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Você aprendeu o encanto de Ler Símbolos",
+                            "atributoEfeito": "ENCANTOS",
+                            "nomeEfeito": "Ler Símbolos",
+                            "quantidade": 1
+                        }
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 34,
+                    "textoDestino": "Volte para 34, depois de anotar o encanto e o custo em ENERGIA na sua Folha de Aventuras."
                 }
             ]
         },

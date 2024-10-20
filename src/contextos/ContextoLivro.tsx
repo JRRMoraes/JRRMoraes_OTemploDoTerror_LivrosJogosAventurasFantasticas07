@@ -1,18 +1,27 @@
-import { Dispatch, SetStateAction, createContext, useContext, useState } from "react";
-import { IJogo, ILivro, IPagina, ECampanhaCapitulo, PAGINA_ZERADA, PAGINA_INICIAL } from "../tipos";
+import { Dispatch, SetStateAction, createContext, useContext } from "react";
+import { ILivro, IAudioExecutor, IJogo, IPagina, ECampanhaCapitulo, PAGINA_ZERADA, PAGINA_INICIAL } from "../tipos";
 
 export type TContextoBaseLivro = {
     livro: ILivro;
     setLivro: Dispatch<SetStateAction<ILivro>>;
-    audioMusica: string;
-    setAudioMusica: Dispatch<SetStateAction<string>>;
+    audioExecutor: IAudioExecutor;
+    setAudioExecutor: Dispatch<SetStateAction<IAudioExecutor>>;
 };
 
 export const ContextoBaseLivro = createContext<TContextoBaseLivro>(null!);
 ContextoBaseLivro.displayName = "Livro";
 
 export const ContextoLivro = () => {
-    const { livro, setLivro, audioMusica, setAudioMusica } = useContext(ContextoBaseLivro);
+    const { livro, setLivro, audioExecutor, setAudioExecutor } = useContext(ContextoBaseLivro);
+
+    return {
+        livro,
+        setLivro,
+        audioExecutor,
+        setAudioExecutor,
+        ObterPagina,
+        CaminhoImagem,
+    };
 
     function ObterPagina(jogo: IJogo): IPagina {
         if (!livro || !livro.paginasIniciais || !livro.paginasCampanha) {
@@ -44,17 +53,8 @@ export const ContextoLivro = () => {
     function CaminhoImagem(imagem: string) {
         return CAMINHO_IMAGEM + imagem;
     }
-
-    return {
-        livro,
-        setLivro,
-        audioMusica,
-        setAudioMusica,
-        ObterPagina,
-        CaminhoImagem,
-    };
 };
 
 export default ContextoLivro;
 
-export const CAMINHO_IMAGEM = "src/assets/LJAF07_OTemploDoTerror/imagens/";
+export const CAMINHO_IMAGEM = "/LJAF07_OTemploDoTerror/imagens/";

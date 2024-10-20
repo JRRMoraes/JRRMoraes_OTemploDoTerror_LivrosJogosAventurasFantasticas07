@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IJogo, IPagina, IPaginaCampanha, CriarJogoNulo, ECampanhaCapitulo } from "../tipos";
+import { IJogo, IPagina, IPaginaCampanha, ECampanhaCapitulo, IEfeito, CriarJogoNulo } from "../tipos";
 import { ContextoBaseJogos } from "../contextos";
 import { IChildrenProps, CriarStateComLocalStorage } from "../uteis";
 
@@ -20,6 +20,8 @@ export const ProvedorJogos = ({ children }: IChildrenProps) => {
 
     const [padraoCapitulo, setPadraoCapitulo] = useState<ECampanhaCapitulo>(ECampanhaCapitulo.PAGINAS_INICIAIS);
 
+    const [efeitosAtuais, setEfeitosAtuais] = useState<IEfeito[]>([]);
+
     return (
         <ContextoBaseJogos.Provider
             value={{
@@ -37,6 +39,8 @@ export const ProvedorJogos = ({ children }: IChildrenProps) => {
                 setPaginaCampanha,
                 padraoCapitulo,
                 setPadraoCapitulo,
+                efeitosAtuais,
+                setEfeitosAtuais,
             }}
         >
             {children}

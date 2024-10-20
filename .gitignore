@@ -24,5 +24,6 @@ dist-ssr
 *.sw?
 
 src/assets/LJAF07_OTemploDoTerror/imagens/originais/*
+public/LJAF07_OTemploDoTerror/imagens/originais/*
 public/originais/*
 .vercel

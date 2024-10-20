@@ -36,6 +36,8 @@ export type TContextoBaseJogos = {
     setPaginaCampanha: Dispatch<SetStateAction<IPaginaCampanha>>;
     padraoCapitulo: ECampanhaCapitulo;
     setPadraoCapitulo: Dispatch<SetStateAction<ECampanhaCapitulo>>;
+    efeitosAtuais: IEfeito[];
+    setEfeitosAtuais: Dispatch<SetStateAction<IEfeito[]>>;
 };
 
 export const ContextoBaseJogos = createContext<TContextoBaseJogos>(null!);
@@ -57,14 +59,16 @@ export const ContextoJogos = () => {
         setPaginaCampanha,
         padraoCapitulo,
         setPadraoCapitulo,
+        efeitosAtuais,
+        setEfeitosAtuais,
     } = useContext(ContextoBaseJogos);
 
     const navegador = useNavigate();
 
     useEffect(() => {
-        if (jogoAtual && jogoAtual.panilha && jogoAtual.panilha.auxEfeitos && jogoAtual.panilha.auxEfeitos.length) {
-            setJogoAtual((prevJogoAtual) => {
-                prevJogoAtual.panilha.auxEfeitos = prevJogoAtual.panilha.auxEfeitos.map((efeitoI) => {
+        if (jogoAtual && jogoAtual.panilha && efeitosAtuais && efeitosAtuais.length && efeitosAtuais.find((efeitoI) => efeitoI.auxProcessoEfeito !== EProcesso.PROCESSANDO)) {
+            setEfeitosAtuais((prevEfeitosAtuais) => {
+                prevEfeitosAtuais = prevEfeitosAtuais.map((efeitoI) => {
                     if (efeitoI.auxProcessoEfeito === EProcesso._ZERO) {
                         efeitoI.auxProcessoEfeito = EProcesso.INICIANDO;
                     } else if (efeitoI.auxProcessoEfeito === EProcesso.INICIANDO) {
@@ -78,11 +82,40 @@ export const ContextoJogos = () => {
                     }
                     return efeitoI;
                 });
-                prevJogoAtual.panilha.auxEfeitos = prevJogoAtual.panilha.auxEfeitos.filter((efeitoI) => efeitoI.auxProcessoEfeito !== EProcesso.DESTRUIDO);
-                return { ...prevJogoAtual };
+                prevEfeitosAtuais = prevEfeitosAtuais.filter((efeitoI) => efeitoI.auxProcessoEfeito !== EProcesso.DESTRUIDO);
+                return [...prevEfeitosAtuais];
             });
         }
-    }, [jogoAtual]);
+    }, [efeitosAtuais]);
+
+    return {
+        jogoSalvo1,
+        setJogoSalvo1,
+        jogoSalvo2,
+        setJogoSalvo2,
+        jogoSalvo3,
+        setJogoSalvo3,
+        jogoAtual,
+        setJogoAtual,
+        paginaAtual,
+        setPaginaAtual,
+        paginaCampanha,
+        setPaginaCampanha,
+        efeitosAtuais,
+        setEfeitosAtuais,
+        ResetarJogoAtual,
+        NavegarParaPaginaLivroJogoComJogoSalvo,
+        CarregarJogoSalvoOuNovo,
+        SalvarJogoAtualNoSalvo,
+        ExcluirJogoSalvo,
+        ImporPaginaAtualECampanha,
+        ImporPaginaCampanhaEJogoAtualViaDestino,
+        ImporPaginaCampanhaViaAtual,
+        CriarPanilhaNoJogoAtualViaRolagens,
+        AplicarEfeitosDaHistoria,
+        AplicarPenalidadeDeTestarSorte,
+        ObterEfeitoAtualDoAtributo,
+    };
 
     function ResetarJogoAtual() {
         setPaginaAtual(null!);
@@ -250,12 +283,12 @@ export const ContextoJogos = () => {
     }
 
     function AplicarEfeitosDaHistoria(efeitos: IEfeito[]) {
-        setJogoAtual((prevJogoAtual) => {
-            efeitos.forEach((efeitoI) => {
+        setEfeitosAtuais((prevEfeitosAtuais) => {
+            prevEfeitosAtuais = efeitos.map((efeitoI) => {
                 efeitoI.auxProcessoEfeito = EProcesso._ZERO;
-                prevJogoAtual.panilha.auxEfeitos = [...prevJogoAtual.panilha.auxEfeitos, efeitoI];
+                return efeitoI;
             });
-            return { ...prevJogoAtual };
+            return [...prevEfeitosAtuais];
         });
     }
 
@@ -327,31 +360,12 @@ export const ContextoJogos = () => {
         });
     }
 
-    return {
-        jogoSalvo1,
-        setJogoSalvo1,
-        jogoSalvo2,
-        setJogoSalvo2,
-        jogoSalvo3,
-        setJogoSalvo3,
-        jogoAtual,
-        setJogoAtual,
-        paginaAtual,
-        setPaginaAtual,
-        paginaCampanha,
-        setPaginaCampanha,
-        ResetarJogoAtual,
-        NavegarParaPaginaLivroJogoComJogoSalvo,
-        CarregarJogoSalvoOuNovo,
-        SalvarJogoAtualNoSalvo,
-        ExcluirJogoSalvo,
-        ImporPaginaAtualECampanha,
-        ImporPaginaCampanhaEJogoAtualViaDestino,
-        ImporPaginaCampanhaViaAtual,
-        CriarPanilhaNoJogoAtualViaRolagens,
-        AplicarEfeitosDaHistoria,
-        AplicarPenalidadeDeTestarSorte,
-    };
+    function ObterEfeitoAtualDoAtributo(atributo: EAtributo): IEfeito {
+        if (!efeitosAtuais || !efeitosAtuais.length) {
+            return null!;
+        }
+        return efeitosAtuais.find((efeitoI) => efeitoI.atributoEfeito === atributo && [EProcesso._ZERO, EProcesso.INICIANDO, EProcesso.PROCESSANDO].includes(efeitoI.auxProcessoEfeito))!;
+    }
 };
 
 export default ContextoJogos;

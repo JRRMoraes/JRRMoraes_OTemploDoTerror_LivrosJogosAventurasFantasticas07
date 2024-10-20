@@ -2,94 +2,63 @@ import styles from "./TelaPanilhaNova.module.scss";
 import "../globais/CoresHES.scss";
 import { useState, useEffect, useRef } from "react";
 import { ContextoJogos } from "../contextos";
-import { IRolagensParaPanilhaNova, ITotaisRoladosParaPanilhaNova, EJogoNivel, COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_ENERGIA, COR_ENERGIA_DOTS, COR_SORTE, COR_SORTE_DOTS } from "../tipos";
+import {
+    IRolagemParaPanilhaNova,
+    EJogoNivel,
+    ROLAGEM_PARA_PANILHA_NOVA_ZERADA,
+    COR_HABILIDADE,
+    COR_HABILIDADE_DOTS,
+    COR_ENERGIA,
+    COR_ENERGIA_DOTS,
+    COR_SORTE,
+    COR_SORTE_DOTS,
+    DADOS_TEMPO_ROLANDO_SEGUNDOS,
+    DADOS_TEMPO_ROLANDO_MILESIMOS,
+} from "../tipos";
 import { Botao } from "../componentes";
 import ReactDice, { ReactDiceRef } from "react-dice-complete";
+import { EProcesso } from "../uteis";
 
 export const TelaPanilhaNova = () => {
     const { jogoAtual, CriarPanilhaNoJogoAtualViaRolagens } = ContextoJogos();
 
     const [indiceRolagem, setIndiceRolagem] = useState(0);
-
-    const [rolagens, setRolagens] = useState<IRolagensParaPanilhaNova>({
-        habilidade1: 0,
-        energia1: 0,
-        energia2: 0,
-        sorte1: 0,
-    });
-
-    const [totaisRolados, setTotaisRolados] = useState<ITotaisRoladosParaPanilhaNova>({
-        habilidade: 0,
-        energia: 0,
-        sorte: 0,
-    });
-
-    const [rolandoDados, setRolandoDados] = useState({ rolando: false, quantidade: 0 });
-
-    const reactDiceHabilidade = useRef<ReactDiceRef>(null);
-    const reactDiceEnergia = useRef<ReactDiceRef>(null);
-    const reactDiceSorte = useRef<ReactDiceRef>(null);
-
-    const rolagemHabilidadeConcluida = (totalValue: number, values: number[]) => {
-        setRolagens((prevRolagens) => {
-            return { ...prevRolagens, habilidade1: values[0] };
-        });
-        setTotaisRolados((prevTotaisRolados) => {
-            return { ...prevTotaisRolados, habilidade: 6 + values[0] };
-        });
-        setRolandoDados((prevRolandoDados) => {
-            return { ...prevRolandoDados, quantidade: prevRolandoDados.quantidade + 1 };
-        });
-    };
-
-    const rolagemEnergiaConcluida = (totalValue: number, values: number[]) => {
-        setRolagens((prevRolagens) => {
-            return { ...prevRolagens, energia1: values[0], energia2: values[1] };
-        });
-        setTotaisRolados((prevTotaisRolados) => {
-            return { ...prevTotaisRolados, energia: 12 + values[0] + values[1] };
-        });
-        setRolandoDados((prevRolandoDados) => {
-            return { ...prevRolandoDados, quantidade: prevRolandoDados.quantidade + 1 };
-        });
-    };
-
-    const rolagemSorteConcluida = (totalValue: number, values: number[]) => {
-        setRolagens((prevRolagens) => {
-            return { ...prevRolagens, sorte1: values[0] };
-        });
-        setTotaisRolados((prevTotaisRolados) => {
-            return { ...prevTotaisRolados, sorte: 6 + values[0] };
-        });
-        setRolandoDados((prevRolandoDados) => {
-            return { ...prevRolandoDados, quantidade: prevRolandoDados.quantidade + 1 };
-        });
-    };
+    const [rolagemDados, setRolagemDados] = useState<IRolagemParaPanilhaNova>(ROLAGEM_PARA_PANILHA_NOVA_ZERADA);
+    const dadosHabilidade = useRef<ReactDiceRef>(null);
+    const dadosEnergia = useRef<ReactDiceRef>(null);
+    const dadosSorte = useRef<ReactDiceRef>(null);
 
     useEffect(() => {
         if (!jogoAtual || jogoAtual.panilha) {
             return;
         }
         if (indiceRolagem >= 1) {
-            RolarDados();
+            setRolagemDados((prevRolandoDados) => {
+                return { ...prevRolandoDados, processoRolagem: EProcesso.INICIANDO };
+            });
         }
     }, [jogoAtual, indiceRolagem]);
 
     useEffect(() => {
-        if (rolandoDados.rolando) {
-            if (indiceRolagem === 0 && rolandoDados.quantidade >= 12) {
-                setRolandoDados((prevRolandoDados) => {
-                    return { ...prevRolandoDados, rolando: false };
+        if (rolagemDados.processoRolagem === EProcesso.INICIANDO) {
+            dadosHabilidade.current?.rollAll();
+            dadosEnergia.current?.rollAll();
+            dadosSorte.current?.rollAll();
+            setRolagemDados((prevRolandoDados) => {
+                return { ...prevRolandoDados, processoRolagem: EProcesso.PROCESSANDO };
+            });
+        } else if (rolagemDados.processoRolagem === EProcesso.PROCESSANDO) {
+            setTimeout(() => {
+                setRolagemDados((prevRolandoDados) => {
+                    return { ...prevRolandoDados, processoRolagem: EProcesso.CONCLUIDO };
                 });
-            } else if (indiceRolagem !== 0 && rolandoDados.quantidade >= 15) {
-                setRolandoDados((prevRolandoDados) => {
-                    return { ...prevRolandoDados, rolando: false };
-                });
-            }
-        } else if (rolandoDados.quantidade !== 0) {
-            setRolandoDados({ rolando: false, quantidade: 0 });
+            }, DADOS_TEMPO_ROLANDO_MILESIMOS);
+        } else if (rolagemDados.processoRolagem === EProcesso.CONCLUIDO) {
+            setRolagemDados((prevRolandoDados) => {
+                return { ...prevRolandoDados, processoRolagem: EProcesso.DESTRUIDO };
+            });
         }
-    }, [rolandoDados]);
+    }, [rolagemDados]);
 
     if (!jogoAtual) {
         return <></>;
@@ -123,17 +92,22 @@ export const TelaPanilhaNova = () => {
                         <tbody>
                             <tr>
                                 <td className={styles.panilhaNova_rolagem_titulo}>
-                                    {"HABILIDADE:  "} <span className={styles.panilhaNova_rolagem_total}>{ObterTotalDaRolagem(totaisRolados.habilidade)}</span>
+                                    <span>{"HABILIDADE:  "}</span>
+                                    <span className={styles.panilhaNova_rolagem_total}>{ObterTotalDaRolagem(rolagemDados.totais.habilidade)}</span>
                                 </td>
-                                <td className={styles.panilhaNova_rolagem_soma}>6 +</td>
+                                <td className={styles.panilhaNova_rolagem_soma}>
+                                    <span>{"6 +"}</span>
+                                </td>
                                 <td className={styles.panilhaNova_rolagem_dados}>
                                     <ReactDice
                                         numDice={1}
-                                        ref={reactDiceHabilidade}
+                                        ref={dadosHabilidade}
                                         rollDone={rolagemHabilidadeConcluida}
                                         faceColor={COR_HABILIDADE}
                                         dotColor={COR_HABILIDADE_DOTS}
                                         defaultRoll={1}
+                                        disableIndividual={true}
+                                        rollTime={DADOS_TEMPO_ROLANDO_SEGUNDOS}
                                     />
                                 </td>
                             </tr>
@@ -145,17 +119,22 @@ export const TelaPanilhaNova = () => {
                         <tbody>
                             <tr>
                                 <td className={styles.panilhaNova_rolagem_titulo}>
-                                    {"ENERGIA:  "} <span className={styles.panilhaNova_rolagem_total}>{ObterTotalDaRolagem(totaisRolados.energia)}</span>
+                                    <span>{"ENERGIA:  "}</span>
+                                    <span className={styles.panilhaNova_rolagem_total}>{ObterTotalDaRolagem(rolagemDados.totais.energia)}</span>
                                 </td>
-                                <td className={styles.panilhaNova_rolagem_soma}>12 +</td>
+                                <td className={styles.panilhaNova_rolagem_soma}>
+                                    <span>{"12 +"}</span>
+                                </td>
                                 <td className={styles.panilhaNova_rolagem_dados}>
                                     <ReactDice
                                         numDice={2}
-                                        ref={reactDiceEnergia}
+                                        ref={dadosEnergia}
                                         rollDone={rolagemEnergiaConcluida}
                                         faceColor={COR_ENERGIA}
                                         dotColor={COR_ENERGIA_DOTS}
                                         defaultRoll={1}
+                                        disableIndividual={true}
+                                        rollTime={DADOS_TEMPO_ROLANDO_SEGUNDOS}
                                     />
                                 </td>
                             </tr>
@@ -167,17 +146,22 @@ export const TelaPanilhaNova = () => {
                         <tbody>
                             <tr>
                                 <td className={styles.panilhaNova_rolagem_titulo}>
-                                    {"SORTE:  "} <span className={styles.panilhaNova_rolagem_total}>{ObterTotalDaRolagem(totaisRolados.sorte)}</span>
+                                    <span>{"SORTE:  "}</span>
+                                    <span className={styles.panilhaNova_rolagem_total}>{ObterTotalDaRolagem(rolagemDados.totais.sorte)}</span>
                                 </td>
-                                <td className={styles.panilhaNova_rolagem_soma}>6 +</td>
+                                <td className={styles.panilhaNova_rolagem_soma}>
+                                    <span>{"6 +"}</span>
+                                </td>
                                 <td className={styles.panilhaNova_rolagem_dados}>
                                     <ReactDice
                                         numDice={1}
-                                        ref={reactDiceSorte}
+                                        ref={dadosSorte}
                                         rollDone={rolagemSorteConcluida}
                                         faceColor={COR_SORTE}
                                         dotColor={COR_SORTE_DOTS}
                                         defaultRoll={1}
+                                        disableIndividual={true}
+                                        rollTime={DADOS_TEMPO_ROLANDO_SEGUNDOS}
                                     />
                                 </td>
                             </tr>
@@ -198,7 +182,7 @@ export const TelaPanilhaNova = () => {
                     <div className={styles.panilhaNova_botoes}>
                         <Botao
                             aoClicar={() => ExecutarRolagem()}
-                            desativado={rolandoDados.rolando}
+                            //desativado={EstaRolandoDados()}
                         >
                             <h4>CLIQUE AQUI, para fazer a primeira rolagem</h4>
                         </Botao>
@@ -219,16 +203,14 @@ export const TelaPanilhaNova = () => {
                     <div className={styles.panilhaNova_botoes}>
                         <Botao
                             aoClicar={() => ExecutarRolagem()}
-                            desativado={rolandoDados.rolando}
+                            desativado={EstaRolandoDados()}
                         >
-                            <>
-                                <h4>Você quer ROLAR novamente?</h4>
-                                <p>Ainda tem 2 tentativas</p>
-                            </>
+                            <h4>Você quer ROLAR novamente?</h4>
+                            <p>Ainda tem 2 tentativas</p>
                         </Botao>
                         <Botao
                             aoClicar={() => AceitarRolagem()}
-                            desativado={rolandoDados.rolando}
+                            desativado={EstaRolandoDados()}
                         >
                             <h4>Você ACEITA essas rolagens?</h4>
                         </Botao>
@@ -249,16 +231,14 @@ export const TelaPanilhaNova = () => {
                     <div className={styles.panilhaNova_botoes}>
                         <Botao
                             aoClicar={() => ExecutarRolagem()}
-                            desativado={rolandoDados.rolando}
+                            desativado={EstaRolandoDados()}
                         >
-                            <>
-                                <h4>Você quer ROLAR novamente?</h4>
-                                <p>Ainda tem 1 tentativa</p>
-                            </>
+                            <h4>Você quer ROLAR novamente?</h4>
+                            <p>Ainda tem 1 tentativa</p>
                         </Botao>
                         <Botao
                             aoClicar={() => AceitarRolagem()}
-                            desativado={rolandoDados.rolando}
+                            desativado={EstaRolandoDados()}
                         >
                             <h4>Você ACEITA essas rolagens?</h4>
                         </Botao>
@@ -279,7 +259,7 @@ export const TelaPanilhaNova = () => {
                     <div className={styles.panilhaNova_botoes}>
                         <Botao
                             aoClicar={() => AceitarRolagem()}
-                            desativado={rolandoDados.rolando}
+                            desativado={EstaRolandoDados()}
                         >
                             <h4>Você DEVE ACEITAR essas rolagens</h4>
                         </Botao>
@@ -291,33 +271,50 @@ export const TelaPanilhaNova = () => {
         }
     }
 
-    function RolarDados() {
-        setRolagens({
-            habilidade1: 0,
-            energia1: 0,
-            energia2: 0,
-            sorte1: 0,
-        });
-        reactDiceHabilidade.current?.rollAll();
-        reactDiceEnergia.current?.rollAll();
-        reactDiceSorte.current?.rollAll();
+    function EstaRolandoDados() {
+        return [EProcesso._ZERO, EProcesso.INICIANDO, EProcesso.PROCESSANDO].includes(rolagemDados.processoRolagem);
     }
 
     function ObterTotalDaRolagem(total: number) {
-        if (indiceRolagem === 0 || rolandoDados.rolando) {
+        if (indiceRolagem === 0 || EstaRolandoDados()) {
             return "?";
         } else {
             return total;
         }
     }
 
-    function AceitarRolagem() {
-        CriarPanilhaNoJogoAtualViaRolagens(totaisRolados, "", EJogoNivel.FACIL);
+    function ExecutarRolagem() {
+        setRolagemDados(ROLAGEM_PARA_PANILHA_NOVA_ZERADA);
+        setIndiceRolagem((prevIndiceRolagem) => prevIndiceRolagem + 1);
     }
 
-    function ExecutarRolagem() {
-        setRolandoDados({ rolando: true, quantidade: 0 });
-        setIndiceRolagem((prevIndiceRolagem) => prevIndiceRolagem + 1);
+    function rolagemHabilidadeConcluida(totalValue: number, values: number[]) {
+        setRolagemDados((prevRolandoDados) => {
+            prevRolandoDados.rolagens.habilidade1 = values[0];
+            prevRolandoDados.totais.habilidade = 6 + totalValue;
+            return { ...prevRolandoDados };
+        });
+    }
+
+    function rolagemEnergiaConcluida(totalValue: number, values: number[]) {
+        setRolagemDados((prevRolandoDados) => {
+            prevRolandoDados.rolagens.energia1 = values[0];
+            prevRolandoDados.rolagens.energia2 = values[1];
+            prevRolandoDados.totais.energia = 12 + totalValue;
+            return { ...prevRolandoDados };
+        });
+    }
+
+    function rolagemSorteConcluida(totalValue: number, values: number[]) {
+        setRolagemDados((prevRolandoDados) => {
+            prevRolandoDados.rolagens.sorte1 = values[0];
+            prevRolandoDados.totais.sorte = 6 + totalValue;
+            return { ...prevRolandoDados };
+        });
+    }
+
+    function AceitarRolagem() {
+        CriarPanilhaNoJogoAtualViaRolagens(rolagemDados.totais, "", EJogoNivel.FACIL);
     }
 };
 

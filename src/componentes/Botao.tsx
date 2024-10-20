@@ -1,8 +1,8 @@
-import "./Botao.module.scss";
+import styles from "./Botao.module.scss";
 import { ReactElement } from "react";
 
 interface IBotaoProps {
-    children: ReactElement | string;
+    children: string | ReactElement | ReactElement[] | undefined;
     aoClicar: () => void;
     tipo?: "button" | "submit" | "reset";
     desativado?: boolean;
@@ -11,6 +11,7 @@ interface IBotaoProps {
 export const Botao = ({ children, aoClicar, tipo = "button", desativado = false }: IBotaoProps) => {
     return (
         <button
+            className={styles.botao}
             type={tipo}
             onClick={() => AoClicar()}
             disabled={desativado}

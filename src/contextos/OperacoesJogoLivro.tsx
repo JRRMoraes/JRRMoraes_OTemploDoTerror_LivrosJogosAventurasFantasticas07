@@ -19,6 +19,9 @@ export const OperacoesJogoLivro = (jogoAtual: IJogo, paginaCampanha: IPaginaCamp
                 case EAtributo.ITENS:
                     _ok &&= ValidarAprovacoesDestino_Itens(aprovacaoI);
                     break;
+                case EAtributo.ENCANTOS:
+                    _ok &&= ValidarAprovacoesDestino_Encantos(aprovacaoI);
+                    break;
                 default:
                     _ok = false;
                     console.log("OperacoesJogoLivro:ValidarAprovacoesDestino:: Não foi encontrado o atributo " + aprovacaoI.atributoAprovacao + " com nome '" + aprovacaoI.nomeAprovacao + "'.");
@@ -29,76 +32,64 @@ export const OperacoesJogoLivro = (jogoAtual: IJogo, paginaCampanha: IPaginaCamp
     }
 
     function ValidarAprovacoesDestino_Funcao(aprovacao: IAprovacaoDestino): boolean {
-        let _ok = false;
+        let _quantidade = 0;
         switch (aprovacao.nomeAprovacao) {
             case "JogoAtual_Panilha":
-                _ok = !!(jogoAtual && jogoAtual.panilha);
+                _quantidade = jogoAtual && jogoAtual.panilha ? 1 : 0;
                 break;
             default:
-                _ok = false;
                 console.log("Operação de destino '" + aprovacao.nomeAprovacao + "' não foi encontrada");
-                break;
+                return false;
         }
-        switch (aprovacao.comparacao) {
-            case EComparacao.NAO_POSSUIR:
-                _ok = !_ok;
-                break;
-            case EComparacao._POSSUIR:
-            default:
-                _ok = _ok;
-                break;
-        }
-        return _ok;
+        return ValidarComparacaoEQuantidade(aprovacao, _quantidade);
     }
 
     function ValidarAprovacoesDestino_Itens(aprovacao: IAprovacaoDestino): boolean {
-        let _ok = false;
-        let _item = null;
         if (!jogoAtual || !jogoAtual.panilha || !jogoAtual.panilha.itens || !jogoAtual.panilha.itens.length || !aprovacao.nomeAprovacao) {
-            _ok = false;
-        } else {
-            _item = jogoAtual.panilha.itens.find((itemI) => TextosIguais(itemI.idItem, aprovacao.nomeAprovacao));
+            return ValidarComparacaoEQuantidade(aprovacao, 0);
         }
+        const _item = jogoAtual.panilha.itens.find((itemI) => TextosIguais(itemI.idItem, aprovacao.nomeAprovacao));
         if (_item) {
-            switch (aprovacao.comparacao) {
-                case EComparacao.MAIOR_IGUAL:
-                    _ok = !!(aprovacao.quantidade && _item.quantidade >= aprovacao.quantidade);
-                    break;
-                case EComparacao.MAIOR:
-                    _ok = !!(aprovacao.quantidade && _item.quantidade > aprovacao.quantidade);
-                    break;
-                case EComparacao.MENOR_IGUAL:
-                    _ok = !!(aprovacao.quantidade && _item.quantidade <= aprovacao.quantidade);
-                    break;
-                case EComparacao.MENOR:
-                    _ok = !!(aprovacao.quantidade && _item.quantidade < aprovacao.quantidade);
-                    break;
-                case EComparacao.NAO_POSSUIR:
-                    _ok = false;
-                    break;
-                case EComparacao._POSSUIR:
-                default:
-                    _ok = true;
-                    break;
+            return ValidarComparacaoEQuantidade(aprovacao, _item.quantidade);
+        } else {
+            return ValidarComparacaoEQuantidade(aprovacao, 0);
+        }
+    }
+
+    function ValidarAprovacoesDestino_Encantos(aprovacao: IAprovacaoDestino): boolean {
+        if (!jogoAtual || !jogoAtual.panilha || !jogoAtual.panilha.encantos || !jogoAtual.panilha.encantos.length) {
+            return ValidarComparacaoEQuantidade(aprovacao, 0);
+        }
+        if (aprovacao.nomeAprovacao && aprovacao.nomeAprovacao !== "") {
+            const _encanto = jogoAtual.panilha.encantos.find((encantoI) => TextosIguais(encantoI, aprovacao.nomeAprovacao));
+            if (_encanto) {
+                return ValidarComparacaoEQuantidade(aprovacao, 1);
+            } else {
+                return ValidarComparacaoEQuantidade(aprovacao, 0);
             }
         } else {
-            switch (aprovacao.comparacao) {
-                case EComparacao.MENOR:
-                case EComparacao.MENOR_IGUAL:
-                    _ok = !!aprovacao.quantidade;
-                    break;
-                case EComparacao.NAO_POSSUIR:
-                    _ok = true;
-                    break;
-                case EComparacao.MAIOR_IGUAL:
-                case EComparacao.MAIOR:
-                case EComparacao._POSSUIR:
-                default:
-                    _ok = false;
-                    break;
-            }
+            const _quantidade = jogoAtual.panilha.encantos && jogoAtual.panilha.encantos.length ? jogoAtual.panilha.encantos.length : 0;
+            return ValidarComparacaoEQuantidade(aprovacao, _quantidade);
         }
-        return _ok;
+    }
+
+    function ValidarComparacaoEQuantidade(aprovacao: IAprovacaoDestino, quantidade: number): boolean {
+        const _aprovacaoQuantidade = aprovacao.quantidade ? aprovacao.quantidade : 0;
+        switch (aprovacao.comparacao) {
+            case EComparacao.MAIOR_IGUAL:
+                return quantidade >= _aprovacaoQuantidade;
+            case EComparacao.MAIOR:
+                return quantidade > _aprovacaoQuantidade;
+            case EComparacao.MENOR_IGUAL:
+                return quantidade <= _aprovacaoQuantidade;
+            case EComparacao.MENOR:
+                return quantidade < _aprovacaoQuantidade;
+            case EComparacao.NAO_POSSUIR:
+                return quantidade <= 0;
+            case EComparacao._POSSUIR:
+            default:
+                return quantidade >= 1;
+        }
     }
 };
 

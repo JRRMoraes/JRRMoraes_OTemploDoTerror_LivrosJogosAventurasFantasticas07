@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { ContextoLivro } from "../contextos";
 import { Botao } from "./Botao";
+import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
+import VolumeOffOutlinedIcon from "@mui/icons-material/VolumeOffOutlined";
 
 interface IReprodutorAudioProps {
     audio: string;
@@ -8,30 +10,20 @@ interface IReprodutorAudioProps {
 }
 
 export const ReprodutorAudio = ({ audio, tipo = "audio/mpeg", volume = 50 }: IReprodutorAudioProps) => {
-    const audioRef = React.useRef<HTMLAudioElement>(null);
-
-    const [executando, setExecutando] = useState(true);
-
-    const [minimizado, setMinimizado] = useState(true);
-
-    useEffect(() => {
-        if (executando && audioRef.current) {
-            audioRef.current.play();
-        } else if (!executando && audioRef.current) {
-            audioRef.current.pause();
-        }
-    }, [executando]);
+    const { audioExecutor, setAudioExecutor } = ContextoLivro();
 
     return (
         <div>
             {MontarRetorno_Controles()}
             <audio
-                ref={audioRef}
+                ref={audioExecutor.audioRef}
+                muted={audioExecutor.mudo}
+                loop={audioExecutor.loopAtual}
                 autoPlay={true}
             >
                 <source
-                    src={audio}
-                    type={tipo}
+                    src={audioExecutor.musicaAtual}
+                    type={audioExecutor.tipoAtual}
                 />
                 Seu navegador não suporta o elemento de áudio.
             </audio>
@@ -39,25 +31,31 @@ export const ReprodutorAudio = ({ audio, tipo = "audio/mpeg", volume = 50 }: IRe
     );
 
     function MontarRetorno_Controles() {
-        //if (minimizado) {
-        return <div>{MontarRetorno_BotoesReprodutor()}</div>;
-        //}
-    }
-
-    function MontarRetorno_BotoesReprodutor() {
-        if (executando) {
-            return <Botao aoClicar={() => PararAudio()}>II</Botao>;
+        if (audioExecutor.mudo) {
+            return (
+                <Botao aoClicar={() => OuvirAudio()}>
+                    <VolumeUpOutlinedIcon />
+                </Botao>
+            );
         } else {
-            return <Botao aoClicar={() => ReproduzirAudio()}>&gt;</Botao>;
+            return (
+                <Botao aoClicar={() => MutarAudio()}>
+                    <VolumeOffOutlinedIcon />
+                </Botao>
+            );
         }
     }
 
-    function ReproduzirAudio() {
-        setExecutando(true);
+    function OuvirAudio() {
+        setAudioExecutor((prevAudioExecutor) => {
+            return { ...prevAudioExecutor, mudo: false };
+        });
     }
 
-    function PararAudio() {
-        setExecutando(false);
+    function MutarAudio() {
+        setAudioExecutor((prevAudioExecutor) => {
+            return { ...prevAudioExecutor, mudo: true };
+        });
     }
 };
 

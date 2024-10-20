@@ -2,11 +2,10 @@ import styles from "./TelaPanilha.module.scss";
 import "../globais/CoresHES.scss";
 import { ContextoJogos } from "../contextos";
 import TelaPanilhaNova from "./TelaPanilhaNova";
-import { IEfeito, EAtributo } from "../tipos";
-import { EProcesso } from "../uteis";
+import { EAtributo } from "../tipos";
 
 export const TelaPanilha = () => {
-    const { jogoAtual } = ContextoJogos();
+    const { jogoAtual, ObterEfeitoAtualDoAtributo } = ContextoJogos();
 
     if (!jogoAtual) {
         return <></>;
@@ -85,14 +84,8 @@ export const TelaPanilha = () => {
         );
     }
 
-    function ObterEfeito(atributo: EAtributo): IEfeito {
-        return jogoAtual.panilha.auxEfeitos.find((efeitoI) => {
-            efeitoI.atributoEfeito === atributo && [EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO].includes(efeitoI.auxProcessoEfeito);
-        })!;
-    }
-
     function MontarRetorno_Energia() {
-        const _efeito = ObterEfeito(EAtributo.ENERGIA);
+        const _efeito = ObterEfeitoAtualDoAtributo(EAtributo.ENERGIA);
         let _quantidade = "";
         if (_efeito) {
             _quantidade = _efeito.quantidade.toString();
