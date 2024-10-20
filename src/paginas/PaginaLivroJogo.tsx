@@ -11,7 +11,7 @@ export const PaginaLivroJogo = () => {
 
     const [ehJogoCarregado, setEhJogoCarregado] = useState(false);
 
-    const { livro, audioMusica, ObterPagina } = ContextoLivro();
+    const { livro, ObterPagina } = ContextoLivro();
 
     const { jogoAtual, paginaCampanha, CarregarJogoSalvoOuNovo, ResetarJogoAtual, ImporPaginaAtualECampanha, ImporPaginaCampanhaViaAtual } = ContextoJogos();
 
@@ -48,7 +48,7 @@ export const PaginaLivroJogo = () => {
                         </div>
                     </div>
                     <div className={styles.livroJogo_Desktop_panilha_audio}>
-                        <ReprodutorAudio audio={"/The Storyteller.mp3"} />
+                        <ReprodutorAudio />
                     </div>
                 </div>
                 <div className={styles.livroJogo_Desktop_campanha}>
@@ -73,7 +73,7 @@ export const PaginaLivroJogo = () => {
                         </div>
                     </div>
                 </div>
-                <ReprodutorAudio audio={"/The Storyteller.mp3"} />
+                <ReprodutorAudio />
             </div>
         );
     }

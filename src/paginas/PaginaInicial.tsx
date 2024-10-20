@@ -56,7 +56,7 @@ export const PaginaInicial = () => {
                 <div className={styles.paginaInicial_espaco}></div>
                 <div className={styles.paginaInicial_conteudo}>
                     <div className={styles.paginaInicial_conteudo_1}>
-                        <ReprodutorAudio audio="/The Storyteller.mp3" />
+                        <ReprodutorAudio />
                     </div>
                     <div className={styles.paginaInicial_conteudo_2}>{MontarRetorno_AberturaOuMenu()}</div>
                     <div className={styles.paginaInicial_conteudo_1}></div>

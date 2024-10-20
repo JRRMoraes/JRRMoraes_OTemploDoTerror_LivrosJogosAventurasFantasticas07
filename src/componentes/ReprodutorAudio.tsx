@@ -3,13 +3,7 @@ import { Botao } from "./Botao";
 import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
 import VolumeOffOutlinedIcon from "@mui/icons-material/VolumeOffOutlined";
 
-interface IReprodutorAudioProps {
-    audio: string;
-    tipo?: string;
-    volume?: number;
-}
-
-export const ReprodutorAudio = ({ audio, tipo = "audio/mpeg", volume = 50 }: IReprodutorAudioProps) => {
+export const ReprodutorAudio = () => {
     const { audioExecutor, setAudioExecutor } = ContextoLivro();
 
     return (
