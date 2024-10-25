@@ -11,12 +11,13 @@
     align-items: start;
     background-image: url("/fundo_mesa_madeira_bruta.jpg");
     background-repeat: repeat-y;
-    background-size: cover;
+    background-size: 100% auto;
 
     &_campanha {
+        min-height: 100%;
         width: calc(60% - 30px);
         box-sizing: border-box;
-        background: url("/fundo_pergaminho_papel_antigo_2.png");
+        background: url("/fundo_pergaminho_papel_antigo_5.png");
         background-position: center;
         background-repeat: no-repeat;
         background-size: 100% 100%;

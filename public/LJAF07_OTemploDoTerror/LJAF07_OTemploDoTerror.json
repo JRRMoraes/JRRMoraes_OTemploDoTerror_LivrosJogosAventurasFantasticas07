@@ -647,8 +647,8 @@
                         "energia": 10
                     }
                 ],
-                "textoDerrota": "Você se afogará se não matar o monstro aquático em menos Séries de Ataque do que o índice atual de sua HABILIDADE.",
-                "aprovacaoDerrota": "TurnoDoCombateEhMenorQueHabilidade"
+                "textosDerrota": ["Você se afogará se não matar o monstro aquático em menos Séries de Ataque do que o índice atual de sua HABILIDADE."],
+                "aprovacaoDerrota": "SerieDeAtaqueEhMaiorOuIgualAHabilidade"
             },
             "destinos": [
                 {
@@ -1512,13 +1512,12 @@
             "idPagina": 48,
             "historias": [
                 {
-                    "textosHistoria": ["O corpo da águia estremece quando ela recebe o golpe mortal. Você cai céu abaixo como uma pedra e fatalmente vai dar no chão. Sua aventura está acabada."]
+                    "textosHistoria": ["O corpo da águia estremece quando ela recebe o golpe mortal.", "Você cai céu abaixo como uma pedra e fatalmente vai dar no chão.", "Sua aventura está acabada."]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 99444
                 }
             ]
         },
@@ -1790,7 +1789,10 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "O reflexo de seu próprio olhar não afeta o Fura-Olho, e retorna para você. Você deixa o Espelho cair no chão, e escuta quando ele se despedaça, ao mesmo tempo que se apressa a desembainhar sua espada. Desconte 1 ponto de SORTE e vá para 236."
+                        "O reflexo de seu próprio olhar não afeta o Fura-Olho, e retorna para você.",
+                        "Você deixa o Espelho cair no chão, e escuta quando ele se despedaça, ao mesmo tempo que se apressa a desembainhar sua espada.",
+
+                        "Desconte 1 ponto de SORTE e vá para 236."
                     ]
                 }
             ],
@@ -5528,17 +5530,36 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Duas figuras se tornam visíveis - um frio percorre sua espinha. Com armaduras que pendem frouxamente de seus ossos amarelados, dois Guerreiros-Esqueleto caminham aos arrancos na sua direção, armados de espadas.",
-                        "Primeiro GUERREIRO ESQUELETO    7   5",
-                        "Segundo GUERREIRO ESQUELETO     6   6",
-                        "Ambos os Esqueletos o atacam ao mesmo tempo. Eles atacarão em separado a cada Série de Ataque, mas você tem que escolher qual dos dois enfrentará a cada vez. Ataque o Esqueleto escolhido como num combate normal. Contra o outro, você jogará para saber sua Força de Ataque de modo normal, mas não causará ferimentos se sua Força de Ataque for maior; terá que contar isso apenas como se tivesse se defendido de seu golpe. É claro que, se a Força de Ataque dele for maior, ele o ferirá. Se você vencer, vá para 310."
+                        "Duas figuras se tornam visíveis - um frio percorre sua espinha.",
+                        "Com armaduras que pendem frouxamente de seus ossos amarelados, dois Guerreiros-Esqueleto caminham aos arrancos na sua direção, armados de espadas."
                     ]
                 }
             ],
+            "combate": {
+                "inimigos": [
+                    {
+                        "inimigo": "Primeiro GUERREIRO ESQUELETO",
+                        "habilidade": 7,
+                        "energia": 5
+                    },
+                    {
+                        "inimigo": "Segundo GUERREIRO ESQUELETO",
+                        "habilidade": 6,
+                        "energia": 6
+                    }
+                ],
+                "textosDerrota": [
+                    "Ambos os Esqueletos o atacam ao mesmo tempo.",
+                    "Eles atacarão em separado a cada Série de Ataque, mas você tem que escolher qual dos dois enfrentará a cada vez.",
+                    "Ataque o Esqueleto escolhido como num combate normal.",
+                    "Contra o outro, você jogará para saber sua Força de Ataque de modo normal, mas não causará ferimentos se sua Força de Ataque for maior; terá que contar isso apenas como se tivesse se defendido de seu golpe. É claro que, se a Força de Ataque dele for maior, ele o ferirá."
+                ],
+                "aprovacaoDerrota": "EhCombateMultiplo_1oNormal_2oDefende"
+            },
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 310,
+                    "textoDestino": "Se você vencer, vá para 310."
                 }
             ]
         },
@@ -7184,7 +7205,9 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Você desembainha a espada e tenta golpear o apavorante agressor da águia. Mas o Pterodáctilo se mantém fora de alcance, e você é incapaz de ajudar na batalha entre as duas criaturas aladas. Resolva o combate entre a águia e o Pterodáctilo.",
+                        "Você desembainha a espada e tenta golpear o apavorante agressor da águia.",
+                        "Mas o Pterodáctilo se mantém fora de alcance, e você é incapaz de ajudar na batalha entre as duas criaturas aladas.",
+                        "Resolva o combate entre a águia e o Pterodáctilo.",
                         "HABILIDADE ENERGIA",
                         "ÁGUIA GIGANTE   6 11",
                         "PTERODÁCTILO    8 9",
@@ -7238,14 +7261,20 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Você examina o bastão de prata, esperando descobrir como ele pode ser ativado para disparar raios de luz. Você repara em dois pequenos círculos em relevo na superfície do bastão e compreende que um deles deve ser o botão de disparo. Você aponta o bastão para a porta e resolve que círculo pressionar. Se deseja pressionar o círculo da esquerda do bastão, volte para 343. Se prefere pressionar o círculo da direita, volte para 167."
+                        "Você examina o bastão de prata, esperando descobrir como ele pode ser ativado para disparar raios de luz.",
+                        "Você repara em dois pequenos círculos em relevo na superfície do bastão e compreende que um deles deve ser o botão de disparo.",
+                        "Você aponta o bastão para a porta e resolve que círculo pressionar."
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 343,
+                    "textoDestino": "Se deseja pressionar o círculo da esquerda do bastão, volte para 343."
+                },
+                {
+                    "idPagina": 167,
+                    "textoDestino": "Se prefere pressionar o círculo da direita, volte para 167."
                 }
             ]
         },
@@ -7422,18 +7451,41 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Caminhando decididamente para o sul, você não se dá conta do perigo invisível à sua frente. Seu pé direito afunda na areia, e você sente uma dor aguda quando alguma coisa começa a dilacerar-lhe a perna. Você enfia a espada na areia quando um Abocanhador da Areia tenta derrubá-lo. Ele se debate, a areia se desprende daquele corpo pardo, revelando mandíbulas abertas, repletas de dentes cortantes. É impossível penetrar nas escamas grossas que lhe cobrem a pele. Algumas das escamas subitamente se abrem para dar passagem a dois longos tentáculos que tentam agarrá-lo e puxá-lo para a goela do Abocanhador. Ignorando a dor na perna, você golpeia os tentáculos robustos com sua espada.",
-                        "HABILIDADE ENERGIA",
-                        "Primeiro TENTÁCULO  7   7",
-                        "Segundo TENTÁCULO   7   7",
-                        "Se qualquer um dos dois tentáculos vencer duas Séries de Ataque consecutivas durante o combate, volte para 149. Se você conseguir decepar os dois tentáculos, volte para 266."
-                    ]
+                        "Caminhando decididamente para o sul, você não se dá conta do perigo invisível à sua frente.",
+                        "Seu pé direito afunda na areia, e você sente uma dor aguda quando alguma coisa começa a dilacerar-lhe a perna.",
+                        "Você enfia a espada na areia quando um Abocanhador da Areia tenta derrubá-lo.",
+                        "Ele se debate, a areia se desprende daquele corpo pardo, revelando mandíbulas abertas, repletas de dentes cortantes.",
+                        "É impossível penetrar nas escamas grossas que lhe cobrem a pele. Algumas das escamas subitamente se abrem para dar passagem a dois longos tentáculos que tentam agarrá-lo e puxá-lo para a goela do Abocanhador.",
+                        "Ignorando a dor na perna, você golpeia os tentáculos robustos com sua espada."
+                    ],
+
+                    "combate": {
+                        "inimigos": [
+                            {
+                                "inimigo": "Primeiro TENTÁCULO",
+                                "habilidade": 7,
+                                "energia": 7
+                            },
+                            {
+                                "inimigo": "Segundo TENTÁCULO",
+                                "habilidade": 7,
+                                "energia": 7
+                            }
+                        ],
+                        "textosDerrota": ["Se qualquer um dos dois tentáculos vencer duas Séries de Ataque consecutivas durante o combate, volte para 149."],
+                        "aprovacaoDerrota": "InimigoComSeriesDeAtaqueVencidosConsecutivos_2",
+                        "destinoDerrota": 149
+                    }
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 149,
+                    "textoDestino": "Se qualquer um dos dois tentáculos vencer duas Séries de Ataque consecutivas durante o combate, volte para 149."
+                },
+                {
+                    "idPagina": 266,
+                    "textoDestino": "Se você conseguir decepar os dois tentáculos, volte para 266."
                 }
             ]
         },
@@ -7808,7 +7860,8 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "No meio da noite, você é acordado pelo som de passos pesados que marcham sobre o chão. A lua está quase cheia e dá luz suficiente para que você veja um grande vulto que se avoluma, vindo na sua direção.",
+                        "No meio da noite, você é acordado pelo som de passos pesados que marcham sobre o chão.",
+                        "A lua está quase cheia e dá luz suficiente para que você veja um grande vulto que se avoluma, vindo na sua direção.",
                         "Apanhando sua espada, você se levanta para se defender do Troll da Caverna, que o descobriu durante a caçada noturna."
                     ]
                 }
@@ -7859,8 +7912,7 @@
             ],
             "destinos": [
                 {
-                    "idPagina": 9999,
-                    "textoDestino": "Parabéns"
+                    "idPagina": 99999
                 }
             ]
         }

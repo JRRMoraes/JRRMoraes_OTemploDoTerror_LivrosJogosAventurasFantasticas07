@@ -5,8 +5,8 @@ import {
     IPagina,
     IPaginaCampanha,
     IEfeito,
-    IDestino,
     EJogoNivel,
+    EAtributo,
     PAGINA_ZERADA,
     CriarJogoNulo,
     AjustarSeForNovoJogo,
@@ -16,7 +16,9 @@ import {
     EPaginaCampanhaEstado,
     RetornarPanilhaEncantosAtualizados,
     RetornarPanilhaItensAtualizados,
-    EAtributo,
+    RetornarPaginaCampanhaDestinosPadronizados,
+    RetornarPaginaCampanhaCombateInicial,
+    EPosturaInimigo,
 } from "../tipos";
 import { EProcesso } from "../uteis";
 import { TEMPO_ANIMACAO } from "../globais/Constantes";
@@ -68,16 +70,24 @@ export const ContextoJogos = () => {
     useEffect(() => {
         if (jogoAtual && jogoAtual.panilha && efeitosAtuais && efeitosAtuais.length && efeitosAtuais.find((efeitoI) => efeitoI.auxProcessoEfeito !== EProcesso.PROCESSANDO)) {
             setEfeitosAtuais((prevEfeitosAtuais) => {
-                prevEfeitosAtuais = prevEfeitosAtuais.map((efeitoI) => {
+                prevEfeitosAtuais = prevEfeitosAtuais.map((efeitoI, indiceI) => {
                     if (efeitoI.auxProcessoEfeito === EProcesso._ZERO) {
                         efeitoI.auxProcessoEfeito = EProcesso.INICIANDO;
                     } else if (efeitoI.auxProcessoEfeito === EProcesso.INICIANDO) {
-                        ImporEfeitoEmJogoAtual(efeitoI);
                         efeitoI.auxProcessoEfeito = EProcesso.PROCESSANDO;
                         setTimeout(() => {
-                            efeitoI.auxProcessoEfeito = EProcesso.CONCLUIDO;
+                            setEfeitosAtuais((prevEfeitosAtuais2) => {
+                                prevEfeitosAtuais2 = prevEfeitosAtuais2.map((efeitoI2, indiceI2) => {
+                                    if (indiceI === indiceI2 && efeitoI2.auxProcessoEfeito === EProcesso.PROCESSANDO) {
+                                        efeitoI2.auxProcessoEfeito = EProcesso.CONCLUIDO;
+                                    }
+                                    return efeitoI2;
+                                });
+                                return [...prevEfeitosAtuais2];
+                            });
                         }, TEMPO_ANIMACAO);
                     } else if (efeitoI.auxProcessoEfeito === EProcesso.CONCLUIDO) {
+                        ImporEfeitoEmJogoAtualNoConcluido(efeitoI);
                         efeitoI.auxProcessoEfeito = EProcesso.DESTRUIDO;
                     }
                     return efeitoI;
@@ -115,6 +125,11 @@ export const ContextoJogos = () => {
         AplicarEfeitosDaHistoria,
         AplicarPenalidadeDeTestarSorte,
         ObterEfeitoAtualDoAtributo,
+        ImporPaginaCampanhaViaDestino,
+        ImporProcessoHistoriasNaPaginaCampanha,
+        ImporProcessoCombateNaPaginaCampanha,
+        ImporProcessoDestinosNaPaginaCampanha,
+        ImporPaginaCampanhaCombateDoProcessoZeroDaSerieDeAtaque,
     };
 
     function ResetarJogoAtual() {
@@ -132,22 +147,16 @@ export const ContextoJogos = () => {
     function CarregarJogoSalvoOuNovo(idJogoSalvo: string) {
         ResetarJogoAtual();
         if (idJogoSalvo === "1") {
-            setJogoAtual(AjustarSeForNovoJogo(jogoSalvo1));
-            if (jogoSalvo1.campanhaCapitulo && jogoSalvo1.campanhaCapitulo !== ECampanhaCapitulo._NULO) {
-                setPadraoCapitulo(jogoSalvo1.campanhaCapitulo);
-            }
+            setJogoAtual(JSON.parse(JSON.stringify(AjustarSeForNovoJogo(jogoSalvo1))));
+            ProcessarEImporPadraoCapitulo(jogoSalvo1);
             return !!(jogoSalvo1 && jogoSalvo1.panilha);
         } else if (idJogoSalvo === "2") {
-            setJogoAtual(AjustarSeForNovoJogo(jogoSalvo2));
-            if (jogoSalvo2.campanhaCapitulo && jogoSalvo2.campanhaCapitulo !== ECampanhaCapitulo._NULO) {
-                setPadraoCapitulo(jogoSalvo2.campanhaCapitulo);
-            }
+            setJogoAtual(JSON.parse(JSON.stringify(AjustarSeForNovoJogo(jogoSalvo2))));
+            ProcessarEImporPadraoCapitulo(jogoSalvo2);
             return !!(jogoSalvo2 && jogoSalvo2.panilha);
         } else if (idJogoSalvo === "3") {
-            setJogoAtual(AjustarSeForNovoJogo(jogoSalvo3));
-            if (jogoSalvo3.campanhaCapitulo && jogoSalvo3.campanhaCapitulo !== ECampanhaCapitulo._NULO) {
-                setPadraoCapitulo(jogoSalvo3.campanhaCapitulo);
-            }
+            setJogoAtual(JSON.parse(JSON.stringify(AjustarSeForNovoJogo(jogoSalvo3))));
+            ProcessarEImporPadraoCapitulo(jogoSalvo3);
             return !!(jogoSalvo3 && jogoSalvo3.panilha);
         } else if (!idJogoSalvo) {
             return false;
@@ -155,6 +164,12 @@ export const ContextoJogos = () => {
             setJogoAtual(null!);
             navegador("/");
             return false;
+        }
+    }
+
+    function ProcessarEImporPadraoCapitulo(jogo: IJogo) {
+        if (jogo.campanhaCapitulo && jogo.campanhaCapitulo !== ECampanhaCapitulo._NULO) {
+            setPadraoCapitulo(jogo.campanhaCapitulo);
         }
     }
 
@@ -177,24 +192,12 @@ export const ContextoJogos = () => {
         }
         jogoAtual.dataSalvo = new Date();
         if (jogoAtual.idJogo === 1) {
-            setJogoSalvo1(jogoAtual);
+            setJogoSalvo1(JSON.parse(JSON.stringify(jogoAtual)));
         } else if (jogoAtual.idJogo === 2) {
-            setJogoSalvo2(jogoAtual);
+            setJogoSalvo2(JSON.parse(JSON.stringify(jogoAtual)));
         } else if (jogoAtual.idJogo === 3) {
-            setJogoSalvo3(jogoAtual);
+            setJogoSalvo3(JSON.parse(JSON.stringify(jogoAtual)));
         }
-    }
-
-    function ImporPadroesNaPaginaCampanhaDestinos() {
-        setPaginaCampanha((prevPaginaCampanha) => {
-            prevPaginaCampanha.destinos = prevPaginaCampanha.destinos.map<IDestino>((destinoI) => {
-                if (!destinoI.idCapitulo || destinoI.idCapitulo === ECampanhaCapitulo._NULO) {
-                    destinoI.idCapitulo = padraoCapitulo;
-                }
-                return destinoI;
-            });
-            return prevPaginaCampanha;
-        });
     }
 
     function ImporPaginaAtualECampanha(pagina: IPagina, jogoCarregado: boolean) {
@@ -216,24 +219,15 @@ export const ContextoJogos = () => {
                 titulo: pagina.titulo,
                 ehJogoCarregado: jogoCarregado,
                 estado: EPaginaCampanhaEstado._INICIO,
+                processoHistorias: EProcesso._ZERO,
+                processoCombate: EProcesso._ZERO,
+                processoDestinos: EProcesso._ZERO,
                 idPaginaDestino: PAGINA_ZERADA.idPagina,
                 idCapituloDestino: PAGINA_ZERADA.idCapitulo,
                 historias: null!,
                 combate: null!,
                 destinos: null!,
             });
-            if (jogoCarregado) {
-                setPaginaCampanha((prevPaginaCampanha) => {
-                    return {
-                        ...prevPaginaCampanha,
-                        estado: EPaginaCampanhaEstado.DESTINOS,
-                        historias: pagina.historias ? pagina.historias : [],
-                        combate: pagina.combate,
-                        destinos: pagina.destinos ? pagina.destinos : [],
-                    };
-                });
-                ImporPadroesNaPaginaCampanhaDestinos();
-            }
             return false;
         }
     }
@@ -254,25 +248,62 @@ export const ContextoJogos = () => {
             setPaginaCampanha((prevPaginaCampanha) => {
                 return { ...prevPaginaCampanha, estado: EPaginaCampanhaEstado.HISTORIAS };
             });
-        } else if (paginaCampanha.estado === EPaginaCampanhaEstado.HISTORIAS && !paginaCampanha.historias) {
-            setPaginaCampanha((prevPaginaCampanha) => {
-                return { ...prevPaginaCampanha, historias: paginaAtual.historias ? paginaAtual.historias : [] };
-            });
-        } else if (paginaCampanha.estado === EPaginaCampanhaEstado.COMBATES && !paginaCampanha.combate) {
-            if (paginaAtual.combate) {
+        } else if (paginaCampanha.estado === EPaginaCampanhaEstado.HISTORIAS) {
+            if (paginaCampanha.processoHistorias === EProcesso._ZERO) {
                 setPaginaCampanha((prevPaginaCampanha) => {
-                    return { ...prevPaginaCampanha, combates: paginaAtual.combate };
+                    prevPaginaCampanha.processoHistorias = EProcesso.INICIANDO;
+                    prevPaginaCampanha.historias = paginaAtual.historias;
+                    if (!prevPaginaCampanha.historias) {
+                        prevPaginaCampanha.historias = [];
+                    }
+                    return { ...prevPaginaCampanha };
                 });
-            } else {
+            } else if (paginaCampanha.processoHistorias === EProcesso.CONCLUIDO) {
                 setPaginaCampanha((prevPaginaCampanha) => {
-                    return { ...prevPaginaCampanha, estado: EPaginaCampanhaEstado.DESTINOS };
+                    prevPaginaCampanha.processoHistorias = EProcesso.DESTRUIDO;
+                    prevPaginaCampanha.estado = EPaginaCampanhaEstado.COMBATE;
+                    return { ...prevPaginaCampanha };
                 });
             }
-        } else if (paginaCampanha.estado === EPaginaCampanhaEstado.DESTINOS && !paginaCampanha.destinos) {
-            setPaginaCampanha((prevPaginaCampanha) => {
-                return { ...prevPaginaCampanha, destinos: paginaAtual.destinos ? paginaAtual.destinos : [] };
-            });
-            ImporPadroesNaPaginaCampanhaDestinos();
+        } else if (paginaCampanha.estado === EPaginaCampanhaEstado.COMBATE) {
+            if (paginaCampanha.processoCombate === EProcesso._ZERO) {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    prevPaginaCampanha.processoCombate = EProcesso.INICIANDO;
+                    prevPaginaCampanha.combate = paginaAtual.combate;
+                    if (prevPaginaCampanha.combate && prevPaginaCampanha.combate.inimigos && prevPaginaCampanha.combate.inimigos.length) {
+                        prevPaginaCampanha.combate = RetornarPaginaCampanhaCombateInicial(prevPaginaCampanha.combate, prevPaginaCampanha.ehJogoCarregado);
+                    } else {
+                        prevPaginaCampanha.processoCombate = EProcesso.CONCLUIDO;
+                    }
+                    return { ...prevPaginaCampanha };
+                });
+            } else if (paginaCampanha.processoCombate === EProcesso.CONCLUIDO) {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    prevPaginaCampanha.processoCombate = EProcesso.DESTRUIDO;
+                    prevPaginaCampanha.estado = EPaginaCampanhaEstado.DESTINOS;
+                    return { ...prevPaginaCampanha };
+                });
+            }
+        } else if (paginaCampanha.estado === EPaginaCampanhaEstado.DESTINOS) {
+            if (paginaCampanha.processoDestinos === EProcesso._ZERO) {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    prevPaginaCampanha.processoDestinos = EProcesso.INICIANDO;
+                    prevPaginaCampanha.destinos = paginaAtual.destinos;
+                    if (!prevPaginaCampanha.destinos) {
+                        prevPaginaCampanha.destinos = [];
+                    }
+                    prevPaginaCampanha.destinos = RetornarPaginaCampanhaDestinosPadronizados(prevPaginaCampanha, padraoCapitulo);
+                    return { ...prevPaginaCampanha };
+                });
+            } else if (paginaCampanha.processoDestinos === EProcesso.INICIANDO) {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    return { ...prevPaginaCampanha, processoDestinos: EProcesso.PROCESSANDO };
+                });
+            } else if (paginaCampanha.processoDestinos === EProcesso.CONCLUIDO) {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    return { ...prevPaginaCampanha, processoDestinos: EProcesso.DESTRUIDO };
+                });
+            }
         }
     }
 
@@ -292,8 +323,8 @@ export const ContextoJogos = () => {
         });
     }
 
-    function ImporEfeitoEmJogoAtual(efeito: IEfeito) {
-        if (!efeito || efeito.auxProcessoEfeito !== EProcesso.INICIANDO) {
+    function ImporEfeitoEmJogoAtualNoConcluido(efeito: IEfeito) {
+        if (!efeito || efeito.auxProcessoEfeito !== EProcesso.CONCLUIDO) {
             return;
         }
         switch (efeito.atributoEfeito) {
@@ -365,6 +396,101 @@ export const ContextoJogos = () => {
             return null!;
         }
         return efeitosAtuais.find((efeitoI) => efeitoI.atributoEfeito === atributo && [EProcesso._ZERO, EProcesso.INICIANDO, EProcesso.PROCESSANDO].includes(efeitoI.auxProcessoEfeito))!;
+    }
+
+    function ImporPaginaCampanhaViaDestino(idPaginaDestino: number, idCapituloDestino: ECampanhaCapitulo) {
+        setPaginaCampanha((prevPaginaCampanha_Destino) => {
+            return {
+                ...prevPaginaCampanha_Destino,
+                idPaginaDestino: idPaginaDestino,
+                idCapituloDestino: idCapituloDestino,
+                ehJogoCarregado: false,
+            };
+        });
+    }
+
+    function ImporProcessoHistoriasNaPaginaCampanha(processo: EProcesso.PROCESSANDO | EProcesso.CONCLUIDO) {
+        if (paginaCampanha.estado === EPaginaCampanhaEstado.HISTORIAS) {
+            if (paginaCampanha.processoHistorias === EProcesso.INICIANDO && processo === EProcesso.PROCESSANDO) {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    return { ...prevPaginaCampanha, processoHistorias: EProcesso.PROCESSANDO };
+                });
+            } else if (paginaCampanha.processoHistorias === EProcesso.PROCESSANDO && processo === EProcesso.CONCLUIDO) {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    return { ...prevPaginaCampanha, processoHistorias: EProcesso.CONCLUIDO };
+                });
+            }
+        }
+    }
+
+    function ImporProcessoCombateNaPaginaCampanha(processo: EProcesso.PROCESSANDO | EProcesso.CONCLUIDO) {
+        if (paginaCampanha.estado === EPaginaCampanhaEstado.COMBATE) {
+            if (paginaCampanha.processoCombate === EProcesso.INICIANDO && processo === EProcesso.PROCESSANDO) {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    return { ...prevPaginaCampanha, processoCombate: EProcesso.PROCESSANDO };
+                });
+            } else if (paginaCampanha.processoCombate === EProcesso.PROCESSANDO && processo === EProcesso.CONCLUIDO) {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    return { ...prevPaginaCampanha, processoCombate: EProcesso.CONCLUIDO };
+                });
+            }
+        }
+    }
+
+    function ImporProcessoDestinosNaPaginaCampanha(processo: EProcesso.PROCESSANDO | EProcesso.CONCLUIDO) {
+        if (paginaCampanha.estado === EPaginaCampanhaEstado.DESTINOS) {
+            if (paginaCampanha.processoDestinos === EProcesso.INICIANDO && processo === EProcesso.PROCESSANDO) {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    return { ...prevPaginaCampanha, processoDestinos: EProcesso.PROCESSANDO };
+                });
+            } else if (paginaCampanha.processoDestinos === EProcesso.PROCESSANDO && processo === EProcesso.CONCLUIDO) {
+                setPaginaCampanha((prevPaginaCampanha) => {
+                    return { ...prevPaginaCampanha, processoDestinos: EProcesso.CONCLUIDO };
+                });
+            }
+        }
+    }
+
+    function ImporPaginaCampanhaCombateDoProcessoZeroDaSerieDeAtaque(serieDeAtaque: number) {
+        if (paginaCampanha.combate.auxSerieDeAtaqueAtual !== serieDeAtaque) {
+            setPaginaCampanha((prevPaginaCampanha) => {
+                prevPaginaCampanha.combate.auxSerieDeAtaqueAtual = serieDeAtaque;
+                return { ...prevPaginaCampanha };
+            });
+        }
+        paginaCampanha.combate.inimigos.forEach((inimigoI, indiceI) => {
+            const _temAtacante = inimigoI.auxPosturaInimigo === EPosturaInimigo.ATACANTE;
+            switch (paginaCampanha.combate.aprovacaoDerrota) {
+                case "CombateMultiplo_1oAtacante_2oDefensor":
+                    if (!_temAtacante && inimigoI.auxPosturaInimigo === EPosturaInimigo.DEFENSOR) {
+                        setPaginaCampanha((prevPaginaCampanha) => {
+                            prevPaginaCampanha.combate.inimigos = prevPaginaCampanha.combate.inimigos.map((inimigoI2, indiceI2) => {
+                                if (indiceI === indiceI2) {
+                                    inimigoI2.auxPosturaInimigo = EPosturaInimigo.ATACANTE;
+                                }
+                                return inimigoI2;
+                            });
+                            return { ...prevPaginaCampanha };
+                        });
+                        return;
+                    }
+                    break;
+                default:
+                    if (!_temAtacante && inimigoI.auxPosturaInimigo === EPosturaInimigo._PARADO) {
+                        setPaginaCampanha((prevPaginaCampanha) => {
+                            prevPaginaCampanha.combate.inimigos = prevPaginaCampanha.combate.inimigos.map((inimigoI2, indiceI2) => {
+                                if (indiceI === indiceI2) {
+                                    inimigoI2.auxPosturaInimigo = EPosturaInimigo.ATACANTE;
+                                }
+                                return inimigoI2;
+                            });
+                            return { ...prevPaginaCampanha };
+                        });
+                        return;
+                    }
+                    break;
+            }
+        });
     }
 };
 

@@ -12,21 +12,28 @@ import {
     IDestino,
     IRolagemParaDestino,
     PAGINA_ZERADA,
+    PAGINA_FIM_DE_JOGO,
     ROLAGEM_PARA_DESTINO_ZERADA,
     COR_SORTE,
     COR_SORTE_DOTS,
     COR_HABILIDADE,
     COR_HABILIDADE_DOTS,
-    DADOS_TEMPO_ROLANDO_SEGUNDOS,
-    DADOS_TEMPO_ROLANDO_MILESIMOS,
 } from "../tipos";
 import { EProcesso } from "../uteis";
 import ReactDice, { ReactDiceRef } from "react-dice-complete";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
-import { TEMPO_ANIMACAO } from "../globais/Constantes";
+import { TEMPO_ANIMACAO_GRANDE, TEMPO_DADOS_ROLANDO_SEGUNDOS, TEMPO_DADOS_ROLANDO_MILESIMOS } from "../globais/Constantes";
 
 export const TelaDestinos = () => {
-    const { jogoAtual, paginaCampanha, setPaginaCampanha, ImporPaginaCampanhaEJogoAtualViaDestino, SalvarJogoAtualNoSalvo, AplicarPenalidadeDeTestarSorte } = ContextoJogos();
+    const {
+        jogoAtual,
+        paginaCampanha,
+        ImporProcessoDestinosNaPaginaCampanha,
+        ImporPaginaCampanhaEJogoAtualViaDestino,
+        SalvarJogoAtualNoSalvo,
+        AplicarPenalidadeDeTestarSorte,
+        ImporPaginaCampanhaViaDestino,
+    } = ContextoJogos();
 
     const [desativaBotoes, setDesativaBotoes] = useState(false);
 
@@ -41,14 +48,17 @@ export const TelaDestinos = () => {
     const [rolagemDados, setRolagemDados] = useState<IRolagemParaDestino>(ROLAGEM_PARA_DESTINO_ZERADA);
 
     useEffect(() => {
-        if (!jogoAtual || !paginaCampanha || !paginaCampanha.destinos || !paginaCampanha.destinos.length) {
+        if (ContextosReprovados(false)) {
+            return;
+        }
+        if (paginaCampanha.processoDestinos === EProcesso.INICIANDO) {
+            ImporProcessoDestinosNaPaginaCampanha(EProcesso.PROCESSANDO);
             return;
         }
         if (paginaCampanha.idPaginaDestino === PAGINA_ZERADA.idPagina && paginaCampanha.idCapituloDestino === PAGINA_ZERADA.idCapitulo) {
             return;
-        } else {
-            ImporPaginaCampanhaEJogoAtualViaDestino(paginaCampanha.idPaginaDestino, paginaCampanha.idCapituloDestino);
         }
+        ImporPaginaCampanhaEJogoAtualViaDestino(paginaCampanha.idPaginaDestino, paginaCampanha.idCapituloDestino);
     }, [paginaCampanha]);
 
     useEffect(() => {
@@ -73,7 +83,7 @@ export const TelaDestinos = () => {
                 setRolagemDados((prevRolandoDados) => {
                     return { ...prevRolandoDados, processoRolagem: EProcesso.CONCLUIDO };
                 });
-            }, DADOS_TEMPO_ROLANDO_MILESIMOS);
+            }, TEMPO_DADOS_ROLANDO_MILESIMOS);
         } else if (rolagemDados.processoRolagem === EProcesso.CONCLUIDO) {
             let _rolado = rolagemDados.total;
             if (rolagemDados.destino.testeSomarDados) {
@@ -88,37 +98,23 @@ export const TelaDestinos = () => {
             }
             let _idPagina = _teveSorte ? rolagemDados.destino.idPagina : rolagemDados.destino.idPaginaAzar;
             setTimeout(() => {
-                setPaginaCampanha((prevPaginaCampanha_Destino) => {
-                    return {
-                        ...prevPaginaCampanha_Destino,
-                        idPaginaDestino: _idPagina,
-                        idCapituloDestino: rolagemDados.destino.idCapitulo,
-                        ehJogoCarregado: false,
-                    };
-                });
-            }, TEMPO_ANIMACAO * 4);
+                ImporPaginaCampanhaViaDestino(_idPagina, rolagemDados.destino.idCapitulo);
+            }, TEMPO_ANIMACAO_GRANDE);
             setRolagemDados((prevRolandoDados) => {
                 return { ...prevRolandoDados, processoRolagem: EProcesso.DESTRUIDO };
             });
         }
     }, [rolagemDados]);
 
-    if (!jogoAtual) {
+    if (ContextosReprovados(true)) {
         return <></>;
     }
-    if (!paginaCampanha || !paginaCampanha.destinos || !paginaCampanha.destinos.length) {
-        return <></>;
-    }
-    if (paginaCampanha.estado !== EPaginaCampanhaEstado.DESTINOS) {
-        return <></>;
-    }
-    if (jogoAtual.panilha && jogoAtual.panilha.energia === 0 && jogoAtual.campanhaCapitulo === ECampanhaCapitulo.PAGINAS_CAMPANHA) {
+    if (EhFimDeJogo()) {
         return (
             <div className={styles.destinos}>
                 <div className={styles.destinos_morte}>
                     <div className={styles.destinos_tituloESalvar}>
                         <h3>VOCÊ MORREU - FIM DE JOGO</h3>
-                        {MontarRetorno_SalvaJogoAtual()}
                     </div>
                     <div className={styles.destinos_conteudo}>
                         <div className={styles.destinos_conteudo_pagina}>
@@ -140,6 +136,23 @@ export const TelaDestinos = () => {
                 </div>
             </div>
         );
+    }
+
+    function ContextosReprovados(processoIniciandoReprova: boolean) {
+        let _reprovado = !jogoAtual || !paginaCampanha || !paginaCampanha.destinos || !paginaCampanha.destinos.length || ![EPaginaCampanhaEstado.DESTINOS].includes(paginaCampanha.estado);
+        if (processoIniciandoReprova) {
+            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaCampanha.processoDestinos);
+        } else {
+            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaCampanha.processoDestinos);
+        }
+        return _reprovado;
+    }
+
+    function EhFimDeJogo() {
+        const _fimDeJogo = jogoAtual.campanhaCapitulo === ECampanhaCapitulo.PAGINAS_CAMPANHA;
+        const _estaMorto = !!(jogoAtual.panilha && jogoAtual.panilha.energia === 0);
+        const _destinoMorte = !!paginaCampanha.destinos.find((destinoI) => destinoI.idPagina === PAGINA_FIM_DE_JOGO.idPagina);
+        return _fimDeJogo && (_estaMorto || _destinoMorte);
     }
 
     function MontarRetorno_SalvaJogoAtual() {
@@ -207,14 +220,7 @@ export const TelaDestinos = () => {
         const _aoClicar = () => {
             setDesativaBotoes(true);
             if (!destino.testeAtributo || destino.testeAtributo === EAtributoDestinoTeste._NULO) {
-                setPaginaCampanha((prevPaginaCampanha_Destino) => {
-                    return {
-                        ...prevPaginaCampanha_Destino,
-                        idPaginaDestino: destino.idPagina,
-                        idCapituloDestino: destino.idCapitulo,
-                        ehJogoCarregado: false,
-                    };
-                });
+                ImporPaginaCampanhaViaDestino(destino.idPagina, destino.idCapitulo);
             } else {
                 setRolagemDados({ processoRolagem: EProcesso.INICIANDO, total: 0, destino: destino });
             }
@@ -267,36 +273,44 @@ export const TelaDestinos = () => {
         if (!destino.testeAtributo || destino.testeAtributo === EAtributoDestinoTeste._NULO) {
             return <></>;
         } else {
+            let _totalTexto = "?";
+            let _totalValor = 0;
             let _soma = "";
-            if (destino.testeSomarDados) {
-                _soma = destino.testeSomarDados.toString() + " + ";
-            }
-            let _total = "?";
-            if ([EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(rolagemDados.processoRolagem)) {
-                _total = rolagemDados.total.toString();
-            }
+            let _atributoTexto = "";
+            let _atributoValor = 0;
             let _cor = "";
             let _corDot = "";
-            let _texto = "";
-            let _atributo = "";
+            let _teveSorte = false;
+            let _resultadoTexto = "";
+            if (destino.testeSomarDados) {
+                _totalValor += destino.testeSomarDados;
+                _soma = destino.testeSomarDados.toString() + " + ";
+            }
             if (destino.testeAtributo === EAtributoDestinoTeste.SORTE) {
+                _atributoTexto = "SORTE";
+                _atributoValor = jogoAtual.panilha.sorte;
                 _cor = COR_SORTE;
                 _corDot = COR_SORTE_DOTS;
-                _texto = "Você TERÁ SORTE";
-                _atributo = jogoAtual.panilha.sorte.toString();
             } else if (destino.testeAtributo === EAtributoDestinoTeste.HABILIDADE) {
+                _atributoTexto = "HABILIDADE";
+                _atributoValor = jogoAtual.panilha.habilidade;
                 _cor = COR_HABILIDADE;
                 _corDot = COR_HABILIDADE_DOTS;
-                _texto = "Você TERÁ HABILIDADE";
-                _atributo = jogoAtual.panilha.habilidade.toString();
+            }
+            if ([EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(rolagemDados.processoRolagem)) {
+                _totalValor += rolagemDados.total;
+                _totalTexto = _totalValor.toString();
+                _teveSorte = _totalValor <= _atributoValor;
+                _resultadoTexto = _teveSorte ? "Você TEVE " : "Você NÃO TEVE ";
+                _resultadoTexto += _resultadoTexto + _atributoTexto;
             }
             return (
                 <div className={styles.destinos_conteudo_pagina_rolagem}>
                     <table>
                         <tbody>
                             <tr>
-                                <td className={styles.destinos_conteudo_pagina_rolagem_dados}>
-                                    <p>{_soma}</p>
+                                <td className={styles.destinos_conteudo_pagina_rolagem_coluna_dados}>
+                                    <span>{_soma}</span>
                                     <ReactDice
                                         numDice={2}
                                         ref={dados}
@@ -305,20 +319,23 @@ export const TelaDestinos = () => {
                                         dotColor={_corDot}
                                         defaultRoll={1}
                                         disableIndividual={true}
-                                        rollTime={DADOS_TEMPO_ROLANDO_SEGUNDOS}
+                                        rollTime={TEMPO_DADOS_ROLANDO_SEGUNDOS}
                                     />
                                 </td>
-                                <td className={styles.destinos_conteudo_pagina_rolagem_total}>{" = " + _total}</td>
-                                <td className={styles.destinos_conteudo_pagina_rolagem_texto}>
-                                    <span>{_texto}</span>
+                                <td className={styles.destinos_conteudo_pagina_rolagem_coluna_texto}>
+                                    <span>{"Você terá " + _atributoTexto}</span>
                                     <br />
-                                    <span>{" se os dados forem "}</span>
+                                    <span>{"se os dados resultarem em"}</span>
                                     <br />
                                     <span>
-                                        {" MENOR OU IGUAL a "}
-                                        <span className={styles.destinos_conteudo_pagina_rolagem_texto_atributo}>{_atributo}</span>
+                                        {"MENOR OU IGUAL a "}
+                                        <span className={styles.destinos_conteudo_pagina_rolagem_atributo}>{_atributoValor.toString()}</span>
                                     </span>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td className={styles.destinos_conteudo_pagina_rolagem_coluna_dados}>{" = " + _totalTexto}</td>
+                                <td className={styles.destinos_conteudo_pagina_rolagem_coluna_texto}>{_resultadoTexto}</td>
                             </tr>
                         </tbody>
                     </table>

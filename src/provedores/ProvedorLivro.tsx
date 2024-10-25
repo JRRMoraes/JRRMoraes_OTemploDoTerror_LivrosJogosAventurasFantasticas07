@@ -9,6 +9,7 @@ export const ProvedorLivro = ({ children }: IChildrenProps) => {
 
     const [audioExecutor, setAudioExecutor] = useState<IAudioExecutor>({
         audioRef: useRef<HTMLAudioElement>(null),
+        inicializado: false,
         mudo: false,
         volume: 0.4,
         musicaAtual: "/The Storyteller.mp3",

@@ -13,45 +13,49 @@ interface ITelaHistoriasConclusao {
 }
 
 export const TelaHistorias = () => {
-    const { jogoAtual, paginaCampanha, setPaginaCampanha, AplicarEfeitosDaHistoria } = ContextoJogos();
+    const { jogoAtual, paginaCampanha, AplicarEfeitosDaHistoria, ImporProcessoHistoriasNaPaginaCampanha } = ContextoJogos();
 
-    const VELOCIDADES = { normal: 20, rapido: 1 };
+    const VELOCIDADES = { normal: 20, rapido: 0 };
     const [velocidade, setVelocidade] = useState(VELOCIDADES.normal);
     const [exibeBotao, setExibeBotao] = useState(true);
 
     const [conclusoes, setConclusoes] = useState<ITelaHistoriasConclusao[]>([]);
     const [indiceConclusao, setIndiceConclusao] = useState(0);
-    const [todosConcluidos, setTodosConcluidos] = useState(false);
 
     useEffect(() => {
-        if (!jogoAtual || !paginaCampanha || !paginaCampanha.historias || !paginaCampanha.historias.length) {
+        if (ContextosReprovados(false)) {
             setIndiceConclusao(0);
             setConclusoes([]);
-            setTodosConcluidos(false);
             setVelocidade(VELOCIDADES.normal);
             setExibeBotao(true);
-        } else if (paginaCampanha.historias.length && (!conclusoes || !conclusoes.length)) {
-            if (paginaCampanha.ehJogoCarregado) {
-                setVelocidade(VELOCIDADES.rapido);
-                setExibeBotao(false);
-            }
-            paginaCampanha.historias.forEach((historiaI, indiceI) => {
-                setConclusoes((prevConclusoes) => {
-                    return [
-                        ...prevConclusoes,
-                        {
-                            processo: EProcesso._ZERO,
-                            processoTexto: EProcesso._ZERO,
-                            processoEfeito: paginaCampanha.ehJogoCarregado ? EProcesso.CONCLUIDO : EProcesso._ZERO,
-                        },
-                    ];
+            return;
+        }
+        if (paginaCampanha.processoHistorias === EProcesso.INICIANDO) {
+            if (paginaCampanha.historias.length && (!conclusoes || !conclusoes.length)) {
+                if (paginaCampanha.ehJogoCarregado) {
+                    setVelocidade(VELOCIDADES.rapido);
+                    setExibeBotao(false);
+                }
+                paginaCampanha.historias.forEach((historiaI, indiceI) => {
+                    setConclusoes((prevConclusoes) => {
+                        return [
+                            ...prevConclusoes,
+                            {
+                                processo: EProcesso._ZERO,
+                                processoTexto: EProcesso._ZERO,
+                                processoEfeito: paginaCampanha.ehJogoCarregado ? EProcesso.CONCLUIDO : EProcesso._ZERO,
+                            },
+                        ];
+                    });
                 });
-            });
+            }
+            ImporProcessoHistoriasNaPaginaCampanha(EProcesso.PROCESSANDO);
+            return;
         }
     }, [paginaCampanha, conclusoes]);
 
     useEffect(() => {
-        if (!jogoAtual || !paginaCampanha || !paginaCampanha.historias || !paginaCampanha.historias.length || !conclusoes || !conclusoes.length) {
+        if (ContextosReprovados(true)) {
             return;
         }
         if (conclusoes[indiceConclusao]) {
@@ -136,53 +140,53 @@ export const TelaHistorias = () => {
                 setIndiceConclusao((prevIndiceConclusao) => prevIndiceConclusao + 1);
             }
         } else {
-            setTodosConcluidos(true);
+            ImporProcessoHistoriasNaPaginaCampanha(EProcesso.CONCLUIDO);
         }
     }, [indiceConclusao, conclusoes]);
 
-    useEffect(() => {
-        if (todosConcluidos && paginaCampanha.estado === EPaginaCampanhaEstado.HISTORIAS) {
-            setPaginaCampanha((prevPaginaCampanha) => {
-                return { ...prevPaginaCampanha, estado: EPaginaCampanhaEstado.DESTINOS };
-            });
-        }
-    }, [todosConcluidos, paginaCampanha]);
-
-    if (!jogoAtual) {
-        return <></>;
-    }
-    if (!paginaCampanha || !paginaCampanha.historias || !paginaCampanha.historias.length) {
+    if (ContextosReprovados(true)) {
         return <></>;
     }
     if (!conclusoes || !conclusoes.length) {
         return <></>;
     }
-    return <>{MontarRetorno()}</>;
-
-    function MontarRetorno() {
-        return (
-            <div className={styles.historias}>
-                {paginaCampanha.historias.map((historiaI, indiceI) => {
-                    if (conclusoes[indiceI] && [EProcesso.PROCESSANDO, EProcesso.CONCLUIDO].includes(conclusoes[indiceI].processo)) {
-                        return (
-                            <div key={indiceI}>
-                                <div className={styles.historias_texto}>
-                                    <TextosDatilografados
-                                        textos={historiaI.textosHistoria}
-                                        velocidade={velocidade}
-                                        aoConcluir={() => FuncaoAoConcluirTexto()}
-                                    />
-                                </div>
-                                {MontarRetorno_Botao(conclusoes[indiceI])}
-                                {MontarRetorno_Efeitos(conclusoes[indiceI], historiaI.efeitos!)}
+    return (
+        <div className={styles.historias}>
+            {paginaCampanha.historias.map((historiaI, indiceI) => {
+                if (conclusoes[indiceI] && [EProcesso.PROCESSANDO, EProcesso.CONCLUIDO].includes(conclusoes[indiceI].processo)) {
+                    return (
+                        <div key={indiceI}>
+                            <div className={styles.historias_texto}>
+                                <TextosDatilografados
+                                    textos={historiaI.textosHistoria}
+                                    velocidade={velocidade}
+                                    aoConcluir={() => FuncaoAoConcluirTexto()}
+                                />
                             </div>
-                        );
-                    } else {
-                        return <div key={indiceI}></div>;
-                    }
-                })}
-            </div>
-        );
+                            {MontarRetorno_Botao(conclusoes[indiceI])}
+                            {MontarRetorno_Efeitos(conclusoes[indiceI], historiaI.efeitos!)}
+                        </div>
+                    );
+                } else {
+                    return <div key={indiceI}></div>;
+                }
+            })}
+        </div>
+    );
+
+    function ContextosReprovados(processoIniciandoReprova: boolean) {
+        let _reprovado =
+            !jogoAtual ||
+            !paginaCampanha ||
+            !paginaCampanha.historias ||
+            !paginaCampanha.historias.length ||
+            ![EPaginaCampanhaEstado.HISTORIAS, EPaginaCampanhaEstado.COMBATE, EPaginaCampanhaEstado.DESTINOS].includes(paginaCampanha.estado);
+        if (processoIniciandoReprova) {
+            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaCampanha.processoHistorias);
+        } else {
+            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaCampanha.processoHistorias);
+        }
+        return _reprovado;
     }
 
     function MontarRetorno_Botao(conclusao: ITelaHistoriasConclusao) {

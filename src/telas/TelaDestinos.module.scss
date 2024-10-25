@@ -81,35 +81,34 @@
                     table-layout: fixed;
                 }
 
-                &_dados {
-                    width: 40%;
-                    //display: flex;
-                    //flex-direction: row;
-                    //justify-content: center;
+                &_coluna_dados {
+                    width: 50%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
                     align-items: center;
 
-                    p {
+                    span {
                         font-size: 1.2rem;
                         font-weight: 600;
                         margin: 0;
                     }
                 }
 
+                &_coluna_texto {
+                    width: 50%;
+                    font-size: 1rem;
+                    font-weight: 400;
+                }
+
                 &_total {
-                    width: 10%;
                     font-weight: 700;
                     font-size: 1.6rem;
                 }
 
-                &_texto {
-                    width: auto;
-                    font-size: 1rem;
-                    font-weight: 400;
-
-                    &_atributo {
-                        font-weight: 700;
-                        font-size: 1.4rem;
-                    }
+                &_atributo {
+                    font-weight: 700;
+                    font-size: 1.4rem;
                 }
             }
         }

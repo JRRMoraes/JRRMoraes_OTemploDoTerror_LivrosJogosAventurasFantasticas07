@@ -99,9 +99,6 @@ export const ROLAGEM_PARA_DESTINO_ZERADA: IRolagemParaDestino = {
     destino: null!,
 };
 
-export const DADOS_TEMPO_ROLANDO_SEGUNDOS = 2;
-export const DADOS_TEMPO_ROLANDO_MILESIMOS = DADOS_TEMPO_ROLANDO_SEGUNDOS * 1000;
-
 export const COR_HABILIDADE = "#87ceeb";
 export const COR_HABILIDADE_DOTS = "#000000";
 export const COR_ENERGIA = "#008000";

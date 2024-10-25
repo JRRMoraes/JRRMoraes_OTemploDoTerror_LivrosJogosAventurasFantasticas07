@@ -1,6 +1,7 @@
 import styles from "./TelaCampanha.module.scss";
 import { ContextoJogos } from "../contextos";
 import TelaHistorias from "./TelaHistorias";
+import TelaCombate from "./TelaCombate";
 import TelaDestinos from "./TelaDestinos";
 
 export const TelaCampanha = () => {
@@ -13,6 +14,7 @@ export const TelaCampanha = () => {
         <div className={styles.campanha}>
             {MontarRetorno_IndiceTitulo()}
             <TelaHistorias />
+            <TelaCombate />
             <TelaDestinos />
         </div>
     );

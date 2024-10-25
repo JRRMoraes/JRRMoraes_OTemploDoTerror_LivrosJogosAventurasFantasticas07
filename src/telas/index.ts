@@ -3,4 +3,5 @@ export * from "./TelaCampanha";
 export * from "./TelaPanilha";
 export * from "./TelaPanilhaNova";
 export * from "./TelaHistorias";
+export * from "./TelaCombate";
 export * from "./TelaDestinos";

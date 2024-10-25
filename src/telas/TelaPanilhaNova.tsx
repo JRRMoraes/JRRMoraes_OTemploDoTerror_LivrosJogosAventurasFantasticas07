@@ -2,22 +2,11 @@ import styles from "./TelaPanilhaNova.module.scss";
 import "../globais/CoresHES.scss";
 import { useState, useEffect, useRef } from "react";
 import { ContextoJogos } from "../contextos";
-import {
-    IRolagemParaPanilhaNova,
-    EJogoNivel,
-    ROLAGEM_PARA_PANILHA_NOVA_ZERADA,
-    COR_HABILIDADE,
-    COR_HABILIDADE_DOTS,
-    COR_ENERGIA,
-    COR_ENERGIA_DOTS,
-    COR_SORTE,
-    COR_SORTE_DOTS,
-    DADOS_TEMPO_ROLANDO_SEGUNDOS,
-    DADOS_TEMPO_ROLANDO_MILESIMOS,
-} from "../tipos";
+import { IRolagemParaPanilhaNova, EJogoNivel, ROLAGEM_PARA_PANILHA_NOVA_ZERADA, COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_ENERGIA, COR_ENERGIA_DOTS, COR_SORTE, COR_SORTE_DOTS } from "../tipos";
 import { Botao } from "../componentes";
 import ReactDice, { ReactDiceRef } from "react-dice-complete";
 import { EProcesso } from "../uteis";
+import { TEMPO_DADOS_ROLANDO_MILESIMOS, TEMPO_DADOS_ROLANDO_SEGUNDOS } from "../globais/Constantes";
 
 export const TelaPanilhaNova = () => {
     const { jogoAtual, CriarPanilhaNoJogoAtualViaRolagens } = ContextoJogos();
@@ -52,7 +41,7 @@ export const TelaPanilhaNova = () => {
                 setRolagemDados((prevRolandoDados) => {
                     return { ...prevRolandoDados, processoRolagem: EProcesso.CONCLUIDO };
                 });
-            }, DADOS_TEMPO_ROLANDO_MILESIMOS);
+            }, TEMPO_DADOS_ROLANDO_MILESIMOS);
         } else if (rolagemDados.processoRolagem === EProcesso.CONCLUIDO) {
             setRolagemDados((prevRolandoDados) => {
                 return { ...prevRolandoDados, processoRolagem: EProcesso.DESTRUIDO };
@@ -107,7 +96,7 @@ export const TelaPanilhaNova = () => {
                                         dotColor={COR_HABILIDADE_DOTS}
                                         defaultRoll={1}
                                         disableIndividual={true}
-                                        rollTime={DADOS_TEMPO_ROLANDO_SEGUNDOS}
+                                        rollTime={TEMPO_DADOS_ROLANDO_SEGUNDOS}
                                     />
                                 </td>
                             </tr>
@@ -134,7 +123,7 @@ export const TelaPanilhaNova = () => {
                                         dotColor={COR_ENERGIA_DOTS}
                                         defaultRoll={1}
                                         disableIndividual={true}
-                                        rollTime={DADOS_TEMPO_ROLANDO_SEGUNDOS}
+                                        rollTime={TEMPO_DADOS_ROLANDO_SEGUNDOS}
                                     />
                                 </td>
                             </tr>
@@ -161,7 +150,7 @@ export const TelaPanilhaNova = () => {
                                         dotColor={COR_SORTE_DOTS}
                                         defaultRoll={1}
                                         disableIndividual={true}
-                                        rollTime={DADOS_TEMPO_ROLANDO_SEGUNDOS}
+                                        rollTime={TEMPO_DADOS_ROLANDO_SEGUNDOS}
                                     />
                                 </td>
                             </tr>
@@ -180,10 +169,7 @@ export const TelaPanilhaNova = () => {
                     <p>Entretanto a rolagem descartada será perdida.</p>
                     {MontarRetorno_Rolagens()}
                     <div className={styles.panilhaNova_botoes}>
-                        <Botao
-                            aoClicar={() => ExecutarRolagem()}
-                            //desativado={EstaRolandoDados()}
-                        >
+                        <Botao aoClicar={() => ExecutarRolagem()}>
                             <h4>CLIQUE AQUI, para fazer a primeira rolagem</h4>
                         </Botao>
                     </div>

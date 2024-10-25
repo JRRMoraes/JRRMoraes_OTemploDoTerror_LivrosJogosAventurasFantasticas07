@@ -63,12 +63,7 @@
             "titulo": "Habilidade, Energia e Sorte",
             "historias": [
                 {
-                    "textosHistoria": [
-                        "Seu índice de HABILIDADE reflete a sua capacidade como espadachim e sua aptidão geral como lutador.",
-                        "O seu índice de ENERGIA reflete sua constituição física geral, vontade de sobreviver, determinação e condição física como um todo; quanto mais alto for seu índice de ENERGIA, mais tempo você conseguirá sobreviver.",
-                        "O seu índice de SORTE indica o quanto você é uma pessoa naturalmente de sorte. Sorte - e magia - é um fato da vida no reino da fantasia que você está prestes a explorar.",
-                        "Embora você possa conquistar pontos adicionais de HABILIDADE, ENERGIA e SORTE, esses totais nunca poderão exceder seus índices Iniciais, a não ser em raríssimas ocasiões, quando haverá instruções específicas para você numa determinada página."
-                    ],
+                    "textosHistoria": ["Seu índice de HABILIDADE reflete a sua capacidade como espadachim e sua aptidão geral como lutador."],
                     "efeitos": [
                         {
                             "textoEfeito": "Deu ruim, -4 energia",
@@ -79,8 +74,6 @@
                 },
                 {
                     "textosHistoria": [
-                        "Por motivos que serão explicados adiante, os índices de HABILIDADE, ENERGIA e SORTE mudam constantemente durante a aventura. Você deve fazer um registro preciso desses índices e, por este motivo, é aconselhável que escreva números pequenos ou que tenha uma borracha sempre à mão. Mas nunca apague seus índices Iniciais.",
-                        "Embora você possa conquistar pontos adicionais de HABILIDADE, ENERGIA e SORTE, esses totais nunca poderão exceder seus índices Iniciais, a não ser em raríssimas ocasiões, quando haverá instruções específicas para você numa determinada página.",
                         "Seu índice de HABILIDADE reflete a sua capacidade como espadachim e sua aptidão geral como lutador. O seu índice de ENERGIA reflete sua constituição física geral, vontade de sobreviver, determinação e condição física como um todo; quanto mais alto for seu índice de ENERGIA, mais tempo você conseguirá sobreviver. O seu índice de SORTE indica o quanto você é uma pessoa naturalmente de sorte. Sorte - e magia - é um fato da vida no reino da fantasia que você está prestes a explorar."
                     ],
                     "efeitos": [
@@ -134,8 +127,8 @@
                         "energia": 8
                     }
                 ],
-                "textoDerrota": "Você se afogará se não matar o monstro aquático em menos Séries de Ataque do que o índice atual de sua HABILIDADE.",
-                "aprovacaoDerrota": "TurnoDoCombateEhMenorQueHabilidade"
+                "textosDerrota": ["Você se afogará se não matar o monstro aquático em menos Séries de Ataque do que o índice atual de sua HABILIDADE."],
+                "aprovacaoDerrota": "SerieDeAtaqueEhMaiorOuIgualAHabilidade"
             },
             "destinos": [
                 {
@@ -616,7 +609,7 @@
                     ],
                     "testeAtributo": "HABILIDADE",
                     "testeSomarDados": 3,
-                    "idPaginaAzar": 254
+                    "idPaginaAzar": 274
                 }
             ]
         },
@@ -1058,6 +1051,89 @@
                 }
             ]
         },
+        {
+            "idPagina": 274,
+            "historias": [
+                {
+                    "textosHistoria": [
+                        "Duas figuras se tornam visíveis - um frio percorre sua espinha.",
+                        "Com armaduras que pendem frouxamente de seus ossos amarelados, dois Guerreiros-Esqueleto caminham aos arrancos na sua direção, armados de espadas."
+                    ]
+                }
+            ],
+            "combate": {
+                "inimigos": [
+                    {
+                        "inimigo": "Primeiro GUERREIRO ESQUELETO",
+                        "habilidade": 7,
+                        "energia": 5
+                    },
+                    {
+                        "inimigo": "Segundo GUERREIRO ESQUELETO",
+                        "habilidade": 6,
+                        "energia": 6
+                    }
+                ],
+                "textosDerrota": [
+                    "Ambos os Esqueletos o atacam ao mesmo tempo.",
+                    "Eles atacarão em separado a cada Série de Ataque, mas você tem que escolher qual dos dois enfrentará a cada vez.",
+                    "Ataque o Esqueleto escolhido como num combate normal.",
+                    "Contra o outro, você jogará para saber sua Força de Ataque de modo normal, mas não causará ferimentos se sua Força de Ataque for maior; terá que contar isso apenas como se tivesse se defendido de seu golpe. É claro que, se a Força de Ataque dele for maior, ele o ferirá."
+                ],
+                "aprovacaoDerrota": "CombateMultiplo_1oAtacante_2oDefensor"
+            },
+            "destinos": [
+                {
+                    "idPagina": 310,
+                    "textoDestino": "Se você vencer, vá para 310."
+                }
+            ]
+        },
+
+        {
+            "idPagina": 377,
+            "historias": [
+                {
+                    "textosHistoria": [
+                        "Caminhando decididamente para o sul, você não se dá conta do perigo invisível à sua frente.",
+                        "Seu pé direito afunda na areia, e você sente uma dor aguda quando alguma coisa começa a dilacerar-lhe a perna.",
+                        "Você enfia a espada na areia quando um Abocanhador da Areia tenta derrubá-lo.",
+                        "Ele se debate, a areia se desprende daquele corpo pardo, revelando mandíbulas abertas, repletas de dentes cortantes.",
+                        "É impossível penetrar nas escamas grossas que lhe cobrem a pele. Algumas das escamas subitamente se abrem para dar passagem a dois longos tentáculos que tentam agarrá-lo e puxá-lo para a goela do Abocanhador.",
+                        "Ignorando a dor na perna, você golpeia os tentáculos robustos com sua espada."
+                    ],
+
+                    "combate": {
+                        "inimigos": [
+                            {
+                                "inimigo": "Primeiro TENTÁCULO",
+                                "habilidade": 7,
+                                "energia": 7
+                            },
+                            {
+                                "inimigo": "Segundo TENTÁCULO",
+                                "habilidade": 7,
+                                "energia": 7
+                            }
+                        ],
+                        "textosDerrota": ["Se qualquer um dos dois tentáculos vencer duas Séries de Ataque consecutivas durante o combate, volte para 149."],
+                        "aprovacaoDerrota": "InimigoComSeriesDeAtaqueVencidosConsecutivos_2",
+                        "destinoDerrota": 149
+                    }
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 149,
+                    "textoDestino": "Se qualquer um dos dois tentáculos vencer duas Séries de Ataque consecutivas durante o combate, volte para 149."
+                },
+                {
+                    "idPagina": 266,
+                    "textoDestino": "Se você conseguir decepar os dois tentáculos, volte para 266."
+                }
+            ]
+        },
+
         {
             "idPagina": 999,
             "historias": [
