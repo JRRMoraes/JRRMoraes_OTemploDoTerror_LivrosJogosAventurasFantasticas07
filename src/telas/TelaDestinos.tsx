@@ -27,7 +27,7 @@ import { TEMPO_ANIMACAO_GRANDE, TEMPO_DADOS_ROLANDO_SEGUNDOS, TEMPO_DADOS_ROLAND
 export const TelaDestinos = () => {
     const {
         jogoAtual,
-        paginaCampanha,
+        paginaExecutor,
         ImporProcessoDestinosNaPaginaCampanha,
         ImporPaginaCampanhaEJogoAtualViaDestino,
         SalvarJogoAtualNoSalvo,
@@ -39,7 +39,7 @@ export const TelaDestinos = () => {
 
     const [salvando, setSalvando] = useState(EProcesso._ZERO);
 
-    const { ValidarAprovacoesDestino } = OperacoesJogoLivro(jogoAtual, paginaCampanha);
+    const { ValidarAprovacoesDestino } = OperacoesJogoLivro(jogoAtual, paginaExecutor);
 
     const navegador = useNavigate();
 
@@ -51,18 +51,18 @@ export const TelaDestinos = () => {
         if (ContextosReprovados(false)) {
             return;
         }
-        if (paginaCampanha.processoDestinos === EProcesso.INICIANDO) {
+        if (paginaExecutor.exeProcessoDestinos === EProcesso.INICIANDO) {
             ImporProcessoDestinosNaPaginaCampanha(EProcesso.PROCESSANDO);
             return;
         }
-        if (paginaCampanha.idPaginaDestino === PAGINA_ZERADA.idPagina && paginaCampanha.idCapituloDestino === PAGINA_ZERADA.idCapitulo) {
+        if (paginaExecutor.exeIdPaginaDestino === PAGINA_ZERADA.idPagina && paginaExecutor.exeIdCapituloDestino === PAGINA_ZERADA.idCapitulo) {
             return;
         }
-        ImporPaginaCampanhaEJogoAtualViaDestino(paginaCampanha.idPaginaDestino, paginaCampanha.idCapituloDestino);
-    }, [paginaCampanha]);
+        ImporPaginaCampanhaEJogoAtualViaDestino(paginaExecutor.exeIdPaginaDestino, paginaExecutor.exeIdCapituloDestino);
+    }, [paginaExecutor]);
 
     useEffect(() => {
-        if (salvando === EProcesso.INICIANDO && !paginaCampanha.ehJogoCarregado) {
+        if (salvando === EProcesso.INICIANDO && !paginaExecutor.exeEhJogoCarregado) {
             setSalvando(EProcesso.PROCESSANDO);
             SalvarJogoAtualNoSalvo();
             setTimeout(() => {
@@ -139,11 +139,11 @@ export const TelaDestinos = () => {
     }
 
     function ContextosReprovados(processoIniciandoReprova: boolean) {
-        let _reprovado = !jogoAtual || !paginaCampanha || !paginaCampanha.destinos || !paginaCampanha.destinos.length || ![EPaginaCampanhaEstado.DESTINOS].includes(paginaCampanha.estado);
+        let _reprovado = !jogoAtual || !paginaExecutor || !paginaExecutor.destinos || !paginaExecutor.destinos.length || ![EPaginaCampanhaEstado.DESTINOS].includes(paginaExecutor.exeEstado);
         if (processoIniciandoReprova) {
-            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaCampanha.processoDestinos);
+            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaExecutor.exeProcessoDestinos);
         } else {
-            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaCampanha.processoDestinos);
+            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaExecutor.exeProcessoDestinos);
         }
         return _reprovado;
     }
@@ -151,12 +151,12 @@ export const TelaDestinos = () => {
     function EhFimDeJogo() {
         const _fimDeJogo = jogoAtual.campanhaCapitulo === ECampanhaCapitulo.PAGINAS_CAMPANHA;
         const _estaMorto = !!(jogoAtual.panilha && jogoAtual.panilha.energia === 0);
-        const _destinoMorte = !!paginaCampanha.destinos.find((destinoI) => destinoI.idPagina === PAGINA_FIM_DE_JOGO.idPagina);
+        const _destinoMorte = !!paginaExecutor.destinos.find((destinoI) => destinoI.idPagina === PAGINA_FIM_DE_JOGO.idPagina);
         return _fimDeJogo && (_estaMorto || _destinoMorte);
     }
 
     function MontarRetorno_SalvaJogoAtual() {
-        if (paginaCampanha.ehJogoCarregado) {
+        if (paginaExecutor.exeEhJogoCarregado) {
             return <></>;
         }
         switch (salvando) {
@@ -231,7 +231,7 @@ export const TelaDestinos = () => {
     function MontarRetorno_Destinos() {
         return (
             <div className={styles.destinos_conteudo}>
-                {paginaCampanha.destinos.map((destinoI, indiceI) => {
+                {paginaExecutor.destinos.map((destinoI, indiceI) => {
                     return (
                         <div
                             key={indiceI}

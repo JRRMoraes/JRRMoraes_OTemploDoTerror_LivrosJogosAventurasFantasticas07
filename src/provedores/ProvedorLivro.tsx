@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import { ILivro, IAudioExecutor } from "../tipos";
 import { IChildrenProps } from "../uteis";
 import { ContextoBaseLivro } from "../contextos";
+import axios from "axios";
 
 export const ProvedorLivro = ({ children }: IChildrenProps) => {
     const [livro, setLivro] = useState<ILivro>(null!);

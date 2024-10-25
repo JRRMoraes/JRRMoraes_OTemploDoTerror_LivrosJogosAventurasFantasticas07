@@ -11,7 +11,7 @@ interface ITelaCombateConclusao {
 }
 
 export const TelaCombate = () => {
-    const { jogoAtual, paginaCampanha, ImporProcessoCombateNaPaginaCampanha, ImporPaginaCampanhaCombateDoProcessoZeroDaSerieDeAtaque } = ContextoJogos();
+    const { jogoAtual, paginaExecutor, ImporProcessoCombateNaPaginaCampanha, ImporPaginaCampanhaCombateDoProcessoZeroDaSerieDeAtaque } = ContextoJogos();
 
     const [serieDeAtaqueAtual, setSerieDeAtaqueAtual] = useState(1);
     const [processoSerieDeAtaque, setProcessoSerieDeAtaque] = useState<EProcesso>(EProcesso._ZERO);
@@ -26,13 +26,13 @@ export const TelaCombate = () => {
             setProcessoSerieDeAtaque(EProcesso._ZERO);
             return;
         }
-        if (paginaCampanha.processoCombate === EProcesso.INICIANDO) {
+        if (paginaExecutor.exeProcessoCombate === EProcesso.INICIANDO) {
             setSerieDeAtaqueAtual(1);
             setProcessoSerieDeAtaque(EProcesso._ZERO);
             ImporProcessoCombateNaPaginaCampanha(EProcesso.PROCESSANDO);
             return;
         }
-        if (paginaCampanha.processoCombate === EProcesso.PROCESSANDO) {
+        if (paginaExecutor.exeProcessoCombate === EProcesso.PROCESSANDO) {
             if (processoSerieDeAtaque === EProcesso._ZERO) {
                 ImporPaginaCampanhaCombateDoProcessoZeroDaSerieDeAtaque(serieDeAtaqueAtual);
                 setProcessoSerieDeAtaque(EProcesso.INICIANDO);
@@ -41,7 +41,7 @@ export const TelaCombate = () => {
             } else if (processoSerieDeAtaque === EProcesso.PROCESSANDO) {
                 // rolar dados
             } else if (processoSerieDeAtaque === EProcesso.DESTRUIDO) {
-                switch (AvaliarResultadoCombateDaPaginaCampanhaCombate(paginaCampanha.combate, jogoAtual.panilha)) {
+                switch (AvaliarResultadoCombateDaPaginaCampanhaCombate(paginaExecutor.combate, jogoAtual.panilha)) {
                     case EResultadoCombate.VITORIA:
                         ImporProcessoCombateNaPaginaCampanha(EProcesso.CONCLUIDO);
                         break;
@@ -56,12 +56,12 @@ export const TelaCombate = () => {
                 }
             }
         }
-    }, [jogoAtual, paginaCampanha, serieDeAtaqueAtual, processoSerieDeAtaque]);
+    }, [jogoAtual, paginaExecutor, serieDeAtaqueAtual, processoSerieDeAtaque]);
 
     if (ContextosReprovados(true)) {
         return <></>;
     }
-    if (![EPaginaCampanhaEstado.COMBATE, EPaginaCampanhaEstado.DESTINOS].includes(paginaCampanha.estado)) {
+    if (![EPaginaCampanhaEstado.COMBATE, EPaginaCampanhaEstado.DESTINOS].includes(paginaExecutor.exeEstado)) {
         return <></>;
     }
     return (
@@ -78,22 +78,22 @@ export const TelaCombate = () => {
     function ContextosReprovados(processoIniciandoReprova: boolean) {
         let _reprovado =
             !jogoAtual ||
-            !paginaCampanha ||
-            !paginaCampanha.combate ||
-            !paginaCampanha.combate.inimigos ||
-            !paginaCampanha.combate.inimigos.length ||
-            ![EPaginaCampanhaEstado.COMBATE, EPaginaCampanhaEstado.DESTINOS].includes(paginaCampanha.estado);
+            !paginaExecutor ||
+            !paginaExecutor.combate ||
+            !paginaExecutor.combate.inimigos ||
+            !paginaExecutor.combate.inimigos.length ||
+            ![EPaginaCampanhaEstado.COMBATE, EPaginaCampanhaEstado.DESTINOS].includes(paginaExecutor.exeEstado);
         if (processoIniciandoReprova) {
-            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaCampanha.processoCombate);
+            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaExecutor.exeProcessoCombate);
         } else {
-            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaCampanha.processoCombate);
+            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaExecutor.exeProcessoCombate);
         }
         return _reprovado;
     }
 
     function MontarRetorno_Derrota() {
-        if (paginaCampanha.combate.textosDerrota) {
-            paginaCampanha.combate.textosDerrota.map((textoI) => {
+        if (paginaExecutor.combate.textosDerrota) {
+            paginaExecutor.combate.textosDerrota.map((textoI) => {
                 return <p>{textoI}</p>;
             });
         } else {
@@ -104,14 +104,14 @@ export const TelaCombate = () => {
     function MontarRetorno_Inimigos() {
         return (
             <div className={styles.combate_arena}>
-                {paginaCampanha.combate.inimigos.map((inimigoI, indiceI) => {
+                {paginaExecutor.combate.inimigos.map((inimigoI, indiceI) => {
                     return (
                         <div
                             key={indiceI}
                             className={styles.combate_arena}
                         >
                             <div>
-                                {inimigoI.inimigo} - H: {inimigoI.habilidade} - E: {inimigoI.energia} -{inimigoI.auxPosturaInimigo}
+                                {inimigoI.inimigo} - H: {inimigoI.habilidade} - E: {inimigoI.energia} -{inimigoI.posturaInimigo}
                             </div>
                         </div>
                     );

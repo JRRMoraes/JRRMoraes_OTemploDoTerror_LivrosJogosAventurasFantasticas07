@@ -13,7 +13,7 @@ interface ITelaHistoriasConclusao {
 }
 
 export const TelaHistorias = () => {
-    const { jogoAtual, paginaCampanha, AplicarEfeitosDaHistoria, ImporProcessoHistoriasNaPaginaCampanha } = ContextoJogos();
+    const { jogoAtual, paginaExecutor, AplicarEfeitosDaHistoria, ImporProcessoHistoriasNaPaginaCampanha } = ContextoJogos();
 
     const VELOCIDADES = { normal: 20, rapido: 0 };
     const [velocidade, setVelocidade] = useState(VELOCIDADES.normal);
@@ -30,20 +30,20 @@ export const TelaHistorias = () => {
             setExibeBotao(true);
             return;
         }
-        if (paginaCampanha.processoHistorias === EProcesso.INICIANDO) {
-            if (paginaCampanha.historias.length && (!conclusoes || !conclusoes.length)) {
-                if (paginaCampanha.ehJogoCarregado) {
+        if (paginaExecutor.exeProcessoHistorias === EProcesso.INICIANDO) {
+            if (paginaExecutor.historias.length && (!conclusoes || !conclusoes.length)) {
+                if (paginaExecutor.exeEhJogoCarregado) {
                     setVelocidade(VELOCIDADES.rapido);
                     setExibeBotao(false);
                 }
-                paginaCampanha.historias.forEach((historiaI, indiceI) => {
+                paginaExecutor.historias.forEach((historiaI, indiceI) => {
                     setConclusoes((prevConclusoes) => {
                         return [
                             ...prevConclusoes,
                             {
                                 processo: EProcesso._ZERO,
                                 processoTexto: EProcesso._ZERO,
-                                processoEfeito: paginaCampanha.ehJogoCarregado ? EProcesso.CONCLUIDO : EProcesso._ZERO,
+                                processoEfeito: paginaExecutor.exeEhJogoCarregado ? EProcesso.CONCLUIDO : EProcesso._ZERO,
                             },
                         ];
                     });
@@ -52,7 +52,7 @@ export const TelaHistorias = () => {
             ImporProcessoHistoriasNaPaginaCampanha(EProcesso.PROCESSANDO);
             return;
         }
-    }, [paginaCampanha, conclusoes]);
+    }, [paginaExecutor, conclusoes]);
 
     useEffect(() => {
         if (ContextosReprovados(true)) {
@@ -90,12 +90,12 @@ export const TelaHistorias = () => {
                         });
                     } else if (conclusoes[indiceConclusao].processoEfeito === EProcesso.INICIANDO) {
                         if (
-                            !paginaCampanha.ehJogoCarregado &&
-                            paginaCampanha.estado === EPaginaCampanhaEstado.HISTORIAS &&
-                            paginaCampanha.historias[indiceConclusao].efeitos &&
-                            paginaCampanha.historias[indiceConclusao].efeitos.length
+                            !paginaExecutor.exeEhJogoCarregado &&
+                            paginaExecutor.exeEstado === EPaginaCampanhaEstado.HISTORIAS &&
+                            paginaExecutor.historias[indiceConclusao].efeitos &&
+                            paginaExecutor.historias[indiceConclusao].efeitos.length
                         ) {
-                            AplicarEfeitosDaHistoria(paginaCampanha.historias[indiceConclusao].efeitos);
+                            AplicarEfeitosDaHistoria(paginaExecutor.historias[indiceConclusao].efeitos);
                             setConclusoes((prevConclusoes) => {
                                 return prevConclusoes.map((conclusaoI, indiceI) => {
                                     if (indiceI === indiceConclusao) {
@@ -152,7 +152,7 @@ export const TelaHistorias = () => {
     }
     return (
         <div className={styles.historias}>
-            {paginaCampanha.historias.map((historiaI, indiceI) => {
+            {paginaExecutor.historias.map((historiaI, indiceI) => {
                 if (conclusoes[indiceI] && [EProcesso.PROCESSANDO, EProcesso.CONCLUIDO].includes(conclusoes[indiceI].processo)) {
                     return (
                         <div key={indiceI}>
@@ -177,14 +177,14 @@ export const TelaHistorias = () => {
     function ContextosReprovados(processoIniciandoReprova: boolean) {
         let _reprovado =
             !jogoAtual ||
-            !paginaCampanha ||
-            !paginaCampanha.historias ||
-            !paginaCampanha.historias.length ||
-            ![EPaginaCampanhaEstado.HISTORIAS, EPaginaCampanhaEstado.COMBATE, EPaginaCampanhaEstado.DESTINOS].includes(paginaCampanha.estado);
+            !paginaExecutor ||
+            !paginaExecutor.historias ||
+            !paginaExecutor.historias.length ||
+            ![EPaginaCampanhaEstado.HISTORIAS, EPaginaCampanhaEstado.COMBATE, EPaginaCampanhaEstado.DESTINOS].includes(paginaExecutor.exeEstado);
         if (processoIniciandoReprova) {
-            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaCampanha.processoHistorias);
+            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaExecutor.exeProcessoHistorias);
         } else {
-            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaCampanha.processoHistorias);
+            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaExecutor.exeProcessoHistorias);
         }
         return _reprovado;
     }

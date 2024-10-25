@@ -5,9 +5,9 @@ import TelaCombate from "./TelaCombate";
 import TelaDestinos from "./TelaDestinos";
 
 export const TelaCampanha = () => {
-    const { jogoAtual, paginaCampanha } = ContextoJogos();
+    const { jogoAtual, paginaExecutor } = ContextoJogos();
 
-    if (!jogoAtual || !paginaCampanha) {
+    if (!jogoAtual || !paginaExecutor) {
         return <></>;
     }
     return (
@@ -20,10 +20,10 @@ export const TelaCampanha = () => {
     );
 
     function MontarRetorno_IndiceTitulo() {
-        if (paginaCampanha.titulo) {
-            return <h1 className={styles.campanha_titulo}>{paginaCampanha.titulo}</h1>;
-        } else if (paginaCampanha.idPagina > 0) {
-            return <h1 className={styles.campanha_indice}>{paginaCampanha.idPagina}</h1>;
+        if (paginaExecutor.titulo) {
+            return <h1 className={styles.campanha_titulo}>{paginaExecutor.titulo}</h1>;
+        } else if (paginaExecutor.idPagina > 0) {
+            return <h1 className={styles.campanha_indice}>{paginaExecutor.idPagina}</h1>;
         } else {
             return <></>;
         }

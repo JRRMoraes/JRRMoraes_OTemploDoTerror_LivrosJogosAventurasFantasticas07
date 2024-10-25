@@ -5554,7 +5554,7 @@
                     "Ataque o Esqueleto escolhido como num combate normal.",
                     "Contra o outro, você jogará para saber sua Força de Ataque de modo normal, mas não causará ferimentos se sua Força de Ataque for maior; terá que contar isso apenas como se tivesse se defendido de seu golpe. É claro que, se a Força de Ataque dele for maior, ele o ferirá."
                 ],
-                "aprovacaoDerrota": "EhCombateMultiplo_1oNormal_2oDefende"
+                "combateMultiplo_2osApoio": true
             },
             "destinos": [
                 {
