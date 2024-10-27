@@ -7473,7 +7473,7 @@
                             }
                         ],
                         "textosDerrota": ["Se qualquer um dos dois tentáculos vencer duas Séries de Ataque consecutivas durante o combate, volte para 149."],
-                        "aprovacaoDerrota": "InimigoComSeriesDeAtaqueVencidosConsecutivos_2",
+                        "aprovacaoDerrota": "InimigoComSerieDeAtaqueVencidoConsecutivo_2",
                         "destinoDerrota": 149
                     }
                 }

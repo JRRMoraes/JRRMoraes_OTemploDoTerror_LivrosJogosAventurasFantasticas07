@@ -9,7 +9,7 @@ import { TEMPO_ANIMACAO } from "../globais/Constantes";
 export const PaginaInicial = () => {
     const { livro, CaminhoImagem } = ContextoLivro();
 
-    const { jogoAtual, ResetarJogoAtual } = ContextoJogos();
+    const { jogoAtual, paginaExecutor, ResetarJogoAtual } = ContextoJogos();
 
     const [estado, setEstado] = useState<"ABERTURA" | "MENU">("ABERTURA");
 
@@ -24,7 +24,7 @@ export const PaginaInicial = () => {
     }, []);
 
     useEffect(() => {
-        if (jogoAtual) {
+        if (jogoAtual || paginaExecutor) {
             ResetarJogoAtual();
         }
 

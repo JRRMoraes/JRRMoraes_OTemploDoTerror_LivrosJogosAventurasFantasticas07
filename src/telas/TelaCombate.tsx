@@ -1,7 +1,7 @@
 import styles from "./TelaCombate.module.scss";
 import { useState, useEffect, useRef } from "react";
 import { ContextoJogos } from "../contextos";
-import { EPaginaCampanhaEstado, AvaliarResultadoCombateDaPaginaCampanhaCombate, EResultadoCombate } from "../tipos";
+import { EPaginaCampanhaEstado, AvaliarResultadoCombateDaPaginaCampanhaCombate, EResultadoCombate, IInimigoExecutor, EPosturaInimigo } from "../tipos";
 import { EProcesso } from "../uteis";
 import { ReactDiceRef } from "react-dice-complete";
 
@@ -54,6 +54,8 @@ export const TelaCombate = () => {
                         setProcessoSerieDeAtaque(EProcesso._ZERO);
                         break;
                 }
+                ///// teste
+                ImporProcessoCombateNaPaginaCampanha(EProcesso.CONCLUIDO);
             }
         }
     }, [jogoAtual, paginaExecutor, serieDeAtaqueAtual, processoSerieDeAtaque]);
@@ -71,7 +73,11 @@ export const TelaCombate = () => {
                 <h4>{"Turno " + serieDeAtaqueAtual.toString()}</h4>
             </div>
             <div className={styles.combate_derrota}>{MontarRetorno_Derrota()}</div>
-            {MontarRetorno_Inimigos()}
+            <div className={styles.combate_arena}>
+                {paginaExecutor.combate.inimigos.map((inimigoI, indiceI) => {
+                    return MontarRetorno_Inimigo(inimigoI, indiceI);
+                })}
+            </div>
         </div>
     );
 
@@ -101,23 +107,54 @@ export const TelaCombate = () => {
         }
     }
 
-    function MontarRetorno_Inimigos() {
-        return (
-            <div className={styles.combate_arena}>
-                {paginaExecutor.combate.inimigos.map((inimigoI, indiceI) => {
-                    return (
-                        <div
-                            key={indiceI}
-                            className={styles.combate_arena}
-                        >
-                            <div>
-                                {inimigoI.inimigo} - H: {inimigoI.habilidade} - E: {inimigoI.energia} -{inimigoI.posturaInimigo}
-                            </div>
+    function MontarRetorno_Inimigo(inimigo: IInimigoExecutor, indiceI: number) {
+        switch (inimigo.exePosturaInimigo) {
+            case EPosturaInimigo.MORTO:
+                return (
+                    <div
+                        key={indiceI}
+                        className={styles.combate_arena}
+                    >
+                        <div>
+                            {inimigo.inimigo} - H: {inimigo.habilidade} - E: {inimigo.energia} -{inimigo.exePosturaInimigo}
                         </div>
-                    );
-                })}
-            </div>
-        );
+                    </div>
+                );
+            case EPosturaInimigo.APOIO:
+                return (
+                    <div
+                        key={indiceI}
+                        className={styles.combate_arena}
+                    >
+                        <div>
+                            {inimigo.inimigo} - H: {inimigo.habilidade} - E: {inimigo.energia} -{inimigo.exePosturaInimigo}
+                        </div>
+                    </div>
+                );
+            case EPosturaInimigo.ATACANTE:
+                return (
+                    <div
+                        key={indiceI}
+                        className={styles.combate_arena}
+                    >
+                        <div>
+                            {inimigo.inimigo} - H: {inimigo.habilidade} - E: {inimigo.energia} -{inimigo.exePosturaInimigo}
+                        </div>
+                    </div>
+                );
+            case EPosturaInimigo._AGUARDANDO:
+            default:
+                return (
+                    <div
+                        key={indiceI}
+                        className={styles.combate_arena}
+                    >
+                        <div>
+                            {inimigo.inimigo} - H: {inimigo.habilidade} - E: {inimigo.energia} -{inimigo.exePosturaInimigo}
+                        </div>
+                    </div>
+                );
+        }
     }
 };
 

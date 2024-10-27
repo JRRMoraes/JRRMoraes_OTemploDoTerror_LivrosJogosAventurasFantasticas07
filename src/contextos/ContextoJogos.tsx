@@ -112,6 +112,8 @@ export const ContextoJogos = () => {
         ImporProcessoHistoriasNaPaginaCampanha,
         ImporProcessoCombateNaPaginaCampanha,
         ImporProcessoDestinosNaPaginaCampanha,
+        ImporPaginaCampanhaHistoriasExecutoresViaIndice,
+        ImporEIncrementarPaginaCampanhaExeIndiceHistoria,
         ImporPaginaCampanhaCombateDoProcessoZeroDaSerieDeAtaque,
     };
 
@@ -150,7 +152,7 @@ export const ContextoJogos = () => {
     }
 
     function ProcessarEImporPadraoCapitulo(jogo: IJogo) {
-        if (jogo.campanhaCapitulo && jogo.campanhaCapitulo !== ECampanhaCapitulo._NULO) {
+        if (jogo.campanhaCapitulo && jogo.campanhaCapitulo !== ECampanhaCapitulo._NULO && jogo.campanhaCapitulo !== padraoCapitulo) {
             setPadraoCapitulo(jogo.campanhaCapitulo);
         }
     }
@@ -200,20 +202,24 @@ export const ContextoJogos = () => {
                 exeIdPaginaDestino: PAGINA_ZERADA.idPagina,
                 exeIdCapituloDestino: PAGINA_ZERADA.idCapitulo,
                 exeEstado: EPaginaCampanhaEstado._NULO,
-                exeProcessoHistorias: EProcesso._ZERO,
-                exeProcessoCombate: EProcesso._ZERO,
-                exeProcessoDestinos: EProcesso._ZERO,
                 historias: [],
-                combate: null!,
-                destinos: [],
+                exeProcessoHistorias: EProcesso._ZERO,
+                exeIndiceHistoria: 0,
                 exeEfeitosAtuais: [],
+                combate: null!,
+                exeProcessoCombate: EProcesso._ZERO,
+                destinos: [],
+                exeProcessoDestinos: EProcesso._ZERO,
             });
             setPaginaExecutor((prevPaginaExecutor) => {
                 prevPaginaExecutor.exeEstado = EPaginaCampanhaEstado.INICIALIZADO;
                 if (pagina.historias && pagina.historias.length) {
                     prevPaginaExecutor.historias = pagina.historias.map((historiaI) => ({
                         ...historiaI,
+                        exeIndiceHistoria: 0,
                         exeProcessoHistoria: EProcesso._ZERO,
+                        exeProcessoTexto: EProcesso._ZERO,
+                        exeProcessoEfeito: prevPaginaExecutor.exeEhJogoCarregado ? EProcesso.CONCLUIDO : EProcesso._ZERO,
                     }));
                 }
                 if (pagina.combate) {
@@ -231,7 +237,7 @@ export const ContextoJogos = () => {
                             ...inimigoI,
                             exeEnergiaAtual: inimigoI.energia,
                             exePosturaInimigo: EPosturaInimigo._AGUARDANDO,
-                            exeSerieDeAtaqueVencidosConsecutivos: 0,
+                            exeSerieDeAtaqueVencidoConsecutivo: 0,
                         }));
                     }
                     if (pagina.combate.aliado) {
@@ -239,7 +245,7 @@ export const ContextoJogos = () => {
                             ...pagina.combate.aliado,
                             exeEnergiaAtual: pagina.combate.aliado.energia,
                             exePosturaInimigo: EPosturaInimigo.ATACANTE,
-                            exeSerieDeAtaqueVencidosConsecutivos: 0,
+                            exeSerieDeAtaqueVencidoConsecutivo: 0,
                         };
                     }
                 }
@@ -459,6 +465,35 @@ export const ContextoJogos = () => {
                 });
             }
         }
+    }
+
+    function ImporPaginaCampanhaHistoriasExecutoresViaIndice(processoHistoria: EProcesso, processoTexto: EProcesso, processoEfeito: EProcesso) {
+        if (paginaExecutor.historias[paginaExecutor.exeIndiceHistoria]) {
+            setPaginaExecutor((prevPaginaExecutor) => {
+                prevPaginaExecutor.historias = prevPaginaExecutor.historias.map((historiaI, indiceI) => {
+                    if (indiceI === paginaExecutor.exeIndiceHistoria) {
+                        if (processoHistoria !== EProcesso._ZERO) {
+                            historiaI.exeProcessoHistoria = processoHistoria;
+                        }
+                        if (processoTexto !== EProcesso._ZERO) {
+                            historiaI.exeProcessoTexto = processoTexto;
+                        }
+                        if (processoEfeito !== EProcesso._ZERO) {
+                            historiaI.exeProcessoEfeito = processoEfeito;
+                        }
+                    }
+                    return historiaI;
+                });
+                return { ...prevPaginaExecutor };
+            });
+        }
+    }
+
+    function ImporEIncrementarPaginaCampanhaExeIndiceHistoria() {
+        setPaginaExecutor((prevPaginaExecutor) => {
+            prevPaginaExecutor.exeIndiceHistoria += 1;
+            return { ...prevPaginaExecutor };
+        });
     }
 
     function ImporPaginaCampanhaCombateDoProcessoZeroDaSerieDeAtaque(serieDeAtaque: number) {

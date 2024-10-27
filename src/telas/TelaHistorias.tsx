@@ -1,159 +1,86 @@
 import styles from "./TelaHistorias.module.scss";
 import { useState, useEffect } from "react";
-import { IEfeito, EPaginaCampanhaEstado } from "../tipos";
+import { EPaginaCampanhaEstado, IHistoriaExecutor } from "../tipos";
 import { ContextoJogos } from "../contextos";
 import { Botao, TextosDatilografados } from "../componentes";
 import { EProcesso } from "../uteis";
 import { TEMPO_ANIMACAO } from "../globais/Constantes";
 
-interface ITelaHistoriasConclusao {
-    processo: EProcesso;
-    processoTexto: EProcesso;
-    processoEfeito: EProcesso;
-}
-
 export const TelaHistorias = () => {
-    const { jogoAtual, paginaExecutor, AplicarEfeitosDaHistoria, ImporProcessoHistoriasNaPaginaCampanha } = ContextoJogos();
+    const {
+        jogoAtual,
+        paginaExecutor,
+        AplicarEfeitosDaHistoria,
+        ImporProcessoHistoriasNaPaginaCampanha,
+        ImporPaginaCampanhaHistoriasExecutoresViaIndice,
+        ImporEIncrementarPaginaCampanhaExeIndiceHistoria,
+    } = ContextoJogos();
 
     const VELOCIDADES = { normal: 20, rapido: 0 };
     const [velocidade, setVelocidade] = useState(VELOCIDADES.normal);
     const [exibeBotao, setExibeBotao] = useState(true);
 
-    const [conclusoes, setConclusoes] = useState<ITelaHistoriasConclusao[]>([]);
-    const [indiceConclusao, setIndiceConclusao] = useState(0);
-
     useEffect(() => {
         if (ContextosReprovados(false)) {
-            setIndiceConclusao(0);
-            setConclusoes([]);
             setVelocidade(VELOCIDADES.normal);
             setExibeBotao(true);
             return;
         }
         if (paginaExecutor.exeProcessoHistorias === EProcesso.INICIANDO) {
-            if (paginaExecutor.historias.length && (!conclusoes || !conclusoes.length)) {
-                if (paginaExecutor.exeEhJogoCarregado) {
-                    setVelocidade(VELOCIDADES.rapido);
-                    setExibeBotao(false);
-                }
-                paginaExecutor.historias.forEach((historiaI, indiceI) => {
-                    setConclusoes((prevConclusoes) => {
-                        return [
-                            ...prevConclusoes,
-                            {
-                                processo: EProcesso._ZERO,
-                                processoTexto: EProcesso._ZERO,
-                                processoEfeito: paginaExecutor.exeEhJogoCarregado ? EProcesso.CONCLUIDO : EProcesso._ZERO,
-                            },
-                        ];
-                    });
-                });
+            if (paginaExecutor.exeEhJogoCarregado) {
+                setVelocidade(VELOCIDADES.rapido);
+                setExibeBotao(false);
             }
             ImporProcessoHistoriasNaPaginaCampanha(EProcesso.PROCESSANDO);
             return;
         }
-    }, [paginaExecutor, conclusoes]);
-
-    useEffect(() => {
-        if (ContextosReprovados(true)) {
+        if (paginaExecutor.exeProcessoHistorias === EProcesso.PROCESSANDO) {
+            if (ObterHistoriaAtual()) {
+                if (ObterHistoriaAtual().exeProcessoHistoria === EProcesso._ZERO) {
+                    ImporPaginaCampanhaHistoriasExecutoresViaIndice(EProcesso.INICIANDO, EProcesso.INICIANDO, EProcesso._ZERO);
+                } else if (ObterHistoriaAtual().exeProcessoHistoria === EProcesso.INICIANDO) {
+                    ImporPaginaCampanhaHistoriasExecutoresViaIndice(EProcesso.PROCESSANDO, EProcesso.PROCESSANDO, EProcesso._ZERO);
+                } else if (ObterHistoriaAtual().exeProcessoHistoria === EProcesso.PROCESSANDO) {
+                    if (ObterHistoriaAtual().exeProcessoTexto === EProcesso.CONCLUIDO) {
+                        if (ObterHistoriaAtual().exeProcessoEfeito === EProcesso._ZERO) {
+                            ImporPaginaCampanhaHistoriasExecutoresViaIndice(EProcesso._ZERO, EProcesso._ZERO, EProcesso.INICIANDO);
+                        } else if (ObterHistoriaAtual().exeProcessoEfeito === EProcesso.INICIANDO) {
+                            if (
+                                !paginaExecutor.exeEhJogoCarregado &&
+                                paginaExecutor.exeEstado === EPaginaCampanhaEstado.HISTORIAS &&
+                                ObterHistoriaAtual().efeitos &&
+                                ObterHistoriaAtual().efeitos.length
+                            ) {
+                                AplicarEfeitosDaHistoria(ObterHistoriaAtual().efeitos);
+                                ImporPaginaCampanhaHistoriasExecutoresViaIndice(EProcesso._ZERO, EProcesso._ZERO, EProcesso.PROCESSANDO);
+                                setTimeout(() => {
+                                    ImporPaginaCampanhaHistoriasExecutoresViaIndice(EProcesso._ZERO, EProcesso._ZERO, EProcesso.CONCLUIDO);
+                                }, TEMPO_ANIMACAO);
+                            } else {
+                                ImporPaginaCampanhaHistoriasExecutoresViaIndice(EProcesso._ZERO, EProcesso._ZERO, EProcesso.CONCLUIDO);
+                            }
+                        } else if (ObterHistoriaAtual().exeProcessoEfeito === EProcesso.CONCLUIDO) {
+                            ImporPaginaCampanhaHistoriasExecutoresViaIndice(EProcesso.CONCLUIDO, EProcesso.DESTRUIDO, EProcesso.DESTRUIDO);
+                        }
+                    }
+                } else if (ObterHistoriaAtual().exeProcessoHistoria === EProcesso.CONCLUIDO) {
+                    ImporPaginaCampanhaHistoriasExecutoresViaIndice(EProcesso.DESTRUIDO, EProcesso._ZERO, EProcesso._ZERO);
+                    ImporEIncrementarPaginaCampanhaExeIndiceHistoria();
+                }
+            } else {
+                ImporProcessoHistoriasNaPaginaCampanha(EProcesso.CONCLUIDO);
+            }
             return;
         }
-        if (conclusoes[indiceConclusao]) {
-            if (conclusoes[indiceConclusao].processo === EProcesso._ZERO) {
-                setConclusoes((prevConclusoes) => {
-                    return prevConclusoes.map((conclusaoI, indiceI) => {
-                        if (indiceI === indiceConclusao) {
-                            return { ...conclusaoI, processo: EProcesso.INICIANDO };
-                        }
-                        return conclusaoI;
-                    });
-                });
-            } else if (conclusoes[indiceConclusao].processo === EProcesso.INICIANDO) {
-                setConclusoes((prevConclusoes) => {
-                    return prevConclusoes.map((conclusaoI, indiceI) => {
-                        if (indiceI === indiceConclusao) {
-                            return { ...conclusaoI, processo: EProcesso.PROCESSANDO, processoTexto: EProcesso.PROCESSANDO };
-                        }
-                        return conclusaoI;
-                    });
-                });
-            } else if (conclusoes[indiceConclusao].processo === EProcesso.PROCESSANDO) {
-                if (conclusoes[indiceConclusao].processoTexto === EProcesso.CONCLUIDO) {
-                    if (conclusoes[indiceConclusao].processoEfeito === EProcesso._ZERO) {
-                        setConclusoes((prevConclusoes) => {
-                            return prevConclusoes.map((conclusaoI, indiceI) => {
-                                if (indiceI === indiceConclusao) {
-                                    return { ...conclusaoI, processoEfeito: EProcesso.INICIANDO };
-                                }
-                                return conclusaoI;
-                            });
-                        });
-                    } else if (conclusoes[indiceConclusao].processoEfeito === EProcesso.INICIANDO) {
-                        if (
-                            !paginaExecutor.exeEhJogoCarregado &&
-                            paginaExecutor.exeEstado === EPaginaCampanhaEstado.HISTORIAS &&
-                            paginaExecutor.historias[indiceConclusao].efeitos &&
-                            paginaExecutor.historias[indiceConclusao].efeitos.length
-                        ) {
-                            AplicarEfeitosDaHistoria(paginaExecutor.historias[indiceConclusao].efeitos);
-                            setConclusoes((prevConclusoes) => {
-                                return prevConclusoes.map((conclusaoI, indiceI) => {
-                                    if (indiceI === indiceConclusao) {
-                                        return { ...conclusaoI, processoEfeito: EProcesso.PROCESSANDO };
-                                    }
-                                    return conclusaoI;
-                                });
-                            });
-                        } else {
-                            setConclusoes((prevConclusoes) => {
-                                return prevConclusoes.map((conclusaoI, indiceI) => {
-                                    if (indiceI === indiceConclusao) {
-                                        return { ...conclusaoI, processoEfeito: EProcesso.CONCLUIDO };
-                                    }
-                                    return conclusaoI;
-                                });
-                            });
-                        }
-                    } else if (conclusoes[indiceConclusao].processoEfeito === EProcesso.PROCESSANDO) {
-                        setTimeout(() => {
-                            setConclusoes((prevConclusoes) => {
-                                return prevConclusoes.map((conclusaoI, indiceI) => {
-                                    if (indiceI === indiceConclusao) {
-                                        return { ...conclusaoI, processoEfeito: EProcesso.CONCLUIDO };
-                                    }
-                                    return conclusaoI;
-                                });
-                            });
-                        }, TEMPO_ANIMACAO);
-                    } else if (conclusoes[indiceConclusao].processoEfeito === EProcesso.CONCLUIDO) {
-                        setConclusoes((prevConclusoes) => {
-                            return prevConclusoes.map((conclusaoI, indiceI) => {
-                                if (indiceI === indiceConclusao) {
-                                    return { ...conclusaoI, processo: EProcesso.CONCLUIDO };
-                                }
-                                return conclusaoI;
-                            });
-                        });
-                    }
-                }
-            } else if (conclusoes[indiceConclusao].processo === EProcesso.CONCLUIDO) {
-                setIndiceConclusao((prevIndiceConclusao) => prevIndiceConclusao + 1);
-            }
-        } else {
-            ImporProcessoHistoriasNaPaginaCampanha(EProcesso.CONCLUIDO);
-        }
-    }, [indiceConclusao, conclusoes]);
+    }, [paginaExecutor]);
 
     if (ContextosReprovados(true)) {
-        return <></>;
-    }
-    if (!conclusoes || !conclusoes.length) {
         return <></>;
     }
     return (
         <div className={styles.historias}>
             {paginaExecutor.historias.map((historiaI, indiceI) => {
-                if (conclusoes[indiceI] && [EProcesso.PROCESSANDO, EProcesso.CONCLUIDO].includes(conclusoes[indiceI].processo)) {
+                if ([EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaExecutor.historias[indiceI].exeProcessoHistoria)) {
                     return (
                         <div key={indiceI}>
                             <div className={styles.historias_texto}>
@@ -163,8 +90,8 @@ export const TelaHistorias = () => {
                                     aoConcluir={() => FuncaoAoConcluirTexto()}
                                 />
                             </div>
-                            {MontarRetorno_Botao(conclusoes[indiceI])}
-                            {MontarRetorno_Efeitos(conclusoes[indiceI], historiaI.efeitos!)}
+                            {MontarRetorno_Botao(historiaI)}
+                            {MontarRetorno_Efeitos(historiaI)}
                         </div>
                     );
                 } else {
@@ -189,8 +116,12 @@ export const TelaHistorias = () => {
         return _reprovado;
     }
 
-    function MontarRetorno_Botao(conclusao: ITelaHistoriasConclusao) {
-        if (conclusao.processoTexto !== EProcesso.CONCLUIDO && exibeBotao) {
+    function ObterHistoriaAtual() {
+        return paginaExecutor.historias[paginaExecutor.exeIndiceHistoria];
+    }
+
+    function MontarRetorno_Botao(historia: IHistoriaExecutor) {
+        if (historia.exeProcessoTexto !== EProcesso.DESTRUIDO && exibeBotao) {
             return (
                 <div className={styles.historias_pularHistoria}>
                     <Botao aoClicar={() => PularHistoria()}>Pular História</Botao>
@@ -201,11 +132,11 @@ export const TelaHistorias = () => {
         }
     }
 
-    function MontarRetorno_Efeitos(conclusao: ITelaHistoriasConclusao, efeitos: IEfeito[]) {
-        if (conclusao.processoTexto === EProcesso.CONCLUIDO && conclusao.processoEfeito !== EProcesso._ZERO) {
+    function MontarRetorno_Efeitos(historia: IHistoriaExecutor) {
+        if (historia.exeProcessoTexto === EProcesso.DESTRUIDO && historia.exeProcessoEfeito !== EProcesso._ZERO) {
             return (
                 <div>
-                    {efeitos?.map((efeitoI, indiceI) => {
+                    {historia.efeitos.map((efeitoI, indiceI) => {
                         let _className = efeitoI.quantidade >= 1 ? styles.historias_efeito_bom : styles.historias_efeito_ruim;
                         return (
                             <p
@@ -229,16 +160,7 @@ export const TelaHistorias = () => {
     }
 
     function FuncaoAoConcluirTexto() {
-        if (conclusoes[indiceConclusao]) {
-            setConclusoes((prevConclusoes) => {
-                return prevConclusoes.map((conclusaoI, indiceI) => {
-                    if (indiceI === indiceConclusao) {
-                        return { ...conclusaoI, processoTexto: EProcesso.CONCLUIDO, processoEfeito: EProcesso.INICIANDO };
-                    }
-                    return conclusaoI;
-                });
-            });
-        }
+        ImporPaginaCampanhaHistoriasExecutoresViaIndice(EProcesso._ZERO, EProcesso.CONCLUIDO, EProcesso._ZERO);
     }
 };
 

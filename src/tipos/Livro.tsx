@@ -45,6 +45,8 @@ export interface IHistoria {
 
 export interface IHistoriaExecutor extends IHistoria {
     exeProcessoHistoria: EProcesso;
+    exeProcessoTexto: EProcesso;
+    exeProcessoEfeito: EProcesso;
 }
 
 export const HISTORIA_ZERADA: IHistoria = {
@@ -75,7 +77,7 @@ export interface IInimigo {
 export interface IInimigoExecutor extends IInimigo {
     exeEnergiaAtual: number;
     exePosturaInimigo: EPosturaInimigo;
-    exeSerieDeAtaqueVencidosConsecutivos: number;
+    exeSerieDeAtaqueVencidoConsecutivo: number;
 }
 
 export interface ICombate {
@@ -129,17 +131,18 @@ export interface IPagina {
 }
 
 export interface IPaginaExecutor extends IPagina {
-    historias: IHistoriaExecutor[];
-    combate: ICombateExecutor;
-    destinos: IDestinoExecutor[];
     exeEhJogoCarregado: boolean;
     exeIdPaginaDestino: number;
     exeIdCapituloDestino: ECampanhaCapitulo;
     exeEstado: EPaginaCampanhaEstado;
+    historias: IHistoriaExecutor[];
     exeProcessoHistorias: EProcesso;
-    exeProcessoCombate: EProcesso;
-    exeProcessoDestinos: EProcesso;
+    exeIndiceHistoria: number;
     exeEfeitosAtuais: IEfeitoExecutor[];
+    combate: ICombateExecutor;
+    exeProcessoCombate: EProcesso;
+    destinos: IDestinoExecutor[];
+    exeProcessoDestinos: EProcesso;
 }
 
 export const PAGINA_ZERADA: IPagina = {
@@ -243,8 +246,8 @@ export function AvaliarResultadoCombateDaPaginaCampanhaCombate(combate: ICombate
                 return EResultadoCombate.DERROTA;
             }
             break;
-        case "InimigoComSeriesDeAtaqueVencidosConsecutivos_2":
-            if (combate.inimigos.find((inimigoI) => inimigoI.exeSerieDeAtaqueVencidosConsecutivos >= 2)) {
+        case "InimigoComSerieDeAtaqueVencidoConsecutivo_2":
+            if (combate.inimigos.find((inimigoI) => inimigoI.exeSerieDeAtaqueVencidoConsecutivo >= 2)) {
                 return EResultadoCombate.DERROTA;
             }
             break;
