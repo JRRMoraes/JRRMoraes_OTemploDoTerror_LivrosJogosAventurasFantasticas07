@@ -4,7 +4,7 @@ import { ContextoLivro, ContextoJogos } from "../contextos";
 import { IChildrenProps } from "../uteis";
 import { TextosDatilografados, ReprodutorAudio } from "../componentes";
 import { TelaListaJogosSalvos } from "../telas";
-import { TEMPO_ANIMACAO } from "../globais/Constantes";
+import { TEMPO_ANIMACAO_NORMAL } from "../globais/Constantes";
 
 export const PaginaInicial = () => {
     const { livro, CaminhoImagem } = ContextoLivro();
@@ -69,11 +69,11 @@ export const PaginaInicial = () => {
         if (indiceApresentacoes + 1 < livro.apresentacoes.length) {
             setTimeout(() => {
                 setIndiceApresentacoes((prevIndiceApresentacoes) => prevIndiceApresentacoes + 1);
-            }, TEMPO_ANIMACAO);
+            }, TEMPO_ANIMACAO_NORMAL);
         } else {
             setTimeout(() => {
                 ExibirMenu();
-            }, TEMPO_ANIMACAO);
+            }, TEMPO_ANIMACAO_NORMAL);
         }
     }
 

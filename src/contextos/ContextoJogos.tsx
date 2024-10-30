@@ -14,14 +14,14 @@ import {
     ITotaisRoladosParaPanilhaNova,
     CriarPanilhaViaRolagens,
     ECampanhaCapitulo,
-    EPaginaCampanhaEstado,
+    EPaginaExecutorEstado,
     RetornarPanilhaEncantosAtualizados,
     RetornarPanilhaItensAtualizados,
-    RetornarPaginaCampanhaCombateInicial,
+    RetornarPaginaExecutorCombateInicial,
     EPosturaInimigo,
 } from "../tipos";
 import { EProcesso } from "../uteis";
-import { TEMPO_ANIMACAO } from "../globais/Constantes";
+import { TEMPO_ANIMACAO_NORMAL } from "../globais/Constantes";
 
 export type TContextoBaseJogos = {
     jogoSalvo1: IJogo;
@@ -72,7 +72,7 @@ export const ContextoJogos = () => {
                                 });
                                 return { ...prevPaginaExecutor2 };
                             });
-                        }, TEMPO_ANIMACAO);
+                        }, TEMPO_ANIMACAO_NORMAL);
                     } else if (efeitoI.exeProcessoEfeito === EProcesso.CONCLUIDO) {
                         ImporEfeitoEmJogoAtualNoConcluido(efeitoI);
                         efeitoI.exeProcessoEfeito = EProcesso.DESTRUIDO;
@@ -101,20 +101,17 @@ export const ContextoJogos = () => {
         CarregarJogoSalvoOuNovo,
         SalvarJogoAtualNoSalvo,
         ExcluirJogoSalvo,
-        ImporPaginaAtualECampanha,
-        ImporPaginaCampanhaEJogoAtualViaDestino,
-        ImporPaginaCampanhaViaAtual,
+        ImporPaginaExecutor,
+        ImporJogoAtualViaDestino,
+        AtualizarPaginaExecutorAutomaticamente,
         CriarPanilhaNoJogoAtualViaRolagens,
         AplicarEfeitosDaHistoria,
         AplicarPenalidadeDeTestarSorte,
         ObterEfeitoAtualDoAtributo,
-        ImporPaginaCampanhaViaDestino,
-        ImporProcessoHistoriasNaPaginaCampanha,
-        ImporProcessoCombateNaPaginaCampanha,
-        ImporProcessoDestinosNaPaginaCampanha,
-        ImporPaginaCampanhaHistoriasExecutoresViaIndice,
-        ImporEIncrementarPaginaCampanhaExeIndiceHistoria,
-        ImporPaginaCampanhaCombateDoProcessoZeroDaSerieDeAtaque,
+        ImporPaginaExecutorViaDestino,
+        ImporProcessoCombateNaPaginaExecutor,
+        ImporProcessoDestinosNaPaginaExecutor,
+        ImporPaginaExecutorCombateDoProcessoZeroDaSerieDeAtaque,
     };
 
     function ResetarJogoAtual() {
@@ -183,7 +180,7 @@ export const ContextoJogos = () => {
         }
     }
 
-    function ImporPaginaAtualECampanha(pagina: IPagina, jogoCarregado: boolean) {
+    function ImporPaginaExecutor(pagina: IPagina, jogoCarregado: boolean) {
         if (!pagina || (pagina.idPagina === PAGINA_ZERADA.idPagina && pagina.idCapitulo === PAGINA_ZERADA.idCapitulo)) {
             setPaginaExecutor(null!);
             return jogoCarregado;
@@ -201,7 +198,7 @@ export const ContextoJogos = () => {
                 exeEhJogoCarregado: jogoCarregado,
                 exeIdPaginaDestino: PAGINA_ZERADA.idPagina,
                 exeIdCapituloDestino: PAGINA_ZERADA.idCapitulo,
-                exeEstado: EPaginaCampanhaEstado._NULO,
+                exeEstado: EPaginaExecutorEstado._NULO,
                 historias: [],
                 exeProcessoHistorias: EProcesso._ZERO,
                 exeIndiceHistoria: 0,
@@ -212,7 +209,7 @@ export const ContextoJogos = () => {
                 exeProcessoDestinos: EProcesso._ZERO,
             });
             setPaginaExecutor((prevPaginaExecutor) => {
-                prevPaginaExecutor.exeEstado = EPaginaCampanhaEstado.INICIALIZADO;
+                prevPaginaExecutor.exeEstado = EPaginaExecutorEstado.INICIALIZADO;
                 if (pagina.historias && pagina.historias.length) {
                     prevPaginaExecutor.historias = pagina.historias.map((historiaI) => ({
                         ...historiaI,
@@ -262,22 +259,22 @@ export const ContextoJogos = () => {
         }
     }
 
-    function ImporPaginaCampanhaEJogoAtualViaDestino(idPaginaDestino: number, idCapituloDestino: ECampanhaCapitulo) {
+    function ImporJogoAtualViaDestino(idPaginaDestino: number, idCapituloDestino: ECampanhaCapitulo) {
         setPaginaExecutor(null!);
         setJogoAtual((prevJogoAtual) => {
             return { ...prevJogoAtual, campanhaIndice: idPaginaDestino, campanhaCapitulo: idCapituloDestino };
         });
     }
 
-    function ImporPaginaCampanhaViaAtual() {
+    function AtualizarPaginaExecutorAutomaticamente() {
         if (!paginaExecutor) {
             return;
         }
-        if (paginaExecutor.exeEstado === EPaginaCampanhaEstado.INICIALIZADO) {
+        if (paginaExecutor.exeEstado === EPaginaExecutorEstado.INICIALIZADO) {
             setPaginaExecutor((prevPaginaExecutor) => {
-                return { ...prevPaginaExecutor, exeEstado: EPaginaCampanhaEstado.HISTORIAS };
+                return { ...prevPaginaExecutor, exeEstado: EPaginaExecutorEstado.HISTORIAS };
             });
-        } else if (paginaExecutor.exeEstado === EPaginaCampanhaEstado.HISTORIAS) {
+        } else if (paginaExecutor.exeEstado === EPaginaExecutorEstado.HISTORIAS) {
             if (paginaExecutor.exeProcessoHistorias === EProcesso._ZERO) {
                 setPaginaExecutor((prevPaginaExecutor) => {
                     return { ...prevPaginaExecutor, exeProcessoHistorias: EProcesso.INICIANDO };
@@ -285,16 +282,16 @@ export const ContextoJogos = () => {
             } else if (paginaExecutor.exeProcessoHistorias === EProcesso.CONCLUIDO) {
                 setPaginaExecutor((prevPaginaExecutor) => {
                     prevPaginaExecutor.exeProcessoHistorias = EProcesso.DESTRUIDO;
-                    prevPaginaExecutor.exeEstado = EPaginaCampanhaEstado.COMBATE;
+                    prevPaginaExecutor.exeEstado = EPaginaExecutorEstado.COMBATE;
                     return { ...prevPaginaExecutor };
                 });
             }
-        } else if (paginaExecutor.exeEstado === EPaginaCampanhaEstado.COMBATE) {
+        } else if (paginaExecutor.exeEstado === EPaginaExecutorEstado.COMBATE) {
             if (paginaExecutor.exeProcessoCombate === EProcesso._ZERO) {
                 setPaginaExecutor((prevPaginaExecutor) => {
                     prevPaginaExecutor.exeProcessoCombate = EProcesso.INICIANDO;
                     if (prevPaginaExecutor.combate && prevPaginaExecutor.combate.inimigos && prevPaginaExecutor.combate.inimigos.length) {
-                        prevPaginaExecutor.combate = RetornarPaginaCampanhaCombateInicial(prevPaginaExecutor.combate, prevPaginaExecutor.exeEhJogoCarregado);
+                        prevPaginaExecutor.combate = RetornarPaginaExecutorCombateInicial(prevPaginaExecutor.combate, prevPaginaExecutor.exeEhJogoCarregado);
                     } else {
                         prevPaginaExecutor.exeProcessoCombate = EProcesso.CONCLUIDO;
                     }
@@ -303,11 +300,11 @@ export const ContextoJogos = () => {
             } else if (paginaExecutor.exeProcessoCombate === EProcesso.CONCLUIDO) {
                 setPaginaExecutor((prevPaginaExecutor) => {
                     prevPaginaExecutor.exeProcessoCombate = EProcesso.DESTRUIDO;
-                    prevPaginaExecutor.exeEstado = EPaginaCampanhaEstado.DESTINOS;
+                    prevPaginaExecutor.exeEstado = EPaginaExecutorEstado.DESTINOS;
                     return { ...prevPaginaExecutor };
                 });
             }
-        } else if (paginaExecutor.exeEstado === EPaginaCampanhaEstado.DESTINOS) {
+        } else if (paginaExecutor.exeEstado === EPaginaExecutorEstado.DESTINOS) {
             if (paginaExecutor.exeProcessoDestinos === EProcesso._ZERO) {
                 setPaginaExecutor((prevPaginaExecutor) => {
                     return { ...prevPaginaExecutor, exeProcessoDestinos: EProcesso.INICIANDO };
@@ -406,7 +403,7 @@ export const ContextoJogos = () => {
     }
 
     function ObterEfeitoAtualDoAtributo(atributo: EAtributo): IEfeito {
-        if (!paginaExecutor.exeEfeitosAtuais || !paginaExecutor.exeEfeitosAtuais.length) {
+        if (!paginaExecutor || !paginaExecutor.exeEfeitosAtuais || !paginaExecutor.exeEfeitosAtuais.length) {
             return null!;
         }
         return paginaExecutor.exeEfeitosAtuais.find(
@@ -414,7 +411,7 @@ export const ContextoJogos = () => {
         )!;
     }
 
-    function ImporPaginaCampanhaViaDestino(idPaginaDestino: number, idCapituloDestino: ECampanhaCapitulo) {
+    function ImporPaginaExecutorViaDestino(idPaginaDestino: number, idCapituloDestino: ECampanhaCapitulo) {
         setPaginaExecutor((prevPaginaExecutor) => {
             return {
                 ...prevPaginaExecutor,
@@ -425,22 +422,8 @@ export const ContextoJogos = () => {
         });
     }
 
-    function ImporProcessoHistoriasNaPaginaCampanha(processo: EProcesso.PROCESSANDO | EProcesso.CONCLUIDO) {
-        if (paginaExecutor.exeEstado === EPaginaCampanhaEstado.HISTORIAS) {
-            if (paginaExecutor.exeProcessoHistorias === EProcesso.INICIANDO && processo === EProcesso.PROCESSANDO) {
-                setPaginaExecutor((prevPaginaExecutor) => {
-                    return { ...prevPaginaExecutor, exeProcessoHistorias: EProcesso.PROCESSANDO };
-                });
-            } else if (paginaExecutor.exeProcessoHistorias === EProcesso.PROCESSANDO && processo === EProcesso.CONCLUIDO) {
-                setPaginaExecutor((prevPaginaExecutor) => {
-                    return { ...prevPaginaExecutor, exeProcessoHistorias: EProcesso.CONCLUIDO };
-                });
-            }
-        }
-    }
-
-    function ImporProcessoCombateNaPaginaCampanha(processo: EProcesso.PROCESSANDO | EProcesso.CONCLUIDO) {
-        if (paginaExecutor.exeEstado === EPaginaCampanhaEstado.COMBATE) {
+    function ImporProcessoCombateNaPaginaExecutor(processo: EProcesso.PROCESSANDO | EProcesso.CONCLUIDO) {
+        if (paginaExecutor.exeEstado === EPaginaExecutorEstado.COMBATE) {
             if (paginaExecutor.exeProcessoCombate === EProcesso.INICIANDO && processo === EProcesso.PROCESSANDO) {
                 setPaginaExecutor((prevPaginaExecutor) => {
                     return { ...prevPaginaExecutor, exeProcessoCombate: EProcesso.PROCESSANDO };
@@ -453,8 +436,8 @@ export const ContextoJogos = () => {
         }
     }
 
-    function ImporProcessoDestinosNaPaginaCampanha(processo: EProcesso.PROCESSANDO | EProcesso.CONCLUIDO) {
-        if (paginaExecutor.exeEstado === EPaginaCampanhaEstado.DESTINOS) {
+    function ImporProcessoDestinosNaPaginaExecutor(processo: EProcesso.PROCESSANDO | EProcesso.CONCLUIDO) {
+        if (paginaExecutor.exeEstado === EPaginaExecutorEstado.DESTINOS) {
             if (paginaExecutor.exeProcessoDestinos === EProcesso.INICIANDO && processo === EProcesso.PROCESSANDO) {
                 setPaginaExecutor((prevPaginaExecutor) => {
                     return { ...prevPaginaExecutor, exeProcessoDestinos: EProcesso.PROCESSANDO };
@@ -467,36 +450,7 @@ export const ContextoJogos = () => {
         }
     }
 
-    function ImporPaginaCampanhaHistoriasExecutoresViaIndice(processoHistoria: EProcesso, processoTexto: EProcesso, processoEfeito: EProcesso) {
-        if (paginaExecutor.historias[paginaExecutor.exeIndiceHistoria]) {
-            setPaginaExecutor((prevPaginaExecutor) => {
-                prevPaginaExecutor.historias = prevPaginaExecutor.historias.map((historiaI, indiceI) => {
-                    if (indiceI === paginaExecutor.exeIndiceHistoria) {
-                        if (processoHistoria !== EProcesso._ZERO) {
-                            historiaI.exeProcessoHistoria = processoHistoria;
-                        }
-                        if (processoTexto !== EProcesso._ZERO) {
-                            historiaI.exeProcessoTexto = processoTexto;
-                        }
-                        if (processoEfeito !== EProcesso._ZERO) {
-                            historiaI.exeProcessoEfeito = processoEfeito;
-                        }
-                    }
-                    return historiaI;
-                });
-                return { ...prevPaginaExecutor };
-            });
-        }
-    }
-
-    function ImporEIncrementarPaginaCampanhaExeIndiceHistoria() {
-        setPaginaExecutor((prevPaginaExecutor) => {
-            prevPaginaExecutor.exeIndiceHistoria += 1;
-            return { ...prevPaginaExecutor };
-        });
-    }
-
-    function ImporPaginaCampanhaCombateDoProcessoZeroDaSerieDeAtaque(serieDeAtaque: number) {
+    function ImporPaginaExecutorCombateDoProcessoZeroDaSerieDeAtaque(serieDeAtaque: number) {
         if (paginaExecutor.combate.exeSerieDeAtaqueAtual !== serieDeAtaque) {
             setPaginaExecutor((prevPaginaExecutor) => {
                 prevPaginaExecutor.combate.exeSerieDeAtaqueAtual = serieDeAtaque;

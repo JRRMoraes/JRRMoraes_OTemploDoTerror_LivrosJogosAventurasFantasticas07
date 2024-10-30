@@ -1,7 +1,7 @@
 import styles from "./TelaCombate.module.scss";
 import { useState, useEffect, useRef } from "react";
 import { ContextoJogos } from "../contextos";
-import { EPaginaCampanhaEstado, AvaliarResultadoCombateDaPaginaCampanhaCombate, EResultadoCombate, IInimigoExecutor, EPosturaInimigo } from "../tipos";
+import { EPaginaExecutorEstado, AvaliarResultadoCombateDaPaginaExecutorCombate, EResultadoCombate, IInimigoExecutor, EPosturaInimigo } from "../tipos";
 import { EProcesso } from "../uteis";
 import { ReactDiceRef } from "react-dice-complete";
 
@@ -11,7 +11,7 @@ interface ITelaCombateConclusao {
 }
 
 export const TelaCombate = () => {
-    const { jogoAtual, paginaExecutor, ImporProcessoCombateNaPaginaCampanha, ImporPaginaCampanhaCombateDoProcessoZeroDaSerieDeAtaque } = ContextoJogos();
+    const { jogoAtual, paginaExecutor, ImporProcessoCombateNaPaginaExecutor, ImporPaginaExecutorCombateDoProcessoZeroDaSerieDeAtaque } = ContextoJogos();
 
     const [serieDeAtaqueAtual, setSerieDeAtaqueAtual] = useState(1);
     const [processoSerieDeAtaque, setProcessoSerieDeAtaque] = useState<EProcesso>(EProcesso._ZERO);
@@ -29,21 +29,21 @@ export const TelaCombate = () => {
         if (paginaExecutor.exeProcessoCombate === EProcesso.INICIANDO) {
             setSerieDeAtaqueAtual(1);
             setProcessoSerieDeAtaque(EProcesso._ZERO);
-            ImporProcessoCombateNaPaginaCampanha(EProcesso.PROCESSANDO);
+            ImporProcessoCombateNaPaginaExecutor(EProcesso.PROCESSANDO);
             return;
         }
         if (paginaExecutor.exeProcessoCombate === EProcesso.PROCESSANDO) {
             if (processoSerieDeAtaque === EProcesso._ZERO) {
-                ImporPaginaCampanhaCombateDoProcessoZeroDaSerieDeAtaque(serieDeAtaqueAtual);
+                ImporPaginaExecutorCombateDoProcessoZeroDaSerieDeAtaque(serieDeAtaqueAtual);
                 setProcessoSerieDeAtaque(EProcesso.INICIANDO);
             } else if (processoSerieDeAtaque === EProcesso.INICIANDO) {
                 // aprovar
             } else if (processoSerieDeAtaque === EProcesso.PROCESSANDO) {
                 // rolar dados
             } else if (processoSerieDeAtaque === EProcesso.DESTRUIDO) {
-                switch (AvaliarResultadoCombateDaPaginaCampanhaCombate(paginaExecutor.combate, jogoAtual.panilha)) {
+                switch (AvaliarResultadoCombateDaPaginaExecutorCombate(paginaExecutor.combate, jogoAtual.panilha)) {
                     case EResultadoCombate.VITORIA:
-                        ImporProcessoCombateNaPaginaCampanha(EProcesso.CONCLUIDO);
+                        ImporProcessoCombateNaPaginaExecutor(EProcesso.CONCLUIDO);
                         break;
                     case EResultadoCombate.DERROTA:
                         // matar ou destino derrota
@@ -55,7 +55,7 @@ export const TelaCombate = () => {
                         break;
                 }
                 ///// teste
-                ImporProcessoCombateNaPaginaCampanha(EProcesso.CONCLUIDO);
+                ImporProcessoCombateNaPaginaExecutor(EProcesso.CONCLUIDO);
             }
         }
     }, [jogoAtual, paginaExecutor, serieDeAtaqueAtual, processoSerieDeAtaque]);
@@ -63,7 +63,7 @@ export const TelaCombate = () => {
     if (ContextosReprovados(true)) {
         return <></>;
     }
-    if (![EPaginaCampanhaEstado.COMBATE, EPaginaCampanhaEstado.DESTINOS].includes(paginaExecutor.exeEstado)) {
+    if (![EPaginaExecutorEstado.COMBATE, EPaginaExecutorEstado.DESTINOS].includes(paginaExecutor.exeEstado)) {
         return <></>;
     }
     return (
@@ -88,7 +88,7 @@ export const TelaCombate = () => {
             !paginaExecutor.combate ||
             !paginaExecutor.combate.inimigos ||
             !paginaExecutor.combate.inimigos.length ||
-            ![EPaginaCampanhaEstado.COMBATE, EPaginaCampanhaEstado.DESTINOS].includes(paginaExecutor.exeEstado);
+            ![EPaginaExecutorEstado.COMBATE, EPaginaExecutorEstado.DESTINOS].includes(paginaExecutor.exeEstado);
         if (processoIniciandoReprova) {
             _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaExecutor.exeProcessoCombate);
         } else {

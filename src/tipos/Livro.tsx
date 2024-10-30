@@ -134,7 +134,7 @@ export interface IPaginaExecutor extends IPagina {
     exeEhJogoCarregado: boolean;
     exeIdPaginaDestino: number;
     exeIdCapituloDestino: ECampanhaCapitulo;
-    exeEstado: EPaginaCampanhaEstado;
+    exeEstado: EPaginaExecutorEstado;
     historias: IHistoriaExecutor[];
     exeProcessoHistorias: EProcesso;
     exeIndiceHistoria: number;
@@ -193,7 +193,7 @@ export interface ILivro {
     paginasCampanha: IPagina[];
 }
 
-export enum EPaginaCampanhaEstado {
+export enum EPaginaExecutorEstado {
     _NULO = "_",
     INICIALIZADO = "INICIALIZADO",
     HISTORIAS = "HISTORIAS",
@@ -211,7 +211,7 @@ export interface IAudioExecutor {
     loopAtual: boolean;
 }
 
-export function RetornarPaginaCampanhaCombateInicial(combate: ICombateExecutor, ehJogoCarregado: boolean) {
+export function RetornarPaginaExecutorCombateInicial(combate: ICombateExecutor, ehJogoCarregado: boolean) {
     if (ehJogoCarregado) {
         combate.inimigos = combate.inimigos.map((inimigoI) => {
             inimigoI.exePosturaInimigo = EPosturaInimigo.MORTO;
@@ -236,7 +236,7 @@ export function RetornarPaginaCampanhaCombateInicial(combate: ICombateExecutor, 
     return combate;
 }
 
-export function AvaliarResultadoCombateDaPaginaCampanhaCombate(combate: ICombateExecutor, panilha: IPanilha) {
+export function AvaliarResultadoCombateDaPaginaExecutorCombate(combate: ICombateExecutor, panilha: IPanilha) {
     if (!combate.inimigos.find((inimigoI) => inimigoI.exePosturaInimigo !== EPosturaInimigo.MORTO)) {
         return EResultadoCombate.VITORIA;
     }

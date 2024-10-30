@@ -13,7 +13,7 @@ export const PaginaLivroJogo = () => {
 
     const { livro, ObterPagina } = ContextoLivro();
 
-    const { jogoAtual, paginaExecutor, CarregarJogoSalvoOuNovo, ResetarJogoAtual, ImporPaginaAtualECampanha, ImporPaginaCampanhaViaAtual } = ContextoJogos();
+    const { jogoAtual, paginaExecutor, CarregarJogoSalvoOuNovo, ResetarJogoAtual, ImporPaginaExecutor, AtualizarPaginaExecutorAutomaticamente } = ContextoJogos();
 
     useEffect(() => {
         if (!jogoAtual) {
@@ -30,8 +30,8 @@ export const PaginaLivroJogo = () => {
 
     useEffect(() => {
         if (jogoAtual) {
-            setEhJogoCarregado(ImporPaginaAtualECampanha(ObterPagina(jogoAtual), ehJogoCarregado));
-            ImporPaginaCampanhaViaAtual();
+            setEhJogoCarregado(ImporPaginaExecutor(ObterPagina(jogoAtual), ehJogoCarregado));
+            AtualizarPaginaExecutorAutomaticamente();
         }
     }, [livro, jogoAtual, paginaExecutor]);
 
