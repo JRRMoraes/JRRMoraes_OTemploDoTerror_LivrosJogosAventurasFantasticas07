@@ -1,25 +1,12 @@
 import styles from "./PaginaLivroJogo.module.scss";
-import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { ContextoLivro, ContextoJogos } from "../contextos";
+import { useEffect } from "react";
+import { ContextoJogos } from "../contextos";
 import { TelaCampanha, TelaPanilha } from "../telas";
 import { isMobile } from "react-device-detect";
 import { ReprodutorAudio } from "../componentes";
 
 export const PaginaLivroJogo = () => {
-    let { idJogo } = useParams();
-
-    const [ehJogoCarregado, setEhJogoCarregado] = useState(false);
-
-    const { livro, ObterPagina } = ContextoLivro();
-
-    const { jogoAtual, paginaExecutor, CarregarJogoSalvoOuNovo, ResetarJogoAtual, ImporPaginaExecutor, AtualizarPaginaExecutorAutomaticamente } = ContextoJogos();
-
-    useEffect(() => {
-        if (!jogoAtual) {
-            setEhJogoCarregado(CarregarJogoSalvoOuNovo(idJogo!));
-        }
-    }, [idJogo]);
+    const { jogoAtual, paginaExecutor, ResetarJogo } = ContextoJogos();
 
     useEffect(() => {
         window.addEventListener("beforeunload", ProcessarRefresh);
@@ -27,13 +14,6 @@ export const PaginaLivroJogo = () => {
             window.removeEventListener("beforeunload", ProcessarRefresh);
         };
     }, []);
-
-    useEffect(() => {
-        if (jogoAtual) {
-            setEhJogoCarregado(ImporPaginaExecutor(ObterPagina(jogoAtual), ehJogoCarregado));
-            AtualizarPaginaExecutorAutomaticamente();
-        }
-    }, [livro, jogoAtual, paginaExecutor]);
 
     if (!jogoAtual || !paginaExecutor) {
         return <></>;
@@ -80,7 +60,7 @@ export const PaginaLivroJogo = () => {
 
     function ProcessarRefresh(evento: BeforeUnloadEvent) {
         evento.preventDefault();
-        ResetarJogoAtual();
+        ResetarJogo();
     }
 };
 

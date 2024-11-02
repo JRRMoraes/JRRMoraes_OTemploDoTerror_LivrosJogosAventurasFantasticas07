@@ -6,4 +6,23 @@
     background-color: orange;
     transition: border-color 0.25s;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+
+    &_titulo {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 0 12px 0;
+        font-style: italic;
+
+        h3 {
+            text-align: left;
+            margin: 0;
+        }
+
+        h4 {
+            text-align: right;
+            margin: 0;
+        }
+    }
 }

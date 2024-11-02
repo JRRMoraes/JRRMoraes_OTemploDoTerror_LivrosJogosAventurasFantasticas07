@@ -1,17 +1,17 @@
 import styles from "./TelaHistorias.module.scss";
-import { IEfeito, IHistoriaExecutor } from "../tipos";
+import { IEfeito, IHistoriaExecucao } from "../tipos";
 import { Botao, TextosDatilografados } from "../componentes";
 import { ControleHistorias } from "../controles";
 
 export const TelaHistorias = () => {
-    const { paginaExecutor, velocidade, ContextosReprovados, AprovarExeProcessoHistoria, AprovarBotaoPularHistoria, AprovarEfeitos, PularHistoria, FuncaoAoConcluirTexto } = ControleHistorias();
+    const { historiasExecutor, velocidade, ContextosReprovados, AprovarExeProcessoHistoria, AprovarBotaoPularHistoria, AprovarEfeitos, PularHistoria, FuncaoAoConcluirTexto } = ControleHistorias();
 
     if (ContextosReprovados(true)) {
         return <></>;
     }
     return (
         <div className={styles.historias}>
-            {paginaExecutor.historias.map((historiaI, indiceI) => {
+            {historiasExecutor.historias.map((historiaI, indiceI) => {
                 if (AprovarExeProcessoHistoria(historiaI)) {
                     return (
                         <div key={indiceI}>
@@ -33,7 +33,7 @@ export const TelaHistorias = () => {
         </div>
     );
 
-    function MontarRetorno_BotaoPularHistoria(historia: IHistoriaExecutor) {
+    function MontarRetorno_BotaoPularHistoria(historia: IHistoriaExecucao) {
         if (AprovarBotaoPularHistoria(historia)) {
             return (
                 <div className={styles.historias_pularHistoria}>
@@ -45,7 +45,7 @@ export const TelaHistorias = () => {
         }
     }
 
-    function MontarRetorno_Efeitos(historia: IHistoriaExecutor) {
+    function MontarRetorno_Efeitos(historia: IHistoriaExecucao) {
         if (AprovarEfeitos(historia)) {
             return (
                 <div>

@@ -1,7 +1,7 @@
 import { IJogo, IPaginaExecutor, IAprovacaoDestino, EAtributo, EComparacao } from "../tipos";
 import { TextosIguais } from "../uteis";
 
-export const OperacoesJogoLivro = (jogoAtual: IJogo, paginaExecutor: IPaginaExecutor) => {
+export const OperacoesJogoLivro = (jogoAtual: IJogo) => {
     return {
         ValidarAprovacoesDestino,
     };

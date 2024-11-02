@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { EPaginaExecutorEstado, IHistoriaExecutor } from "../tipos";
+import { EPaginaExecutorEstado, IHistoriaExecucao } from "../tipos";
 import { ContextoJogos } from "../contextos";
 import { EProcesso } from "../uteis";
 import { TEMPO_ANIMACAO_NORMAL } from "../globais/Constantes";
 
 export const ControleHistorias = () => {
-    const { jogoAtual, paginaExecutor, setPaginaExecutor, AplicarEfeitosDaHistoria } = ContextoJogos();
+    const { jogoAtual, paginaExecutor, historiasExecutor, setHistoriasExecutor, AplicarEfeitosAtuaisDaHistoria } = ContextoJogos();
 
     const VELOCIDADES = { normal: 20, rapido: 0 };
     const [velocidade, setVelocidade] = useState(VELOCIDADES.normal);
@@ -17,24 +17,24 @@ export const ControleHistorias = () => {
             setExibeBotao(true);
             return;
         }
-        if (paginaExecutor.exeProcessoHistorias === EProcesso.INICIANDO) {
+        if (historiasExecutor.processoHistorias === EProcesso.INICIANDO) {
             if (paginaExecutor.exeEhJogoCarregado) {
                 setVelocidade(VELOCIDADES.rapido);
                 setExibeBotao(false);
             }
-            ImporProcessoHistoriasNaPaginaExecutor(EProcesso.PROCESSANDO);
+            ImporProcessoNoHistoriasExecutor(EProcesso.PROCESSANDO);
             return;
         }
-        if (paginaExecutor.exeProcessoHistorias === EProcesso.PROCESSANDO) {
+        if (historiasExecutor.processoHistorias === EProcesso.PROCESSANDO) {
             if (ObterHistoriaAtual()) {
                 if (ObterHistoriaAtual().exeProcessoHistoria === EProcesso._ZERO) {
-                    ImporPaginaExecutorHistoriasExecutoresViaIndice(EProcesso.INICIANDO, EProcesso.INICIANDO, EProcesso._ZERO);
+                    ImporExeProcessosDoHistoriasExecutorViaIndice(EProcesso.INICIANDO, EProcesso.INICIANDO, EProcesso._ZERO);
                 } else if (ObterHistoriaAtual().exeProcessoHistoria === EProcesso.INICIANDO) {
-                    ImporPaginaExecutorHistoriasExecutoresViaIndice(EProcesso.PROCESSANDO, EProcesso.PROCESSANDO, EProcesso._ZERO);
+                    ImporExeProcessosDoHistoriasExecutorViaIndice(EProcesso.PROCESSANDO, EProcesso.PROCESSANDO, EProcesso._ZERO);
                 } else if (ObterHistoriaAtual().exeProcessoHistoria === EProcesso.PROCESSANDO) {
                     if (ObterHistoriaAtual().exeProcessoTexto === EProcesso.CONCLUIDO) {
                         if (ObterHistoriaAtual().exeProcessoEfeito === EProcesso._ZERO) {
-                            ImporPaginaExecutorHistoriasExecutoresViaIndice(EProcesso._ZERO, EProcesso._ZERO, EProcesso.INICIANDO);
+                            ImporExeProcessosDoHistoriasExecutorViaIndice(EProcesso._ZERO, EProcesso._ZERO, EProcesso.INICIANDO);
                         } else if (ObterHistoriaAtual().exeProcessoEfeito === EProcesso.INICIANDO) {
                             if (
                                 !paginaExecutor.exeEhJogoCarregado &&
@@ -42,31 +42,31 @@ export const ControleHistorias = () => {
                                 ObterHistoriaAtual().efeitos &&
                                 ObterHistoriaAtual().efeitos.length
                             ) {
-                                AplicarEfeitosDaHistoria(ObterHistoriaAtual().efeitos);
-                                ImporPaginaExecutorHistoriasExecutoresViaIndice(EProcesso._ZERO, EProcesso._ZERO, EProcesso.PROCESSANDO);
+                                AplicarEfeitosAtuaisDaHistoria(ObterHistoriaAtual().efeitos);
+                                ImporExeProcessosDoHistoriasExecutorViaIndice(EProcesso._ZERO, EProcesso._ZERO, EProcesso.PROCESSANDO);
                                 setTimeout(() => {
-                                    ImporPaginaExecutorHistoriasExecutoresViaIndice(EProcesso._ZERO, EProcesso._ZERO, EProcesso.CONCLUIDO);
+                                    ImporExeProcessosDoHistoriasExecutorViaIndice(EProcesso._ZERO, EProcesso._ZERO, EProcesso.CONCLUIDO);
                                 }, TEMPO_ANIMACAO_NORMAL);
                             } else {
-                                ImporPaginaExecutorHistoriasExecutoresViaIndice(EProcesso._ZERO, EProcesso._ZERO, EProcesso.CONCLUIDO);
+                                ImporExeProcessosDoHistoriasExecutorViaIndice(EProcesso._ZERO, EProcesso._ZERO, EProcesso.CONCLUIDO);
                             }
                         } else if (ObterHistoriaAtual().exeProcessoEfeito === EProcesso.CONCLUIDO) {
-                            ImporPaginaExecutorHistoriasExecutoresViaIndice(EProcesso.CONCLUIDO, EProcesso.DESTRUIDO, EProcesso.DESTRUIDO);
+                            ImporExeProcessosDoHistoriasExecutorViaIndice(EProcesso.CONCLUIDO, EProcesso.DESTRUIDO, EProcesso.DESTRUIDO);
                         }
                     }
                 } else if (ObterHistoriaAtual().exeProcessoHistoria === EProcesso.CONCLUIDO) {
-                    ImporPaginaExecutorHistoriasExecutoresViaIndice(EProcesso.DESTRUIDO, EProcesso._ZERO, EProcesso._ZERO);
-                    ImporEIncrementarPaginaExecutorExeIndiceHistoria();
+                    ImporExeProcessosDoHistoriasExecutorViaIndice(EProcesso.DESTRUIDO, EProcesso._ZERO, EProcesso._ZERO);
+                    ImporEIncrementarIndiceDoHistoriasExecutor();
                 }
             } else {
-                ImporProcessoHistoriasNaPaginaExecutor(EProcesso.CONCLUIDO);
+                ImporProcessoNoHistoriasExecutor(EProcesso.CONCLUIDO);
             }
             return;
         }
-    }, [paginaExecutor]);
+    }, [historiasExecutor]);
 
     return {
-        paginaExecutor,
+        historiasExecutor,
         velocidade,
         exibeBotao,
         ContextosReprovados,
@@ -80,41 +80,41 @@ export const ControleHistorias = () => {
     function ContextosReprovados(processoIniciandoReprova: boolean) {
         let _reprovado =
             !jogoAtual ||
-            !paginaExecutor ||
-            !paginaExecutor.historias ||
-            !paginaExecutor.historias.length ||
+            !historiasExecutor ||
+            !historiasExecutor.historias ||
+            !historiasExecutor.historias.length ||
             ![EPaginaExecutorEstado.HISTORIAS, EPaginaExecutorEstado.COMBATE, EPaginaExecutorEstado.DESTINOS].includes(paginaExecutor.exeEstado);
         if (processoIniciandoReprova) {
-            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaExecutor.exeProcessoHistorias);
+            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(historiasExecutor.processoHistorias);
         } else {
-            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaExecutor.exeProcessoHistorias);
+            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(historiasExecutor.processoHistorias);
         }
         return _reprovado;
     }
 
     function ObterHistoriaAtual() {
-        return paginaExecutor.historias[paginaExecutor.exeIndiceHistoria];
+        return historiasExecutor.historias[historiasExecutor.indiceHistoria];
     }
 
-    function ImporProcessoHistoriasNaPaginaExecutor(processo: EProcesso.PROCESSANDO | EProcesso.CONCLUIDO) {
+    function ImporProcessoNoHistoriasExecutor(processo: EProcesso.PROCESSANDO | EProcesso.CONCLUIDO) {
         if (paginaExecutor.exeEstado === EPaginaExecutorEstado.HISTORIAS) {
-            if (paginaExecutor.exeProcessoHistorias === EProcesso.INICIANDO && processo === EProcesso.PROCESSANDO) {
-                setPaginaExecutor((prevPaginaExecutor) => {
-                    return { ...prevPaginaExecutor, exeProcessoHistorias: EProcesso.PROCESSANDO };
+            if (historiasExecutor.processoHistorias === EProcesso.INICIANDO && processo === EProcesso.PROCESSANDO) {
+                setHistoriasExecutor((prevHistoriasExecutor) => {
+                    return { ...prevHistoriasExecutor, processoHistorias: EProcesso.PROCESSANDO };
                 });
-            } else if (paginaExecutor.exeProcessoHistorias === EProcesso.PROCESSANDO && processo === EProcesso.CONCLUIDO) {
-                setPaginaExecutor((prevPaginaExecutor) => {
-                    return { ...prevPaginaExecutor, exeProcessoHistorias: EProcesso.CONCLUIDO };
+            } else if (historiasExecutor.processoHistorias === EProcesso.PROCESSANDO && processo === EProcesso.CONCLUIDO) {
+                setHistoriasExecutor((prevHistoriasExecutor) => {
+                    return { ...prevHistoriasExecutor, processoHistorias: EProcesso.CONCLUIDO };
                 });
             }
         }
     }
 
-    function ImporPaginaExecutorHistoriasExecutoresViaIndice(processoHistoria: EProcesso, processoTexto: EProcesso, processoEfeito: EProcesso) {
-        if (paginaExecutor.historias[paginaExecutor.exeIndiceHistoria]) {
-            setPaginaExecutor((prevPaginaExecutor) => {
-                prevPaginaExecutor.historias = prevPaginaExecutor.historias.map((historiaI, indiceI) => {
-                    if (indiceI === paginaExecutor.exeIndiceHistoria) {
+    function ImporExeProcessosDoHistoriasExecutorViaIndice(processoHistoria: EProcesso, processoTexto: EProcesso, processoEfeito: EProcesso) {
+        if (ObterHistoriaAtual()) {
+            setHistoriasExecutor((prevHistoriasExecutor) => {
+                prevHistoriasExecutor.historias = prevHistoriasExecutor.historias.map((historiaI, indiceI) => {
+                    if (indiceI === prevHistoriasExecutor.indiceHistoria) {
                         if (processoHistoria !== EProcesso._ZERO) {
                             historiaI.exeProcessoHistoria = processoHistoria;
                         }
@@ -127,33 +127,28 @@ export const ControleHistorias = () => {
                     }
                     return historiaI;
                 });
-                return { ...prevPaginaExecutor };
+                return { ...prevHistoriasExecutor };
             });
         }
     }
 
-    function ImporEIncrementarPaginaExecutorExeIndiceHistoria() {
-        setPaginaExecutor((prevPaginaExecutor) => {
-            prevPaginaExecutor.exeIndiceHistoria += 1;
-            return { ...prevPaginaExecutor };
+    function ImporEIncrementarIndiceDoHistoriasExecutor() {
+        setHistoriasExecutor((prevHistoriasExecutor) => {
+            prevHistoriasExecutor.indiceHistoria += 1;
+            return { ...prevHistoriasExecutor };
         });
     }
 
-    function AprovarExeProcessoHistoria(historia: IHistoriaExecutor) {
+    function AprovarExeProcessoHistoria(historia: IHistoriaExecucao) {
         return [EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(historia.exeProcessoHistoria);
     }
 
-    function AprovarBotaoPularHistoria(historia: IHistoriaExecutor) {
+    function AprovarBotaoPularHistoria(historia: IHistoriaExecucao) {
         return ![EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(historia.exeProcessoTexto) && exibeBotao;
     }
 
-    function AprovarEfeitos(historia: IHistoriaExecutor) {
-        return (
-            historia.efeitos &&
-            historia.efeitos.length &&
-            [EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(historia.exeProcessoTexto) &&
-            ![EProcesso._ZERO, EProcesso.DESTRUIDO].includes(historia.exeProcessoEfeito)
-        );
+    function AprovarEfeitos(historia: IHistoriaExecucao) {
+        return historia.efeitos && historia.efeitos.length && [EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(historia.exeProcessoTexto) && historia.exeProcessoEfeito !== EProcesso._ZERO;
     }
 
     function PularHistoria() {
@@ -162,7 +157,7 @@ export const ControleHistorias = () => {
     }
 
     function FuncaoAoConcluirTexto() {
-        ImporPaginaExecutorHistoriasExecutoresViaIndice(EProcesso._ZERO, EProcesso.CONCLUIDO, EProcesso._ZERO);
+        ImporExeProcessosDoHistoriasExecutorViaIndice(EProcesso._ZERO, EProcesso.CONCLUIDO, EProcesso._ZERO);
     }
 };
 

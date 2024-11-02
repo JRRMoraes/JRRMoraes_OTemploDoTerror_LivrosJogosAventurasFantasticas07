@@ -9,7 +9,7 @@ import { TEMPO_ANIMACAO_NORMAL } from "../globais/Constantes";
 export const PaginaInicial = () => {
     const { livro, CaminhoImagem } = ContextoLivro();
 
-    const { jogoAtual, paginaExecutor, ResetarJogoAtual } = ContextoJogos();
+    const { jogoAtual, paginaExecutor, ResetarJogo } = ContextoJogos();
 
     const [estado, setEstado] = useState<"ABERTURA" | "MENU">("ABERTURA");
 
@@ -25,7 +25,7 @@ export const PaginaInicial = () => {
 
     useEffect(() => {
         if (jogoAtual || paginaExecutor) {
-            ResetarJogoAtual();
+            ResetarJogo();
         }
 
         document.addEventListener("keydown", exibeMenuViaTeclado, false);

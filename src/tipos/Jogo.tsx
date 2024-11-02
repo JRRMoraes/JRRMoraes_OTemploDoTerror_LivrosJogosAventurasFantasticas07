@@ -22,8 +22,8 @@ export interface IPanilha {
     sorteInicial: number;
     ouro: number;
     provisao: number;
-    encantos: string[];
     itens: IItem[];
+    encantos: string[];
 }
 
 export enum ECampanhaCapitulo {
@@ -135,26 +135,9 @@ export function CriarPanilhaViaRolagens(totaisRolados: ITotaisRoladosParaPanilha
         sorteInicial: totaisRolados.sorte,
         ouro: 0,
         provisao: 0,
-        encantos: [],
         itens: [],
+        encantos: [],
     };
-}
-
-export function RetornarPanilhaEncantosAtualizados(encantos: string[], efeito: IEfeito): string[] {
-    if (!efeito.nomeEfeito) {
-        return encantos;
-    }
-    if (encantos.find((encantoI) => TextosIguais(encantoI, efeito.nomeEfeito))) {
-        encantos = encantos.map((encantoI) => {
-            if (TextosIguais(encantoI, efeito.nomeEfeito)) {
-                return efeito.quantidade >= 1 ? efeito.nomeEfeito : "";
-            }
-            return encantoI;
-        });
-    } else if (efeito.quantidade > 0) {
-        encantos = [...encantos, efeito.nomeEfeito];
-    }
-    return encantos.filter((encantoI) => !TextosIguais(encantoI, ""));
 }
 
 export function RetornarPanilhaItensAtualizados(itens: IItem[], efeito: IEfeito): IItem[] {
@@ -172,4 +155,21 @@ export function RetornarPanilhaItensAtualizados(itens: IItem[], efeito: IEfeito)
         itens = [...itens, { idItem: efeito.nomeEfeito, quantidade: efeito.quantidade }];
     }
     return itens.filter((itemI) => itemI.quantidade > 0);
+}
+
+export function RetornarPanilhaEncantosAtualizados(encantos: string[], efeito: IEfeito): string[] {
+    if (!efeito.nomeEfeito) {
+        return encantos;
+    }
+    if (encantos.find((encantoI) => TextosIguais(encantoI, efeito.nomeEfeito))) {
+        encantos = encantos.map((encantoI) => {
+            if (TextosIguais(encantoI, efeito.nomeEfeito)) {
+                return efeito.quantidade >= 1 ? efeito.nomeEfeito : "";
+            }
+            return encantoI;
+        });
+    } else if (efeito.quantidade > 0) {
+        encantos = [...encantos, efeito.nomeEfeito];
+    }
+    return encantos.filter((encantoI) => !TextosIguais(encantoI, ""));
 }

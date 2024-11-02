@@ -1,15 +1,6 @@
-import { Dispatch, SetStateAction, createContext, useContext } from "react";
-import { ILivro, IAudioExecutor, IJogo, IPagina, ECampanhaCapitulo, PAGINA_ZERADA, PAGINA_INICIAL } from "../tipos";
-
-export type TContextoBaseLivro = {
-    livro: ILivro;
-    setLivro: Dispatch<SetStateAction<ILivro>>;
-    audioExecutor: IAudioExecutor;
-    setAudioExecutor: Dispatch<SetStateAction<IAudioExecutor>>;
-};
-
-export const ContextoBaseLivro = createContext<TContextoBaseLivro>(null!);
-ContextoBaseLivro.displayName = "Livro";
+import { useContext } from "react";
+import { IJogo, IPagina, ECampanhaCapitulo, PAGINA_ZERADA, PAGINA_INICIAL } from "../tipos";
+import { ContextoBaseLivro } from ".";
 
 export const ContextoLivro = () => {
     const { livro, setLivro, audioExecutor, setAudioExecutor } = useContext(ContextoBaseLivro);

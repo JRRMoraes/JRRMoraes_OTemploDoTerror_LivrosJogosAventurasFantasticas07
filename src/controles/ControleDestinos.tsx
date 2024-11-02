@@ -23,8 +23,16 @@ import { TEMPO_ANIMACAO_GRANDE, TEMPO_DADOS_ROLANDO_MILESIMOS } from "../globais
 import ControlePaginaLivroJogo from "./ControlePaginaLivroJogo2";
 
 export const ControleDestinos = () => {
-    const { jogoAtual, paginaExecutor, ImporProcessoDestinosNaPaginaExecutor, ImporJogoAtualViaDestino, SalvarJogoAtualNoSalvo, AplicarPenalidadeDeTestarSorte, ImporPaginaExecutorViaDestino } =
-        ContextoJogos();
+    const {
+        jogoAtual,
+        paginaExecutor,
+        destinosExecutor,
+        ImporProcessoDestinosNaPaginaExecutor,
+        ImporJogoAtualViaDestino,
+        SalvarJogoAtualNoSalvo,
+        AplicarPenalidadeDeTestarSorte,
+        ImporPaginaExecutorViaDestino,
+    } = ContextoJogos();
 
     const { IniciarMudancaFlipPagina } = ControlePaginaLivroJogo();
 
@@ -32,7 +40,7 @@ export const ControleDestinos = () => {
 
     const [salvando, setSalvando] = useState(EProcesso._ZERO);
 
-    const { ValidarAprovacoesDestino } = OperacoesJogoLivro(jogoAtual, paginaExecutor);
+    const { ValidarAprovacoesDestino } = OperacoesJogoLivro(jogoAtual);
 
     const navegador = useNavigate();
 
@@ -44,7 +52,7 @@ export const ControleDestinos = () => {
         if (ContextosReprovados(false)) {
             return;
         }
-        if (paginaExecutor.exeProcessoDestinos === EProcesso.INICIANDO) {
+        if (destinosExecutor.processoDestinos === EProcesso.INICIANDO) {
             ImporProcessoDestinosNaPaginaExecutor(EProcesso.PROCESSANDO);
             return;
         }
@@ -52,6 +60,7 @@ export const ControleDestinos = () => {
             return;
         }
         IniciarMudancaFlipPagina();
+        ImporProcessoDestinosNaPaginaExecutor(EProcesso.CONCLUIDO);
         ImporJogoAtualViaDestino(paginaExecutor.exeIdPaginaDestino, paginaExecutor.exeIdCapituloDestino);
     }, [paginaExecutor]);
 
@@ -101,7 +110,7 @@ export const ControleDestinos = () => {
     }, [rolagemDados]);
 
     return {
-        paginaExecutor,
+        destinosExecutor,
         dadosRef,
         salvando,
         desativaBotoes,
@@ -118,11 +127,11 @@ export const ControleDestinos = () => {
     };
 
     function ContextosReprovados(processoIniciandoReprova: boolean) {
-        let _reprovado = !jogoAtual || !paginaExecutor || !paginaExecutor.destinos || !paginaExecutor.destinos.length || ![EPaginaExecutorEstado.DESTINOS].includes(paginaExecutor.exeEstado);
+        let _reprovado = !jogoAtual || !destinosExecutor || !destinosExecutor.destinos || !destinosExecutor.destinos.length || ![EPaginaExecutorEstado.DESTINOS].includes(paginaExecutor.exeEstado);
         if (processoIniciandoReprova) {
-            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaExecutor.exeProcessoDestinos);
+            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(destinosExecutor.processoDestinos);
         } else {
-            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(paginaExecutor.exeProcessoDestinos);
+            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(destinosExecutor.processoDestinos);
         }
         return _reprovado;
     }
@@ -130,7 +139,7 @@ export const ControleDestinos = () => {
     function EhFimDeJogo() {
         const _fimDeJogo = jogoAtual.campanhaCapitulo === ECampanhaCapitulo.PAGINAS_CAMPANHA;
         const _estaMorto = !!(jogoAtual.panilha && jogoAtual.panilha.energia === 0);
-        const _destinoMorte = !!paginaExecutor.destinos.find((destinoI) => destinoI.idPagina === PAGINA_FIM_DE_JOGO.idPagina);
+        const _destinoMorte = !!destinosExecutor.destinos.find((destinoI) => destinoI.idPagina === PAGINA_FIM_DE_JOGO.idPagina);
         return _fimDeJogo && (_estaMorto || _destinoMorte);
     }
 
@@ -206,8 +215,11 @@ export const ControleDestinos = () => {
             _testeSH.totalValor += rolagemDados.total;
             _testeSH.totalTexto = _testeSH.totalValor.toString();
             _testeSH.teveSorte = _testeSH.totalValor <= _testeSH.atributoValor;
-            _testeSH.resultadoTexto = _testeSH.teveSorte ? "Você TEVE " : "Você NÃO TEVE ";
-            _testeSH.resultadoTexto += _testeSH.resultadoTexto + _testeSH.atributoTexto;
+            if (_testeSH.teveSorte) {
+                _testeSH.resultadoTexto = "Você TEVE " + _testeSH.atributoTexto;
+            } else {
+                _testeSH.resultadoTexto = "Você NÃO TEVE " + _testeSH.atributoTexto;
+            }
         }
         return _testeSH;
     }

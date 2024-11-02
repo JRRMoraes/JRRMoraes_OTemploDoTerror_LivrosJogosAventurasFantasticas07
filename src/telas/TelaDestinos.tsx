@@ -10,7 +10,7 @@ import { ControleDestinos } from "../controles";
 
 export const TelaDestinos = () => {
     const {
-        paginaExecutor,
+        destinosExecutor,
         dadosRef,
         salvando,
         desativaBotoes,
@@ -104,7 +104,7 @@ export const TelaDestinos = () => {
     function MontarRetorno_Destinos() {
         return (
             <div className={styles.destinos_conteudo}>
-                {paginaExecutor.destinos.map((destinoI, indiceI) => {
+                {destinosExecutor.destinos.map((destinoI, indiceI) => {
                     return (
                         <div
                             key={indiceI}
@@ -177,8 +177,12 @@ export const TelaDestinos = () => {
                                 </td>
                             </tr>
                             <tr>
-                                <td className={styles.destinos_conteudo_pagina_rolagem_coluna_dados}>{" = " + _testeSH.totalTexto}</td>
-                                <td className={styles.destinos_conteudo_pagina_rolagem_coluna_texto}>{_testeSH.resultadoTexto}</td>
+                                <td className={styles.destinos_conteudo_pagina_rolagem_coluna_dados}>
+                                    <span className={styles.destinos_conteudo_pagina_rolagem_total}>{" = " + _testeSH.totalTexto}</span>
+                                </td>
+                                <td className={styles.destinos_conteudo_pagina_rolagem_coluna_texto}>
+                                    <span className={styles.destinos_conteudo_pagina_rolagem_total}>{_testeSH.resultadoTexto}</span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
