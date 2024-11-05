@@ -2,24 +2,10 @@ import "../componentes/Botao.module.scss";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ContextoJogos, OperacoesJogoLivro } from "../contextos";
-import {
-    EAtributoDestinoTeste,
-    ECampanhaCapitulo,
-    EJogoNivel,
-    EPaginaExecutorEstado,
-    IDestino,
-    IRolagemParaDestino,
-    PAGINA_ZERADA,
-    PAGINA_FIM_DE_JOGO,
-    ROLAGEM_PARA_DESTINO_ZERADA,
-    COR_SORTE,
-    COR_SORTE_DOTS,
-    COR_HABILIDADE,
-    COR_HABILIDADE_DOTS,
-} from "../tipos";
+import { EAtributoDestinoTeste, ECampanhaCapitulo, EJogoNivel, EPaginaExecutorEstado, IDestino, IRolagemParaDestino, PAGINA_ZERADA, PAGINA_FIM_DE_JOGO, ROLAGEM_PARA_DESTINO_ZERADA } from "../tipos";
 import { EProcesso } from "../uteis";
 import { ReactDiceRef } from "react-dice-complete";
-import { TEMPO_ANIMACAO_GRANDE, TEMPO_DADOS_ROLANDO_MILESIMOS } from "../globais/Constantes";
+import { COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_SORTE, COR_SORTE_DOTS, TEMPO_ANIMACAO_GRANDE, TEMPO_DADOS_ROLANDO_MILESIMOS } from "../globais/Constantes";
 import ControlePaginaLivroJogo from "./ControlePaginaLivroJogo2";
 
 export const ControleDestinos = () => {
@@ -40,7 +26,7 @@ export const ControleDestinos = () => {
 
     const [salvando, setSalvando] = useState(EProcesso._ZERO);
 
-    const { ValidarAprovacoesDestino } = OperacoesJogoLivro(jogoAtual);
+    const { ValidarAprovacoesDestino } = OperacoesJogoLivro();
 
     const navegador = useNavigate();
 

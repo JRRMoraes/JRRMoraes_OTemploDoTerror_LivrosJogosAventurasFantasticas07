@@ -1,15 +1,19 @@
 import styles from "./TelaPanilhaNova.module.scss";
 import "../globais/CoresHES.scss";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { ContextoJogos } from "../contextos";
-import { IRolagemParaPanilhaNova, EJogoNivel, ROLAGEM_PARA_PANILHA_NOVA_ZERADA, COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_ENERGIA, COR_ENERGIA_DOTS, COR_SORTE, COR_SORTE_DOTS } from "../tipos";
+import { IRolagemParaPanilhaNova, EJogoNivel, ROLAGEM_PARA_PANILHA_NOVA_ZERADA } from "../tipos";
 import { Botao } from "../componentes";
 import ReactDice, { ReactDiceRef } from "react-dice-complete";
 import { EProcesso } from "../uteis";
-import { TEMPO_DADOS_ROLANDO_MILESIMOS, TEMPO_DADOS_ROLANDO_SEGUNDOS } from "../globais/Constantes";
+import { COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_ENERGIA, COR_ENERGIA_DOTS, COR_SORTE, COR_SORTE_DOTS, TEMPO_DADOS_ROLANDO_MILESIMOS, TEMPO_DADOS_ROLANDO_SEGUNDOS } from "../globais/Constantes";
 
 export const TelaPanilhaNova = () => {
     const { jogoAtual, CriarPanilhaNoJogoAtualViaRolagens } = ContextoJogos();
+
+    const [nome, setNome] = useState("");
+
+    const [nivel, setNivel] = useState<EJogoNivel>(EJogoNivel._NORMAL);
 
     const [indiceRolagem, setIndiceRolagem] = useState(0);
     const [rolagemDados, setRolagemDados] = useState<IRolagemParaPanilhaNova>(ROLAGEM_PARA_PANILHA_NOVA_ZERADA);
@@ -57,11 +61,13 @@ export const TelaPanilhaNova = () => {
     }
     return (
         <div className={styles.panilhaNova}>
+            {MontarRetorno_EntradaNome()}
+            {MontarRetorno_EntradaNivel()}
             <h2>
-                Role os dados para determinar sua
+                <span>Role os dados para determinar sua</span>
                 <br />
                 <span className="coresHES_habilidade">HABILIDADE</span>, <span className="coresHES_energia">ENERGIA</span>
-                {" e "}
+                <span>{" e "}</span>
                 <span className="coresHES_sorte">SORTE</span>
             </h2>
             <div>
@@ -72,6 +78,55 @@ export const TelaPanilhaNova = () => {
             </div>
         </div>
     );
+
+    function MontarRetorno_EntradaNome() {
+        return (
+            <>
+                <h2>Escreva o nome do seu guerreiro:</h2>
+                <input
+                    type="text"
+                    value={nome}
+                    onChange={AoAlterarNome}
+                />
+            </>
+        );
+    }
+
+    function AoAlterarNome(evento: ChangeEvent<HTMLInputElement>) {
+        setNome(evento.target.value);
+    }
+
+    function MontarRetorno_EntradaNivel() {
+        return (
+            <>
+                <h2>Selecione o nível de dificuldade:</h2>
+                <div className={styles.panilhaNova_selecaoNivel}>
+                    <label key={EJogoNivel.FACIL}>
+                        <input
+                            type="radio"
+                            value={EJogoNivel.FACIL}
+                            checked={nivel === EJogoNivel.FACIL}
+                            onChange={AoAlterarNivel}
+                        />
+                        <span>{EJogoNivel.FACIL}</span>
+                    </label>
+                    <label key={EJogoNivel._NORMAL}>
+                        <input
+                            type="radio"
+                            value={EJogoNivel._NORMAL}
+                            checked={nivel === EJogoNivel._NORMAL}
+                            onChange={AoAlterarNivel}
+                        />
+                        <span>{EJogoNivel._NORMAL}</span>
+                    </label>
+                </div>
+            </>
+        );
+    }
+
+    function AoAlterarNivel(evento: ChangeEvent<HTMLInputElement>) {
+        setNivel(evento.target.value as EJogoNivel);
+    }
 
     function MontarRetorno_Rolagens() {
         return (
@@ -300,7 +355,11 @@ export const TelaPanilhaNova = () => {
     }
 
     function AceitarRolagem() {
-        CriarPanilhaNoJogoAtualViaRolagens(rolagemDados.totais, "", EJogoNivel.FACIL);
+        if (!nome || nome === "") {
+            //alerta
+            return;
+        }
+        CriarPanilhaNoJogoAtualViaRolagens(rolagemDados.totais, nome, nivel);
     }
 };
 

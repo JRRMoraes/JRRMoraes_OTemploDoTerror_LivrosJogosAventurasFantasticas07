@@ -25,4 +25,89 @@
             margin: 0;
         }
     }
+
+    &_derrota {
+        font-style: italic;
+    }
+
+    &_arena {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0;
+
+        &_versus {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            gap: 24px;
+            padding: 10px 0 0 0;
+            border-top: 2px black solid;
+
+            &_lado {
+                flex: 1;
+            }
+        }
+
+        &_comandos {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            margin: 0;
+        }
+    }
+
+    &_esquerda {
+        align-items: flex-start;
+    }
+
+    &_direita {
+        align-items: flex-end;
+    }
+
+    &_infos {
+        display: flex;
+        flex-direction: column;
+        //align-items: center;
+        justify-content: center;
+        margin: 0;
+
+        h4 {
+            margin: 0;
+        }
+    }
+
+    &_lados {
+        display: flex;
+        flex-direction: row;
+        // align-items: center;
+        justify-content: space-between;
+        margin: 0;
+    }
+
+    &_aguardando {
+        font-size: 1rem;
+        font-style: italic;
+        width: 100%;
+    }
+
+    &_atacando {
+        font-size: 1.2rem;
+        font-style: italic;
+        width: 100%;
+    }
+
+    &_apoio {
+        font-size: 1.2rem;
+        font-style: italic;
+        width: 100%;
+    }
+
+    &_morto {
+        font-size: 1rem;
+        font-style: italic;
+        width: 100%;
+    }
 }

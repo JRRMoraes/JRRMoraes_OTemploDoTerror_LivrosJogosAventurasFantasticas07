@@ -6,7 +6,7 @@ import { EAtributo, IEfeito } from "../tipos";
 import { FormatarNumberInteiro } from "../uteis";
 import { BarraEnergia } from "../componentes";
 
-export const TelaPanilha = () => {
+export const TelaPanilha2 = () => {
     const { jogoAtual, ObterEfeitoAtualDoAtributo } = ContextoJogos();
 
     if (!jogoAtual) {
@@ -20,13 +20,52 @@ export const TelaPanilha = () => {
                 <h2>{"Página X  -  Folha de Aventuras"}</h2>
                 <div>
                     <table>
+                        <thead>
+                            <tr>
+                                <th className="coresHES_habilidade">Habilidade:</th>
+                                <th className="coresHES_energia">Energia:</th>
+                                <th className="coresHES_sorte">Sorte:</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr>{MontarRetorno_Habilidade()}</tr>
-                            <tr>{MontarRetorno_Energia()}</tr>
-                            <tr>{MontarRetorno_Sorte()}</tr>
-                            <tr>{MontarRetorno_Ouro()}</tr>
-                            <tr>{MontarRetorno_Provisao()}</tr>
+                            <tr>
+                                {MontarRetorno_Habilidade()}
+                                {MontarRetorno_Energia()}
+                                {MontarRetorno_Sorte()}
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table className={styles.panilha_tabela_op}>
+                        <thead>
+                            <tr>
+                                <th>Ouro:</th>
+                                <th>Provisões:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {MontarRetorno_Ouro()}
+                                {MontarRetorno_Provisao()}
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table className={styles.panilha_tabela_itens}>
+                        <thead>
+                            <tr>
+                                <th>Itens:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             <tr>{MontarRetorno_Itens()}</tr>
+                        </tbody>
+                    </table>
+                    <table className={styles.panilha_tabela_encantos}>
+                        <thead>
+                            <tr>
+                                <th>Encantos:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             <tr>{MontarRetorno_Encantos()}</tr>
                         </tbody>
                     </table>
@@ -44,7 +83,6 @@ export const TelaPanilha = () => {
         const _efeitoElemento = <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
         return (
             <td className="coresHES_habilidade">
-                <span className={styles.panilha_titulo}>{"Habilidade:   "}</span>
                 {_efeitoElemento}
                 <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.habilidade}</span>
                 <span className={styles.panilha_fonteNormal}>{" / "}</span>
@@ -63,13 +101,12 @@ export const TelaPanilha = () => {
         return (
             <td className={"coresHES_energia " + styles.panilha_energia}>
                 <div>
-                    <span className={styles.panilha_titulo}>{"Energia:   "}</span>
                     {_efeitoElemento}
                     <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.energia}</span>
                     <span className={styles.panilha_fonteNormal}>{" / "}</span>
                     <span>{jogoAtual.panilha.energiaInicial}</span>
                 </div>
-                <div className={styles.panilha_tabulacao}>{BarraEnergia(jogoAtual.panilha.energia, jogoAtual.panilha.energiaInicial)}</div>
+                {BarraEnergia(jogoAtual.panilha.energia, jogoAtual.panilha.energiaInicial)}
             </td>
         );
     }
@@ -83,7 +120,6 @@ export const TelaPanilha = () => {
         const _efeitoElemento = <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
         return (
             <td className="coresHES_sorte">
-                <span className={styles.panilha_titulo}>{"Sorte:   "}</span>
                 {_efeitoElemento}
                 <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.sorte}</span>
                 <span className={styles.panilha_fonteNormal}>{" / "}</span>
@@ -101,7 +137,6 @@ export const TelaPanilha = () => {
         const _efeitoElemento = <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
         return (
             <td>
-                <span className={styles.panilha_titulo}>{"Ouro:   "}</span>
                 {_efeitoElemento}
                 <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.ouro}</span>
             </td>
@@ -117,7 +152,6 @@ export const TelaPanilha = () => {
         const _efeitoElemento = <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
         return (
             <td>
-                <span className={styles.panilha_titulo}>{"Provisões:   "}</span>
                 {_efeitoElemento}
                 <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.provisao}</span>
             </td>
@@ -134,7 +168,6 @@ export const TelaPanilha = () => {
             const _efeitoElemento = <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
             return (
                 <td>
-                    <span className={styles.panilha_titulo}>{"Itens:   "}</span>
                     {_efeitoElemento}
                     <ul>
                         {jogoAtual.panilha.itens.map((itemI, indiceI) => {
@@ -165,7 +198,6 @@ export const TelaPanilha = () => {
             const _efeitoElemento = <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
             return (
                 <td>
-                    <span className={styles.panilha_titulo}>{"Encantos:   "}</span>
                     {_efeitoElemento}
                     <ul>
                         {jogoAtual.panilha.encantos.map((encantoI, indiceI) => {
@@ -200,4 +232,4 @@ export const TelaPanilha = () => {
     }
 };
 
-export default TelaPanilha;
+export default TelaPanilha2;

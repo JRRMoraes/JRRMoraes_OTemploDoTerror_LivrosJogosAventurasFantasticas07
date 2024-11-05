@@ -1,10 +1,9 @@
 .livroJogo_Desktop {
-    min-height: 100vh;
+    height: 200vh;
     width: 100vw;
     box-sizing: border-box;
     border: 0;
     margin: 0;
-    gap: 10px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -15,7 +14,7 @@
 
     &_campanha {
         min-height: 100%;
-        width: calc(60% - 30px);
+        width: 70%;
         box-sizing: border-box;
         background: url("/fundo_pergaminho_papel_antigo_5.png");
         background-position: center;
@@ -28,7 +27,7 @@
     }
 
     &_panilha {
-        width: 40%;
+        width: 30%;
 
         &_2 {
             width: 100%;
@@ -39,7 +38,7 @@
         }
 
         &_3 {
-            padding: 80px 50px 80px 50px;
+            padding: 80px 40px 80px 40px;
         }
 
         &_audio {

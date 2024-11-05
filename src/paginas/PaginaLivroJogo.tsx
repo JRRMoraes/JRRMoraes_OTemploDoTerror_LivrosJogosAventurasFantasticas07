@@ -21,6 +21,11 @@ export const PaginaLivroJogo = () => {
     if (!isMobile) {
         return (
             <div className={styles.livroJogo_Desktop}>
+                <div className={styles.livroJogo_Desktop_campanha}>
+                    <div className={styles.livroJogo_Desktop_campanha_2}>
+                        <TelaCampanha />
+                    </div>
+                </div>
                 <div className={styles.livroJogo_Desktop_panilha}>
                     <div className={styles.livroJogo_Desktop_panilha_2}>
                         <div className={styles.livroJogo_Desktop_panilha_3}>
@@ -29,11 +34,6 @@ export const PaginaLivroJogo = () => {
                     </div>
                     <div className={styles.livroJogo_Desktop_panilha_audio}>
                         <ReprodutorAudio />
-                    </div>
-                </div>
-                <div className={styles.livroJogo_Desktop_campanha}>
-                    <div className={styles.livroJogo_Desktop_campanha_2}>
-                        <TelaCampanha />
                     </div>
                 </div>
             </div>

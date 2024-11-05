@@ -21,7 +21,6 @@ import {
     RetornarPanilhaEncantosAtualizados,
     RetornarPanilhaItensAtualizados,
     RetornarCombateExecutorNoProcessoInicial,
-    EPosturaInimigo,
 } from "../tipos";
 import { EProcesso } from "../uteis";
 import { TEMPO_ANIMACAO_NORMAL } from "../globais/Constantes";
@@ -51,6 +50,7 @@ export const ContextoJogos = () => {
 
     const { idJogo } = useParams();
     const [ehJogoCarregado, setEhJogoCarregado] = useState(false);
+
     const { livro, ObterPagina } = ContextoLivro();
 
     const navegador = useNavigate();

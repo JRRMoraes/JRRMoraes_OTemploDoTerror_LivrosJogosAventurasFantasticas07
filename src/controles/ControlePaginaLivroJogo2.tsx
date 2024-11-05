@@ -1,19 +1,12 @@
-import { useParams } from "react-router-dom";
-import { useState, useEffect, useRef, useCallback } from "react";
-import { ContextoLivro, ContextoJogos } from "../contextos";
+import { useState, useEffect, useRef } from "react";
+import { ContextoJogos } from "../contextos";
 import { isMobile } from "react-device-detect";
-import { IHTMLFlipBookRef } from "../componentes/FlipBookPagina";
 import { EProcesso } from "../uteis";
 import { TEMPO_ANIMACAO_NORMAL, TEMPO_ANIMACAO_PEQUENO } from "../globais/Constantes";
+import { IHTMLFlipBookRef } from "../componentes";
 
 export const ControlePaginaLivroJogo2 = () => {
-    let { idJogo } = useParams();
-
-    const [ehJogoCarregado, setEhJogoCarregado] = useState(false);
-
-    const { livro, ObterPagina } = ContextoLivro();
-
-    const { jogoAtual, paginaExecutor, CarregarJogoSalvoOuNovo, ResetarJogo, ImporExecutores, AtualizarPaginaExecutorAutomaticamente } = ContextoJogos();
+    const { jogoAtual, paginaExecutor, ResetarJogo } = ContextoJogos();
 
     const flipBookRef = useRef<IHTMLFlipBookRef>(null);
 
@@ -36,9 +29,7 @@ export const ControlePaginaLivroJogo2 = () => {
                 }
                 break;
             case EProcesso.INICIANDO:
-                if (!jogoAtual) {
-                    setEhJogoCarregado(CarregarJogoSalvoOuNovo(idJogo!));
-                } else if (flipProcesso === EProcesso._ZERO) {
+                if (jogoAtual && flipProcesso === EProcesso._ZERO) {
                     setCapaProcesso(EProcesso.PROCESSANDO);
                     IniciarMudancaFlipPagina();
                 }
@@ -59,7 +50,7 @@ export const ControlePaginaLivroJogo2 = () => {
             case EProcesso.DESTRUIDO:
                 break;
         }
-    }, [idJogo, capaProcesso, jogoAtual, flipProcesso]);
+    }, [capaProcesso, jogoAtual, flipProcesso]);
 
     useEffect(() => {
         switch (flipProcesso) {

@@ -1,9 +1,14 @@
-import { IJogo, IPaginaExecutor, IAprovacaoDestino, EAtributo, EComparacao } from "../tipos";
+import { ContextoJogos } from ".";
+import { IAprovacaoDestino, EAtributo, EComparacao, EResultadoCombate, EPosturaInimigo } from "../tipos";
 import { TextosIguais } from "../uteis";
 
-export const OperacoesJogoLivro = (jogoAtual: IJogo) => {
+export const OperacoesJogoLivro = () => {
+    const { jogoAtual, paginaExecutor, historiasExecutor, combateExecutor, destinosExecutor } = ContextoJogos();
+
     return {
         ValidarAprovacoesDestino,
+        AvaliarResultadoCombateDoCombateExecutorProcessoIniciando,
+        AvaliarResultadoCombateDoCombateExecutorProcessoDestruido,
     };
 
     function ValidarAprovacoesDestino(aprovacoes: IAprovacaoDestino[]) {
@@ -90,6 +95,31 @@ export const OperacoesJogoLivro = (jogoAtual: IJogo) => {
             default:
                 return quantidade >= 1;
         }
+    }
+
+    function AvaliarResultadoCombateDoCombateExecutorProcessoIniciando(): EResultadoCombate {
+        switch (combateExecutor.aprovacaoDerrota) {
+            case "SerieDeAtaqueEhMaiorOuIgualAHabilidade":
+                if (combateExecutor.serieDeAtaqueAtual >= jogoAtual.panilha.habilidade) {
+                    return EResultadoCombate.DERROTA;
+                }
+                break;
+        }
+        return EResultadoCombate._COMBATENDO;
+    }
+
+    function AvaliarResultadoCombateDoCombateExecutorProcessoDestruido(): EResultadoCombate {
+        if (!combateExecutor.inimigos.find((inimigoI) => inimigoI.exePosturaInimigo !== EPosturaInimigo.MORTO)) {
+            return EResultadoCombate.VITORIA;
+        }
+        switch (combateExecutor.aprovacaoDerrota) {
+            case "InimigoComSerieDeAtaqueVencidoConsecutivo_2":
+                if (combateExecutor.inimigos.find((inimigoI) => inimigoI.exeSerieDeAtaqueVencidoConsecutivo >= 2)) {
+                    return EResultadoCombate.DERROTA;
+                }
+                break;
+        }
+        return EResultadoCombate._COMBATENDO;
     }
 };
 

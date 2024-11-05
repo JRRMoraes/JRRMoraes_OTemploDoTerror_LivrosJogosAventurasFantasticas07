@@ -3,7 +3,9 @@
         width: 100%;
         margin: auto;
         table-layout: fixed;
-        text-align: left;
+        text-align: center;
+        border-collapse: collapse;
+        border: 2px groove #213547;
     }
 
     h2 {
@@ -11,30 +13,21 @@
         margin: 0 0 20px 0;
     }
 
+    th,
     td {
+        border-collapse: collapse;
+        border-left: 2px groove #213547;
+        border-right: 2px groove #213547;
         align-items: center;
         justify-content: center;
-        padding: 4px 0;
     }
 
     ul {
         margin: 4px;
     }
 
-    &_titulo {
-        font-size: 1.5rem;
-    }
-
     &_fonteNormal {
         color: #213547;
-    }
-
-    &_numeroAtual {
-        font-size: 1.6rem;
-    }
-
-    &_tabulacao {
-        margin-left: 40px;
     }
 
     &_efeito {
@@ -73,5 +66,21 @@
         100% {
             opacity: 1;
         }
+    }
+
+    &_numeroAtual {
+        font-size: 1.6rem;
+    }
+
+    &_energia {
+        width: 70%;
+    }
+
+    &_itens {
+        text-align: left;
+    }
+
+    &_encantos {
+        text-align: left;
     }
 }

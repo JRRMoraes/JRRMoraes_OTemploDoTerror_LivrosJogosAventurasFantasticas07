@@ -1,5 +1,7 @@
+import { RefObject } from "react";
 import { EProcesso, TextosIguais } from "../uteis";
 import { IEfeito, IDestino, PAGINA_INICIAL, PAGINA_ZERADA } from "./Livro";
+import { DieContainerRef } from "react-dice-complete/dist/DiceContainer";
 
 export interface IItem {
     idItem: string;
@@ -99,12 +101,17 @@ export const ROLAGEM_PARA_DESTINO_ZERADA: IRolagemParaDestino = {
     destino: null!,
 };
 
-export const COR_HABILIDADE = "#87ceeb";
-export const COR_HABILIDADE_DOTS = "#000000";
-export const COR_ENERGIA = "#008000";
-export const COR_ENERGIA_DOTS = "#000000";
-export const COR_SORTE = "#800080";
-export const COR_SORTE_DOTS = "#ffffff";
+export interface IRolagemParaCombate {
+    exeIdRolagemCombate: number;
+    exeProcessoRolagem: EProcesso;
+    exeProcessoSorteConfirmacao: EProcesso;
+    exeDadosJogadorRef: RefObject<DieContainerRef>;
+    exeRolagemTotalJogador: number;
+    exeDadosInimigoRef: RefObject<DieContainerRef>;
+    exeRolagemTotalInimigo: number;
+    exeDadosSorteRef: RefObject<DieContainerRef>;
+    exeRolagemTotalSorte: number;
+}
 
 export function AjustarSeForNovoJogo(jogoSalvo: IJogo) {
     if (!jogoSalvo.dataCriacao) {

@@ -103,18 +103,6 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Freqüentemente você encontrará páginas no livro que o instruirão para que lute com algum tipo de criatura: Talvez você tenha a alternativa de fugir, mas, se não houver - ou se você decidir atacar a criatura ainda assim -, você terá que resolver o combate conforme descrito abaixo.",
-                        "Primeiro, registre os índices de HABILIDADE e de ENERGIA da criatura no primeiro quadro vazio de Encontro com Monstros na sua Folha de Aventuras. Os índices de cada criatura são dados no livro a cada vez que você tem um encontro.",
-                        "A sequência de combate é a seguinte:",
-                        "1. Jogue os dois dados uma vez para a criatura. Some ao índice de HABILIDADE dela. Esse total é a Força de Ataque da criatura.",
-                        "2. Jogue ambos os dados uma vez para você. Some o número obtido a seu índice atual de HABILIDADE. Esse total é sua Força de Ataque.",
-                        "3. Se sua Força de Ataque for maior que a da criatura, você a feriu. Prossiga para o item 4.",
-                        "- Se a Força de Ataque da criatura for maior que a sua, ela o feriu. Prossiga para o item 5.",
-                        "- Se os dois totais de Força de Ataque forem iguais, vocês se defenderam dos golpes um do outro - comece a próxima Série de Ataque a partir do item 1 acima.",
-                        "4. Você feriu a criatura, portanto subtraia 2 pontos do índice de ENERGIA dela. Você pode usar sua SORTE aqui para causar maiores danos (veja adiante).",
-                        "5. Se a criatura tiver ferido você, subtraia 2 pontos de seu próprio índice de ENERGIA. Também nesse momento você pode usar a sua SORTE (veja adiante).",
-                        "6. Faça os ajustes apropriados nos índices de ENERGIA, seu ou da criatura (e no seu índice de SORTE, se você tiver usado a sorte veja adiante).",
-                        "7. Comece a próxima Série de Ataque (repita os itens de 1 a 6). Essa sequência continua até que um índice de ENERGIA, seu ou da criatura que você está enfrentando, tenha sido reduzido a zero (morte).",
                         "Luta Contra Mais de uma Criatura: Se você se defrontar com mais de uma criatura em determinado encontro, as instruções na página em questão lhe dirão como lidar com o combate. Algumas vezes você as tratará como se fossem um único monstro; em outras, lutará contra uma de cada vez."
                     ]
                 }
@@ -123,8 +111,13 @@
                 "inimigos": [
                     {
                         "inimigo": "HOMEM-LAGARTO",
-                        "habilidade": 9,
-                        "energia": 8
+                        "habilidade": 5,
+                        "energia": 6
+                    },
+                    {
+                        "inimigo": "HOMEM-LAGARTO 2",
+                        "habilidade": 10,
+                        "energia": 4
                     }
                 ],
                 "textosDerrota": ["Você se afogará se não matar o monstro aquático em menos Séries de Ataque do que o índice atual de sua HABILIDADE."],

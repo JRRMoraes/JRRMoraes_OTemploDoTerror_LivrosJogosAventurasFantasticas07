@@ -1,6 +1,6 @@
 import { RefObject } from "react";
 import { EProcesso } from "../uteis";
-import { ECampanhaCapitulo, IPanilha } from "./Jogo";
+import { ECampanhaCapitulo } from "./Jogo";
 
 export interface IApresentacao {
     textosApresentacao: string[];
@@ -87,11 +87,22 @@ export interface IInimigoExecucao extends IInimigo {
     exeEnergiaAtual: number;
     exePosturaInimigo: EPosturaInimigo;
     exeSerieDeAtaqueVencidoConsecutivo: number;
+    exeIdRolagemCombate: number;
+}
+
+export interface IAliado {
+    aliado: string;
+    habilidade: number;
+    energia: number;
+}
+
+export interface IAliadoExecucao extends IAliado {
+    exeEnergiaAtual: number;
 }
 
 export interface ICombate {
     inimigos: IInimigo[];
-    aliado: IInimigo;
+    aliado: IAliado;
     textosDerrota: string[];
     aprovacaoDerrota: string;
     combateMultiplo_2osApoio: boolean;
@@ -99,11 +110,12 @@ export interface ICombate {
 
 export interface ICombateExecutor extends ICombate {
     inimigos: IInimigoExecucao[];
-    aliado: IInimigoExecucao;
+    aliado: IAliadoExecucao;
     processoCombate: EProcesso;
-    idPaginaDestinoDerrota: number;
     serieDeAtaqueAtual: number;
     processoSerieDeAtaque: EProcesso;
+    resultadoCombate: EResultadoCombate;
+    idPaginaDestinoDerrota: number;
 }
 
 export interface IAprovacaoDestino {
@@ -261,9 +273,10 @@ export function RetornarCombateExecutorViaPagina(pagina: IPagina): ICombateExecu
         aprovacaoDerrota: null!,
         combateMultiplo_2osApoio: null!,
         processoCombate: EProcesso._ZERO,
-        idPaginaDestinoDerrota: PAGINA_ZERADA.idPagina,
         serieDeAtaqueAtual: 0,
         processoSerieDeAtaque: EProcesso._ZERO,
+        resultadoCombate: EResultadoCombate._COMBATENDO,
+        idPaginaDestinoDerrota: PAGINA_ZERADA.idPagina,
     };
     if (pagina.combate) {
         if (pagina.combate.inimigos && pagina.combate.inimigos.length) {
@@ -273,6 +286,7 @@ export function RetornarCombateExecutorViaPagina(pagina: IPagina): ICombateExecu
                     exeEnergiaAtual: inimigoI.energia,
                     exePosturaInimigo: EPosturaInimigo._AGUARDANDO,
                     exeSerieDeAtaqueVencidoConsecutivo: 0,
+                    exeIdRolagemCombate: Math.ceil(Math.random() * 1000),
                 };
                 return { ..._inimigoExecucao };
             });
@@ -281,8 +295,6 @@ export function RetornarCombateExecutorViaPagina(pagina: IPagina): ICombateExecu
             _combateExecutor.aliado = {
                 ...pagina.combate.aliado,
                 exeEnergiaAtual: pagina.combate.aliado.energia,
-                exePosturaInimigo: EPosturaInimigo.ATACANTE,
-                exeSerieDeAtaqueVencidoConsecutivo: 0,
             };
         }
     }
@@ -322,7 +334,6 @@ export function RetornarPaginaExecutorViaPagina(pagina: IPagina, padraoCapitulo:
 }
 
 export function RetornarCombateExecutorNoProcessoInicial(combate: ICombateExecutor, ehJogoCarregado: boolean) {
-    combate.processoCombate = EProcesso.INICIANDO;
     if (!combate.inimigos || !combate.inimigos.length) {
         combate.processoCombate = EProcesso.CONCLUIDO;
         return combate;
@@ -330,11 +341,13 @@ export function RetornarCombateExecutorNoProcessoInicial(combate: ICombateExecut
     if (ehJogoCarregado) {
         combate.inimigos = combate.inimigos.map((inimigoI) => {
             inimigoI.exePosturaInimigo = EPosturaInimigo.MORTO;
+            inimigoI.exeEnergiaAtual = 0;
             return inimigoI;
         });
         combate.processoCombate = EProcesso.CONCLUIDO;
         return combate;
     }
+    combate.processoCombate = EProcesso.INICIANDO;
     combate.inimigos = combate.inimigos.map((inimigoI) => {
         inimigoI.exePosturaInimigo = EPosturaInimigo._AGUARDANDO;
         return inimigoI;
@@ -350,29 +363,4 @@ export function RetornarCombateExecutorNoProcessoInicial(combate: ICombateExecut
         return inimigoI;
     });
     return combate;
-}
-
-export function AvaliarResultadoCombateDoCombateExecutorProcessoIniciando(combate: ICombateExecutor, panilha: IPanilha): EResultadoCombate {
-    switch (combate.aprovacaoDerrota) {
-        case "SerieDeAtaqueEhMaiorOuIgualAHabilidade":
-            if (combate.serieDeAtaqueAtual >= panilha.habilidade) {
-                return EResultadoCombate.DERROTA;
-            }
-            break;
-    }
-    return EResultadoCombate._COMBATENDO;
-}
-
-export function AvaliarResultadoCombateDoCombateExecutorProcessoDestruido(combate: ICombateExecutor, panilha: IPanilha): EResultadoCombate {
-    if (!combate.inimigos.find((inimigoI) => inimigoI.exePosturaInimigo !== EPosturaInimigo.MORTO)) {
-        return EResultadoCombate.VITORIA;
-    }
-    switch (combate.aprovacaoDerrota) {
-        case "InimigoComSerieDeAtaqueVencidoConsecutivo_2":
-            if (combate.inimigos.find((inimigoI) => inimigoI.exeSerieDeAtaqueVencidoConsecutivo >= 2)) {
-                return EResultadoCombate.DERROTA;
-            }
-            break;
-    }
-    return EResultadoCombate._COMBATENDO;
 }
