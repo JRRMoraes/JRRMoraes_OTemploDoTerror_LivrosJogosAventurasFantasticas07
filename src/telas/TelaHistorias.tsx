@@ -1,29 +1,40 @@
 import styles from "./TelaHistorias.module.scss";
-import { IEfeito, IHistoriaExecucao } from "../tipos";
+import { IEfeito, IHistoriaTextoExecucao } from "../tipos";
 import { Botao, TextosDatilografados } from "../componentes";
 import { ControleHistorias } from "../controles";
 
 export const TelaHistorias = () => {
-    const { historiasExecutor, velocidade, ContextosReprovados, AprovarExeProcessoHistoria, AprovarBotaoPularHistoria, AprovarEfeitos, PularHistoria, FuncaoAoConcluirTexto } = ControleHistorias();
+    const {
+        historiaTextos,
+        historiaEfeitos,
+        historiaImagens,
+        velocidade,
+        ContextosReprovados,
+        AprovarExeProcessoHistoria,
+        AprovarBotaoPularHistoria,
+        AprovarEfeitos,
+        PularHistoria,
+        FuncaoAoConcluirTexto,
+    } = ControleHistorias();
 
-    if (ContextosReprovados(true)) {
+    if (ContextosReprovados()) {
         return <></>;
     }
     return (
         <div className={styles.historias}>
-            {historiasExecutor.historias.map((historiaI, indiceI) => {
-                if (AprovarExeProcessoHistoria(historiaI)) {
+            {historiaTextos.map((historiaTextoI, indiceI) => {
+                if (AprovarExeProcessoHistoria(historiaTextoI)) {
                     return (
                         <div key={indiceI}>
                             <div className={styles.historias_texto}>
                                 <TextosDatilografados
-                                    textos={historiaI.textosHistoria}
+                                    textos={historiaTextoI.textosHistoria}
                                     velocidade={velocidade}
                                     aoConcluir={() => FuncaoAoConcluirTexto()}
                                 />
                             </div>
-                            {MontarRetorno_BotaoPularHistoria(historiaI)}
-                            {MontarRetorno_Efeitos(historiaI)}
+                            {MontarRetorno_BotaoPularHistoria(historiaTextoI)}
+                            {MontarRetorno_Efeitos(historiaTextoI, indiceI)}
                         </div>
                     );
                 } else {
@@ -33,7 +44,7 @@ export const TelaHistorias = () => {
         </div>
     );
 
-    function MontarRetorno_BotaoPularHistoria(historia: IHistoriaExecucao) {
+    function MontarRetorno_BotaoPularHistoria(historia: IHistoriaTextoExecucao) {
         if (AprovarBotaoPularHistoria(historia)) {
             return (
                 <div className={styles.historias_pularHistoria}>
@@ -45,11 +56,11 @@ export const TelaHistorias = () => {
         }
     }
 
-    function MontarRetorno_Efeitos(historia: IHistoriaExecucao) {
-        if (AprovarEfeitos(historia)) {
+    function MontarRetorno_Efeitos(historiaTexto: IHistoriaTextoExecucao, indice: number) {
+        if (AprovarEfeitos(historiaTexto, indice)) {
             return (
                 <div>
-                    {historia.efeitos.map((efeitoI, indiceI) => {
+                    {historiaEfeitos[indice].efeitos.map((efeitoI, indiceI) => {
                         return (
                             <p
                                 key={indiceI}

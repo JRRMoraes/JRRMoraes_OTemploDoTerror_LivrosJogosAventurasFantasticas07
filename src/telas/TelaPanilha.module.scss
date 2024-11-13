@@ -1,4 +1,9 @@
 .panilha {
+    transition:
+        width 0.5s,
+        height 0.5s;
+    height: auto;
+
     table {
         width: 100%;
         margin: auto;
@@ -12,9 +17,8 @@
     }
 
     td {
-        align-items: center;
-        justify-content: center;
         padding: 4px 0;
+        vertical-align: top;
     }
 
     ul {
@@ -72,6 +76,28 @@
 
         100% {
             opacity: 1;
+        }
+    }
+
+    //&_completo {
+    //}
+
+    //&_incompleto {
+    //    tr td span {
+    //        display: flex;
+    //        flex-direction: column;
+    //        //align-items: baseline;
+    //        //justify-content: center;
+    //    }
+    //}
+
+    &_comandos {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        button {
+            margin: 0;
         }
     }
 }

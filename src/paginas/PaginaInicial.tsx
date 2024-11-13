@@ -1,6 +1,6 @@
 import styles from "./PaginaInicial.module.scss";
 import { useCallback, useEffect, useState } from "react";
-import { ContextoLivro, ContextoJogos } from "../contextos";
+import { ContextoLivro, ContextoJogos, ContextoPagina } from "../contextos";
 import { IChildrenProps } from "../uteis";
 import { TextosDatilografados, ReprodutorAudio } from "../componentes";
 import { TelaListaJogosSalvos } from "../telas";
@@ -9,7 +9,9 @@ import { TEMPO_ANIMACAO_NORMAL } from "../globais/Constantes";
 export const PaginaInicial = () => {
     const { livro, CaminhoImagem } = ContextoLivro();
 
-    const { jogoAtual, paginaExecutor, ResetarJogo } = ContextoJogos();
+    const { jogoAtual, ResetarJogo } = ContextoJogos();
+
+    const { pagina } = ContextoPagina();
 
     const [estado, setEstado] = useState<"ABERTURA" | "MENU">("ABERTURA");
 
@@ -24,7 +26,7 @@ export const PaginaInicial = () => {
     }, []);
 
     useEffect(() => {
-        if (jogoAtual || paginaExecutor) {
+        if (jogoAtual || pagina) {
             ResetarJogo();
         }
 

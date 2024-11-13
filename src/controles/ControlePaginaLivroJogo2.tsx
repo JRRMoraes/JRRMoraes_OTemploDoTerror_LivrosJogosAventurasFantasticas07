@@ -1,12 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import { ContextoJogos } from "../contextos";
-import { isMobile } from "react-device-detect";
-import { EProcesso } from "../uteis";
+import { ContextoJogos, ContextoPagina } from "../contextos";
+import { EProcesso, UteisDimensoesPaginaHtml } from "../uteis";
 import { TEMPO_ANIMACAO_NORMAL, TEMPO_ANIMACAO_PEQUENO } from "../globais/Constantes";
 import { IHTMLFlipBookRef } from "../componentes";
 
 export const ControlePaginaLivroJogo2 = () => {
-    const { jogoAtual, paginaExecutor, ResetarJogo } = ContextoJogos();
+    const { jogoAtual, ResetarJogo } = ContextoJogos();
+
+    const { pagina } = ContextoPagina();
+
+    const { EhDispositivoTabletOuDesktop } = UteisDimensoesPaginaHtml();
 
     const flipBookRef = useRef<IHTMLFlipBookRef>(null);
 
@@ -85,14 +88,10 @@ export const ControlePaginaLivroJogo2 = () => {
         };
     }, []);
 
-    return { paginaFlipBook, flipBookRef, ContextosReprovados, EhDesktop, MudarAPaginaNoFlipBook, IniciarMudancaFlipPagina };
+    return { paginaFlipBook, flipBookRef, ContextosReprovados, MudarAPaginaNoFlipBook, IniciarMudancaFlipPagina, EhDispositivoTabletOuDesktop };
 
     function ContextosReprovados() {
-        return !!(!jogoAtual || !paginaExecutor);
-    }
-
-    function EhDesktop() {
-        return !isMobile;
+        return !!(!jogoAtual || !pagina);
     }
 
     function MudarAPaginaNoFlipBook() {

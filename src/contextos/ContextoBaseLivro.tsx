@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from "react";
-import { IAudioExecutor, ILivro } from "../tipos";
+import { ILivro, IAudioExecutor } from "../tipos";
 
 export type TContextoBaseLivro = {
     livro: ILivro;

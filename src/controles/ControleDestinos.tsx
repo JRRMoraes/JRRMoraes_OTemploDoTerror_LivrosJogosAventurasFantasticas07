@@ -1,24 +1,32 @@
 import "../componentes/Botao.module.scss";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ContextoJogos, OperacoesJogoLivro } from "../contextos";
-import { EAtributoDestinoTeste, ECampanhaCapitulo, EJogoNivel, EPaginaExecutorEstado, IDestino, IRolagemParaDestino, PAGINA_ZERADA, PAGINA_FIM_DE_JOGO, ROLAGEM_PARA_DESTINO_ZERADA } from "../tipos";
+import { ContextoJogos, ContextoPagina, OperacoesJogoLivro } from "../contextos";
+import { EAtributoDestinoTeste, ECampanhaCapitulo, EJogoNivel, EPaginaExecutorEstado, IDestino, PAGINA_ZERADA, PAGINA_FIM_DE_JOGO } from "../tipos";
 import { EProcesso } from "../uteis";
-import { ReactDiceRef } from "react-dice-complete";
-import { COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_SORTE, COR_SORTE_DOTS, TEMPO_ANIMACAO_GRANDE, TEMPO_DADOS_ROLANDO_MILESIMOS } from "../globais/Constantes";
+import { COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_SORTE, COR_SORTE_DOTS, TEMPO_ANIMACAO_GRANDE, TEMPO_DADOS_RESULTADO_MILESIMOS } from "../globais/Constantes";
 import ControlePaginaLivroJogo from "./ControlePaginaLivroJogo2";
 
 export const ControleDestinos = () => {
+    const { jogoAtual, ImporJogoAtualViaDestino, SalvarJogoAtualNoSalvo, AplicarPenalidadeDeTestarSorte } = ContextoJogos();
+
     const {
-        jogoAtual,
-        paginaExecutor,
-        destinosExecutor,
-        ImporProcessoDestinosNaPaginaExecutor,
-        ImporJogoAtualViaDestino,
-        SalvarJogoAtualNoSalvo,
-        AplicarPenalidadeDeTestarSorte,
+        paginaEstado,
+        paginaIdPaginaDestino,
+        paginaIdCapituloDestino,
+        paginaEhJogoCarregado,
+        destinoItens,
+        destinoProcesso,
+        destinoProcessoRolagem,
+        setDestinoProcessoRolagem,
+        destinoRolagemTotal,
+        setDestinoRolagemTotal,
+        destinoRolagemDestino,
+        setDestinoRolagemDestino,
+        destinoDadosRef,
+        setDestinoProcesso,
         ImporPaginaExecutorViaDestino,
-    } = ContextoJogos();
+    } = ContextoPagina();
 
     const { IniciarMudancaFlipPagina } = ControlePaginaLivroJogo();
 
@@ -30,74 +38,76 @@ export const ControleDestinos = () => {
 
     const navegador = useNavigate();
 
-    const dadosRef = useRef<ReactDiceRef>(null);
-
-    const [rolagemDados, setRolagemDados] = useState<IRolagemParaDestino>(ROLAGEM_PARA_DESTINO_ZERADA);
+    useEffect(() => {
+        if (!jogoAtual || !destinoItens || !destinoItens.length || paginaEstado !== EPaginaExecutorEstado.DESTINOS) {
+            return;
+        }
+        switch (destinoProcesso) {
+            case EProcesso._ZERO:
+                setDestinoProcesso(EProcesso.INICIANDO);
+                break;
+            case EProcesso.INICIANDO:
+                setDesativaBotoes(false);
+                setSalvando(EProcesso._ZERO);
+                setDestinoProcesso(EProcesso.PROCESSANDO);
+                break;
+            case EProcesso.PROCESSANDO:
+                if (paginaIdPaginaDestino !== PAGINA_ZERADA.idPagina && paginaIdCapituloDestino !== PAGINA_ZERADA.idCapitulo) {
+                    IniciarMudancaFlipPagina();
+                    ImporJogoAtualViaDestino(paginaIdPaginaDestino, paginaIdCapituloDestino);
+                    setDestinoProcesso(EProcesso.CONCLUIDO);
+                }
+                break;
+            case EProcesso.CONCLUIDO:
+                setDestinoProcesso(EProcesso.DESTRUIDO);
+                break;
+        }
+    }, [paginaEstado, destinoProcesso, paginaIdPaginaDestino, paginaIdCapituloDestino]);
 
     useEffect(() => {
-        if (ContextosReprovados(false)) {
-            return;
-        }
-        if (destinosExecutor.processoDestinos === EProcesso.INICIANDO) {
-            ImporProcessoDestinosNaPaginaExecutor(EProcesso.PROCESSANDO);
-            return;
-        }
-        if (paginaExecutor.exeIdPaginaDestino === PAGINA_ZERADA.idPagina && paginaExecutor.exeIdCapituloDestino === PAGINA_ZERADA.idCapitulo) {
-            return;
-        }
-        IniciarMudancaFlipPagina();
-        ImporProcessoDestinosNaPaginaExecutor(EProcesso.CONCLUIDO);
-        ImporJogoAtualViaDestino(paginaExecutor.exeIdPaginaDestino, paginaExecutor.exeIdCapituloDestino);
-    }, [paginaExecutor]);
-
-    useEffect(() => {
-        if (salvando === EProcesso.INICIANDO && !paginaExecutor.exeEhJogoCarregado) {
+        if (salvando === EProcesso.INICIANDO && !paginaEhJogoCarregado) {
             setSalvando(EProcesso.PROCESSANDO);
             SalvarJogoAtualNoSalvo();
             setTimeout(() => {
-                setSalvando(EProcesso.CONCLUIDO);
                 setDesativaBotoes(false);
+                setSalvando(EProcesso.CONCLUIDO);
             }, 2000);
         }
     }, [salvando]);
 
     useEffect(() => {
-        if (rolagemDados.processoRolagem === EProcesso.INICIANDO) {
-            dadosRef.current?.rollAll();
-            setRolagemDados((prevRolandoDados) => {
-                return { ...prevRolandoDados, processoRolagem: EProcesso.PROCESSANDO };
-            });
-        } else if (rolagemDados.processoRolagem === EProcesso.PROCESSANDO) {
+        if (destinoProcessoRolagem === EProcesso.INICIANDO) {
+            destinoDadosRef.current?.rollAll();
+            setDestinoProcessoRolagem(EProcesso.PROCESSANDO);
             setTimeout(() => {
-                setRolagemDados((prevRolandoDados) => {
-                    return { ...prevRolandoDados, processoRolagem: EProcesso.CONCLUIDO };
-                });
-            }, TEMPO_DADOS_ROLANDO_MILESIMOS);
-        } else if (rolagemDados.processoRolagem === EProcesso.CONCLUIDO) {
-            let _rolado = rolagemDados.total;
-            if (rolagemDados.destino.testeSomarDados) {
-                _rolado += rolagemDados.destino.testeSomarDados;
+                setDestinoProcessoRolagem(EProcesso.CONCLUIDO);
+            }, TEMPO_DADOS_RESULTADO_MILESIMOS);
+            return;
+        }
+        if (destinoProcessoRolagem === EProcesso.CONCLUIDO) {
+            let _rolado = destinoRolagemTotal;
+            if (destinoRolagemDestino.testeSomarDados) {
+                _rolado += destinoRolagemDestino.testeSomarDados;
             }
             let _teveSorte = false;
-            if (rolagemDados.destino.testeAtributo === EAtributoDestinoTeste.HABILIDADE) {
+            if (destinoRolagemDestino.testeAtributo === EAtributoDestinoTeste.HABILIDADE) {
                 _teveSorte = _rolado <= jogoAtual.panilha.habilidade;
-            } else if (rolagemDados.destino.testeAtributo === EAtributoDestinoTeste.SORTE) {
+            } else if (destinoRolagemDestino.testeAtributo === EAtributoDestinoTeste.SORTE) {
                 _teveSorte = _rolado <= jogoAtual.panilha.sorte;
                 AplicarPenalidadeDeTestarSorte();
             }
-            let _idPagina = _teveSorte ? rolagemDados.destino.idPagina : rolagemDados.destino.idPaginaAzar;
+            let _idPagina = _teveSorte ? destinoRolagemDestino.idPagina : destinoRolagemDestino.idPaginaAzar;
             setTimeout(() => {
-                ImporPaginaExecutorViaDestino(_idPagina, rolagemDados.destino.idCapitulo);
+                ImporPaginaExecutorViaDestino(_idPagina, destinoRolagemDestino.idCapitulo);
             }, TEMPO_ANIMACAO_GRANDE);
-            setRolagemDados((prevRolandoDados) => {
-                return { ...prevRolandoDados, processoRolagem: EProcesso.DESTRUIDO };
-            });
+            setDestinoProcessoRolagem(EProcesso.DESTRUIDO);
+            return;
         }
-    }, [rolagemDados]);
+    }, [destinoProcessoRolagem]);
 
     return {
-        destinosExecutor,
-        dadosRef,
+        destinoItens,
+        destinoDadosRef,
         salvando,
         desativaBotoes,
         ContextosReprovados,
@@ -112,20 +122,20 @@ export const ControleDestinos = () => {
         AoConcluirRolagem,
     };
 
-    function ContextosReprovados(processoIniciandoReprova: boolean) {
-        let _reprovado = !jogoAtual || !destinosExecutor || !destinosExecutor.destinos || !destinosExecutor.destinos.length || ![EPaginaExecutorEstado.DESTINOS].includes(paginaExecutor.exeEstado);
-        if (processoIniciandoReprova) {
-            _reprovado ||= ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(destinosExecutor.processoDestinos);
-        } else {
-            _reprovado ||= ![EProcesso.INICIANDO, EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(destinosExecutor.processoDestinos);
-        }
-        return _reprovado;
+    function ContextosReprovados() {
+        return (
+            !jogoAtual ||
+            !destinoItens ||
+            !destinoItens.length ||
+            ![EPaginaExecutorEstado.DESTINOS].includes(paginaEstado) ||
+            ![EProcesso.PROCESSANDO, EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(destinoProcesso)
+        );
     }
 
     function EhFimDeJogo() {
         const _fimDeJogo = jogoAtual.campanhaCapitulo === ECampanhaCapitulo.PAGINAS_CAMPANHA;
         const _estaMorto = !!(jogoAtual.panilha && jogoAtual.panilha.energia === 0);
-        const _destinoMorte = !!destinosExecutor.destinos.find((destinoI) => destinoI.idPagina === PAGINA_FIM_DE_JOGO.idPagina);
+        const _destinoMorte = !!destinoItens.find((destinoI) => destinoI.idPagina === PAGINA_FIM_DE_JOGO.idPagina);
         return _fimDeJogo && (_estaMorto || _destinoMorte);
     }
 
@@ -135,7 +145,7 @@ export const ControleDestinos = () => {
     }
 
     function AprovarSalvaJogoAtual() {
-        return paginaExecutor.exeEhJogoCarregado;
+        return paginaEhJogoCarregado;
     }
 
     function EhSalvamentoAutomatico() {
@@ -153,7 +163,9 @@ export const ControleDestinos = () => {
             if (!destino.testeAtributo || destino.testeAtributo === EAtributoDestinoTeste._NULO) {
                 ImporPaginaExecutorViaDestino(destino.idPagina, destino.idCapitulo);
             } else {
-                setRolagemDados({ processoRolagem: EProcesso.INICIANDO, total: 0, destino: destino });
+                setDestinoRolagemTotal(0);
+                setDestinoRolagemDestino(destino);
+                setDestinoProcessoRolagem(EProcesso.INICIANDO);
             }
         };
         return _aoClicar;
@@ -197,8 +209,8 @@ export const ControleDestinos = () => {
             _testeSH.corDados = COR_HABILIDADE;
             _testeSH.corDots = COR_HABILIDADE_DOTS;
         }
-        if ([EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(rolagemDados.processoRolagem)) {
-            _testeSH.totalValor += rolagemDados.total;
+        if ([EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(destinoProcessoRolagem)) {
+            _testeSH.totalValor += destinoRolagemTotal;
             _testeSH.totalTexto = _testeSH.totalValor.toString();
             _testeSH.teveSorte = _testeSH.totalValor <= _testeSH.atributoValor;
             if (_testeSH.teveSorte) {
@@ -211,9 +223,7 @@ export const ControleDestinos = () => {
     }
 
     function AoConcluirRolagem(totalValue: number, values: number[]) {
-        setRolagemDados((prevRolandoDados) => {
-            return { ...prevRolandoDados, total: totalValue };
-        });
+        setDestinoRolagemTotal(totalValue);
     }
 };
 

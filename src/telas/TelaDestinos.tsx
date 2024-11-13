@@ -10,8 +10,8 @@ import { ControleDestinos } from "../controles";
 
 export const TelaDestinos = () => {
     const {
-        destinosExecutor,
-        dadosRef,
+        destinoItens,
+        destinoDadosRef,
         salvando,
         desativaBotoes,
         ContextosReprovados,
@@ -26,12 +26,12 @@ export const TelaDestinos = () => {
         AoConcluirRolagem,
     } = ControleDestinos();
 
-    if (ContextosReprovados(true)) {
+    if (ContextosReprovados()) {
         return <></>;
     }
     if (EhFimDeJogo()) {
         return (
-            <div className={styles.destinos}>
+            <div className={styles.destinoItens}>
                 <div className={styles.destinos_morte}>
                     <div className={styles.destinos_tituloESalvar}>
                         <h3>VOCÊ MORREU - FIM DE JOGO</h3>
@@ -46,7 +46,7 @@ export const TelaDestinos = () => {
         );
     } else {
         return (
-            <div className={styles.destinos}>
+            <div className={styles.destinoItens}>
                 <div className={styles.destinos_normal}>
                     <div className={styles.destinos_tituloESalvar}>
                         <h3>Escolha o seu Destino:</h3>
@@ -104,7 +104,7 @@ export const TelaDestinos = () => {
     function MontarRetorno_Destinos() {
         return (
             <div className={styles.destinos_conteudo}>
-                {destinosExecutor.destinos.map((destinoI, indiceI) => {
+                {destinoItens.map((destinoI, indiceI) => {
                     return (
                         <div
                             key={indiceI}
@@ -156,7 +156,7 @@ export const TelaDestinos = () => {
                                     <span>{_testeSH.soma}</span>
                                     <ReactDice
                                         numDice={2}
-                                        ref={dadosRef}
+                                        ref={destinoDadosRef}
                                         rollDone={AoConcluirRolagem}
                                         faceColor={_testeSH.corDados}
                                         dotColor={_testeSH.corDots}

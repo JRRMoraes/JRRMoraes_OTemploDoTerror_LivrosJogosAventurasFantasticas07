@@ -1,6 +1,15 @@
 import { RefObject } from "react";
 import { EProcesso } from "../uteis";
 import { ECampanhaCapitulo } from "./Jogo";
+import {
+    ATAQUE_DANO_INIMIGO,
+    ATAQUE_DANO_JOGADOR,
+    MORTE_DANO_JOGADOR,
+    SORTE_DERROTA_CURA_INIMIGO,
+    SORTE_DERROTA_DANO_JOGADOR,
+    SORTE_VITORIA_CURA_JOGADOR,
+    SORTE_VITORIA_DANO_INIMIGO,
+} from "../globais/Constantes";
 
 export interface IApresentacao {
     textosApresentacao: string[];
@@ -38,6 +47,65 @@ export interface IEfeitoExecucao extends IEfeito {
     exeIdEfeito: number;
 }
 
+export interface IEfeitoInimigoExecucao extends IEfeitoExecucao {
+    exeIdInimigo: number;
+}
+
+export function ObterEfeitosExecucaoDeEnergia(idEfeito: number, texto: string, quantidade: number): IEfeitoExecucao[] {
+    return [
+        {
+            atributoEfeito: EAtributo.ENERGIA,
+            textoEfeito: texto,
+            nomeEfeito: "",
+            quantidade: quantidade,
+            exeProcessoEfeito: EProcesso._ZERO,
+            exeIdEfeito: idEfeito,
+        },
+    ];
+}
+
+export function EFEITO_MORTE_NO_JOGADOR(): IEfeitoExecucao[] {
+    return ObterEfeitosExecucaoDeEnergia(99100, "MORTE!!!", MORTE_DANO_JOGADOR);
+}
+
+export function EFEITO_ATAQUE_NO_JOGADOR(): IEfeitoExecucao[] {
+    return ObterEfeitosExecucaoDeEnergia(99101, "ATAQUE!!!", ATAQUE_DANO_JOGADOR);
+}
+
+export function EFEITO_SORTE_VITORIA_EM_DEFESA_DO_JOGADOR(): IEfeitoExecucao[] {
+    return ObterEfeitosExecucaoDeEnergia(99102, "SORTE!!!", SORTE_VITORIA_CURA_JOGADOR);
+}
+
+export function EFEITO_SORTE_DERROTA_EM_DEFESA_DO_JOGADOR(): IEfeitoExecucao[] {
+    return ObterEfeitosExecucaoDeEnergia(99103, "AZAR!!!", SORTE_DERROTA_DANO_JOGADOR);
+}
+
+export function ObterEfeitosInimigoExecucaoDeEnergia(idEfeito: number, idInimigo: number, texto: string, quantidade: number): IEfeitoInimigoExecucao[] {
+    return [
+        {
+            atributoEfeito: EAtributo.ENERGIA,
+            textoEfeito: texto,
+            nomeEfeito: "",
+            quantidade: quantidade,
+            exeProcessoEfeito: EProcesso._ZERO,
+            exeIdEfeito: idEfeito,
+            exeIdInimigo: idInimigo,
+        },
+    ];
+}
+
+export function EFEITO_ATAQUE_NO_INIMIGO(idInimigo: number): IEfeitoInimigoExecucao[] {
+    return ObterEfeitosInimigoExecucaoDeEnergia(99201, idInimigo, "ATAQUE!!!", ATAQUE_DANO_INIMIGO);
+}
+
+export function EFEITO_SORTE_VITORIA_EM_ATAQUE_NO_INIMIGO(idInimigo: number): IEfeitoInimigoExecucao[] {
+    return ObterEfeitosInimigoExecucaoDeEnergia(99202, idInimigo, "SORTE!!!", SORTE_VITORIA_DANO_INIMIGO);
+}
+
+export function EFEITO_SORTE_DERROTA_EM_ATAQUE_NO_INIMIGO(idInimigo: number): IEfeitoInimigoExecucao[] {
+    return ObterEfeitosInimigoExecucaoDeEnergia(99203, idInimigo, "AZAR!!!", SORTE_DERROTA_CURA_INIMIGO);
+}
+
 export interface IHistoria {
     textosHistoria: string[];
     efeitos: IEfeito[];
@@ -50,18 +118,14 @@ export const HISTORIA_ZERADA: IHistoria = {
     imagem: "",
 };
 
-export interface IHistoriaExecucao extends IHistoria {
-    efeitos: IEfeitoExecucao[];
-    exeProcessoHistoria: EProcesso;
+export interface IHistoriaTextoExecucao {
+    textosHistoria: string[];
     exeProcessoTexto: EProcesso;
-    exeProcessoEfeito: EProcesso;
 }
 
-export interface IHistoriasExecutor {
-    historias: IHistoriaExecucao[];
-    processoHistorias: EProcesso;
-    indiceHistoria: number;
-    efeitosAtuais: IEfeitoExecucao[];
+export interface IHistoriaEfeitoExecucao {
+    efeitos: IEfeitoExecucao[];
+    exeProcessoEfeito: EProcesso;
 }
 
 export enum EPosturaInimigo {
@@ -72,9 +136,16 @@ export enum EPosturaInimigo {
 }
 
 export enum EResultadoCombate {
-    _COMBATENDO,
-    VITORIA,
-    DERROTA,
+    _COMBATENDO = "Combatendo",
+    VITORIA = "Vitória",
+    DERROTA = "Derrota",
+}
+
+export enum EResultadoDados {
+    _NULO = "_",
+    VITORIA = "Vitória",
+    DERROTA = "Derrota",
+    EMPATE = "Empate",
 }
 
 export interface IInimigo {
@@ -87,7 +158,13 @@ export interface IInimigoExecucao extends IInimigo {
     exeEnergiaAtual: number;
     exePosturaInimigo: EPosturaInimigo;
     exeSerieDeAtaqueVencidoConsecutivo: number;
-    exeIdRolagemCombate: number;
+    exeProcessoRolagemAtaque: EProcesso;
+    exeProcessoRolagemSorteConfirmacao: EProcesso;
+    exeRolagemTotalJogador: number;
+    exeRolagemTotalInimigo: number;
+    exeRolagemTotalSorte: number;
+    exeRolagemResultadoAtaque: EResultadoDados;
+    exeRolagemResultadoSorte: EResultadoDados;
 }
 
 export interface IAliado {
@@ -98,6 +175,8 @@ export interface IAliado {
 
 export interface IAliadoExecucao extends IAliado {
     exeEnergiaAtual: number;
+    exeEhAliado: boolean;
+    exeEstaVivo: boolean;
 }
 
 export interface ICombate {
@@ -106,16 +185,6 @@ export interface ICombate {
     textosDerrota: string[];
     aprovacaoDerrota: string;
     combateMultiplo_2osApoio: boolean;
-}
-
-export interface ICombateExecutor extends ICombate {
-    inimigos: IInimigoExecucao[];
-    aliado: IAliadoExecucao;
-    processoCombate: EProcesso;
-    serieDeAtaqueAtual: number;
-    processoSerieDeAtaque: EProcesso;
-    resultadoCombate: EResultadoCombate;
-    idPaginaDestinoDerrota: number;
 }
 
 export interface IAprovacaoDestino {
@@ -143,11 +212,6 @@ export interface IDestino {
 }
 
 export interface IDestinoExecucao extends IDestino {}
-
-export interface IDestinosExecutor {
-    destinos: IDestinoExecucao[];
-    processoDestinos: EProcesso;
-}
 
 export interface IPagina {
     idPagina: number;
@@ -194,14 +258,6 @@ export const PAGINA_FIM_DE_JOGO: IPagina = {
     destinos: [],
 };
 
-export interface IPaginaExecutor extends IPagina {
-    exeEhJogoCarregado: boolean;
-    exeProcessoPagina: EProcesso;
-    exeIdPaginaDestino: number;
-    exeIdCapituloDestino: ECampanhaCapitulo;
-    exeEstado: EPaginaExecutorEstado;
-}
-
 export interface ILivro {
     idLivroJogo: string;
     titulo: string;
@@ -230,137 +286,4 @@ export interface IAudioExecutor {
     musicaAtual: string;
     tipoAtual: string;
     loopAtual: boolean;
-}
-
-export function RetornarHistoriasExecutorViaPagina(pagina: IPagina, ehJogoCarregado: boolean): IHistoriasExecutor {
-    const _historiasExecutor: IHistoriasExecutor = {
-        historias: [],
-        processoHistorias: EProcesso._ZERO,
-        indiceHistoria: 0,
-        efeitosAtuais: [],
-    };
-    if (pagina.historias && pagina.historias.length) {
-        _historiasExecutor.historias = pagina.historias.map<IHistoriaExecucao>((historiaI) => {
-            const _historiaExecucao: IHistoriaExecucao = {
-                textosHistoria: historiaI.textosHistoria,
-                efeitos: [],
-                imagem: historiaI.imagem,
-                exeProcessoHistoria: EProcesso._ZERO,
-                exeProcessoTexto: EProcesso._ZERO,
-                exeProcessoEfeito: ehJogoCarregado ? EProcesso.CONCLUIDO : EProcesso._ZERO,
-            };
-            if (historiaI.efeitos && historiaI.efeitos.length) {
-                _historiaExecucao.efeitos = historiaI.efeitos.map<IEfeitoExecucao>((efeitoI) => {
-                    const _efeitoExecucaoI: IEfeitoExecucao = {
-                        ...efeitoI,
-                        exeProcessoEfeito: EProcesso._ZERO,
-                        exeIdEfeito: Math.ceil(Math.random() * 1000),
-                    };
-                    return { ..._efeitoExecucaoI };
-                });
-            }
-            return { ..._historiaExecucao };
-        });
-    }
-    return _historiasExecutor;
-}
-
-export function RetornarCombateExecutorViaPagina(pagina: IPagina): ICombateExecutor {
-    const _combateExecutor: ICombateExecutor = {
-        inimigos: null!,
-        aliado: null!,
-        textosDerrota: null!,
-        aprovacaoDerrota: null!,
-        combateMultiplo_2osApoio: null!,
-        processoCombate: EProcesso._ZERO,
-        serieDeAtaqueAtual: 0,
-        processoSerieDeAtaque: EProcesso._ZERO,
-        resultadoCombate: EResultadoCombate._COMBATENDO,
-        idPaginaDestinoDerrota: PAGINA_ZERADA.idPagina,
-    };
-    if (pagina.combate) {
-        if (pagina.combate.inimigos && pagina.combate.inimigos.length) {
-            _combateExecutor.inimigos = pagina.combate.inimigos.map<IInimigoExecucao>((inimigoI) => {
-                const _inimigoExecucao: IInimigoExecucao = {
-                    ...inimigoI,
-                    exeEnergiaAtual: inimigoI.energia,
-                    exePosturaInimigo: EPosturaInimigo._AGUARDANDO,
-                    exeSerieDeAtaqueVencidoConsecutivo: 0,
-                    exeIdRolagemCombate: Math.ceil(Math.random() * 1000),
-                };
-                return { ..._inimigoExecucao };
-            });
-        }
-        if (pagina.combate.aliado) {
-            _combateExecutor.aliado = {
-                ...pagina.combate.aliado,
-                exeEnergiaAtual: pagina.combate.aliado.energia,
-            };
-        }
-    }
-    return _combateExecutor;
-}
-
-export function RetornarDestinosExecutorViaPagina(pagina: IPagina, padraoCapitulo: ECampanhaCapitulo, ehJogoCarregado: boolean): IDestinosExecutor {
-    const _destinosExecutor: IDestinosExecutor = {
-        destinos: [],
-        processoDestinos: EProcesso._ZERO,
-    };
-    if (pagina.destinos && pagina.destinos.length) {
-        _destinosExecutor.destinos = pagina.destinos.map<IDestinoExecucao>((destinoI) => ({
-            ...destinoI,
-            exeProcessoEfeito: EProcesso._ZERO,
-            idCapitulo: destinoI.idCapitulo && destinoI.idCapitulo !== ECampanhaCapitulo._NULO ? destinoI.idCapitulo : padraoCapitulo,
-        }));
-    }
-    return _destinosExecutor;
-}
-
-export function RetornarPaginaExecutorViaPagina(pagina: IPagina, padraoCapitulo: ECampanhaCapitulo, ehJogoCarregado: boolean): IPaginaExecutor {
-    const _paginaExecutor: IPaginaExecutor = {
-        idPagina: pagina.idPagina,
-        idCapitulo: padraoCapitulo,
-        titulo: pagina.titulo,
-        historias: pagina.historias,
-        combate: pagina.combate,
-        destinos: pagina.destinos,
-        exeEhJogoCarregado: ehJogoCarregado,
-        exeProcessoPagina: EProcesso._ZERO,
-        exeIdPaginaDestino: PAGINA_ZERADA.idPagina,
-        exeIdCapituloDestino: PAGINA_ZERADA.idCapitulo,
-        exeEstado: EPaginaExecutorEstado.INICIALIZADO,
-    };
-    return _paginaExecutor;
-}
-
-export function RetornarCombateExecutorNoProcessoInicial(combate: ICombateExecutor, ehJogoCarregado: boolean) {
-    if (!combate.inimigos || !combate.inimigos.length) {
-        combate.processoCombate = EProcesso.CONCLUIDO;
-        return combate;
-    }
-    if (ehJogoCarregado) {
-        combate.inimigos = combate.inimigos.map((inimigoI) => {
-            inimigoI.exePosturaInimigo = EPosturaInimigo.MORTO;
-            inimigoI.exeEnergiaAtual = 0;
-            return inimigoI;
-        });
-        combate.processoCombate = EProcesso.CONCLUIDO;
-        return combate;
-    }
-    combate.processoCombate = EProcesso.INICIANDO;
-    combate.inimigos = combate.inimigos.map((inimigoI) => {
-        inimigoI.exePosturaInimigo = EPosturaInimigo._AGUARDANDO;
-        return inimigoI;
-    });
-    combate.inimigos = combate.inimigos.map((inimigoI, indiceI) => {
-        if (indiceI === 0) {
-            inimigoI.exePosturaInimigo = EPosturaInimigo.ATACANTE;
-        } else {
-            if (combate.combateMultiplo_2osApoio) {
-                inimigoI.exePosturaInimigo = EPosturaInimigo.APOIO;
-            }
-        }
-        return inimigoI;
-    });
-    return combate;
 }

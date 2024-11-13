@@ -47,6 +47,14 @@
 
             &_lado {
                 flex: 1;
+
+                &_2 {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    height: 100%;
+                    width: 100%;
+                }
             }
         }
 
@@ -70,7 +78,6 @@
     &_infos {
         display: flex;
         flex-direction: column;
-        //align-items: center;
         justify-content: center;
         margin: 0;
 
@@ -82,7 +89,6 @@
     &_lados {
         display: flex;
         flex-direction: row;
-        // align-items: center;
         justify-content: space-between;
         margin: 0;
     }

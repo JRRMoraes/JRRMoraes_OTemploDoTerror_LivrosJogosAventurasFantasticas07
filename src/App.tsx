@@ -1,6 +1,6 @@
 import "./globais/EstilosGlobais.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ProvedorLivro, ProvedorJogos } from "./provedores";
+import { ProvedorLivro, ProvedorJogos, ProvedorPagina } from "./provedores";
 import { PaginaInicial, PaginaLivroJogo } from "./paginas";
 
 function App() {
@@ -8,23 +8,25 @@ function App() {
         <>
             <ProvedorLivro>
                 <ProvedorJogos>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route
-                                path="/"
-                                element={<PaginaInicial />}
-                            >
+                    <ProvedorPagina>
+                        <BrowserRouter>
+                            <Routes>
                                 <Route
-                                    index
+                                    path="/"
                                     element={<PaginaInicial />}
+                                >
+                                    <Route
+                                        index
+                                        element={<PaginaInicial />}
+                                    />
+                                </Route>
+                                <Route
+                                    path="/:idJogo"
+                                    element={<PaginaLivroJogo />}
                                 />
-                            </Route>
-                            <Route
-                                path="/:idJogo"
-                                element={<PaginaLivroJogo />}
-                            />
-                        </Routes>
-                    </BrowserRouter>
+                            </Routes>
+                        </BrowserRouter>
+                    </ProvedorPagina>
                 </ProvedorJogos>
             </ProvedorLivro>
         </>

@@ -1,3 +1,5 @@
+@import "../globais/EstilosGlobais.scss";
+
 .livroJogo_Desktop {
     height: 200vh;
     width: 100vw;
@@ -5,12 +7,18 @@
     border: 0;
     margin: 0;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: start;
     background-image: url("/fundo_mesa_madeira_bruta.jpg");
     background-repeat: repeat-y;
     background-size: 100% auto;
+
+    &_2 {
+        width: calc(100% - PixelParaVW(20));
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: start;
+    }
 
     &_campanha {
         min-height: 100%;
@@ -22,7 +30,7 @@
         background-size: 100% 100%;
 
         &_2 {
-            padding: 80px 50px 80px 50px;
+            padding: PixelParaVW(60) PixelParaVW(50) PixelParaVW(60) PixelParaVW(50);
         }
     }
 
@@ -38,7 +46,7 @@
         }
 
         &_3 {
-            padding: 80px 40px 80px 40px;
+            padding: PixelParaVW(80) PixelParaVW(30) PixelParaVW(80) PixelParaVW(30);
         }
 
         &_audio {
@@ -58,44 +66,68 @@
     gap: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     background-image: url("/fundo_mesa_madeira_bruta.jpg");
     background-repeat: repeat-y;
+    background-size: 100% auto;
 
-    ::-webkit-scrollbar {
-        width: 25px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: #dc3545;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background-image: linear-gradient(red, yellow);
-        border-radius: 25px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background-image: linear-gradient(#ee0970, #ff6a00);
-    }
-
-    &_fundo {
-        background: url("/fundo_pergaminho_papel_antigo_1.png");
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: 140% 100%;
-    }
-
-    &_campanha {
-        &_2 {
-            padding: 20px 10px 100px 10px;
-        }
+    &_2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     &_panilha {
-        &_2 {
-            padding: 100px 10px 20px 10px;
+        width: 100%;
+        box-sizing: border-box;
+        background: url("/fundo_pergaminho_papel_antigo_1.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: calc(100% + PixelParaVW(100)) 100%;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: "";
+            position: absolute;
+            background-image: inherit;
+            background-size: inherit;
+            background-position: inherit;
+            z-index: -2;
         }
+
+        &_2 {
+            padding: PixelParaVW(60) PixelParaVW(50) PixelParaVW(60) PixelParaVW(20);
+        }
+    }
+
+    &_campanha {
+        width: 100%;
+        box-sizing: border-box;
+        background: url("/fundo_pergaminho_papel_antigo_5.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: calc(100% + PixelParaVW(100)) 100%;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: "";
+            position: absolute;
+            background-image: inherit;
+            background-size: inherit;
+            background-position: inherit;
+            z-index: -1;
+        }
+
+        &_2 {
+            padding: PixelParaVW(60) PixelParaVW(50) PixelParaVW(80) PixelParaVW(20);
+        }
+    }
+
+    &_audio {
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
     }
 }

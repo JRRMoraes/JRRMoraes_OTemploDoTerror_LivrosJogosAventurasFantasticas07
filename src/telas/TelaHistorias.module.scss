@@ -1,10 +1,9 @@
 .historias {
-    padding: 0;
-    margin: 0 auto;
     width: 100%;
     letter-spacing: 0.5px;
 
     &_texto {
+        font-size: 1rem;
         text-align: justify;
         text-indent: 20px;
     }
@@ -16,7 +15,7 @@
         background-color: #646cff;
         text-align: center;
         font-weight: 700;
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     }
 
@@ -27,12 +26,12 @@
         background-color: #ff8888;
         text-align: center;
         font-weight: 700;
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     }
 
     &_pularHistoria {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
     }
 }

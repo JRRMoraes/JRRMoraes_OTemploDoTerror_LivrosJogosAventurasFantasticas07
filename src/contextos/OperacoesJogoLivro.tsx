@@ -1,9 +1,11 @@
-import { ContextoJogos } from ".";
+import { ContextoJogos, ContextoPagina } from ".";
 import { IAprovacaoDestino, EAtributo, EComparacao, EResultadoCombate, EPosturaInimigo } from "../tipos";
 import { TextosIguais } from "../uteis";
 
 export const OperacoesJogoLivro = () => {
-    const { jogoAtual, paginaExecutor, historiasExecutor, combateExecutor, destinosExecutor } = ContextoJogos();
+    const { jogoAtual } = ContextoJogos();
+
+    const { combateInimigos, combateAprovacaoDerrota, combateSerieDeAtaqueAtual } = ContextoPagina();
 
     return {
         ValidarAprovacoesDestino,
@@ -98,9 +100,9 @@ export const OperacoesJogoLivro = () => {
     }
 
     function AvaliarResultadoCombateDoCombateExecutorProcessoIniciando(): EResultadoCombate {
-        switch (combateExecutor.aprovacaoDerrota) {
-            case "SerieDeAtaqueEhMaiorOuIgualAHabilidade":
-                if (combateExecutor.serieDeAtaqueAtual >= jogoAtual.panilha.habilidade) {
+        switch (combateAprovacaoDerrota.toLowerCase()) {
+            case "SerieDeAtaqueEhMaiorOuIgualAHabilidade".toLowerCase():
+                if (combateSerieDeAtaqueAtual >= jogoAtual.panilha.habilidade) {
                     return EResultadoCombate.DERROTA;
                 }
                 break;
@@ -109,12 +111,15 @@ export const OperacoesJogoLivro = () => {
     }
 
     function AvaliarResultadoCombateDoCombateExecutorProcessoDestruido(): EResultadoCombate {
-        if (!combateExecutor.inimigos.find((inimigoI) => inimigoI.exePosturaInimigo !== EPosturaInimigo.MORTO)) {
+        if (jogoAtual.panilha.energia === 0) {
+            return EResultadoCombate.DERROTA;
+        }
+        if (!combateInimigos.find((inimigoI) => inimigoI.exePosturaInimigo !== EPosturaInimigo.MORTO)) {
             return EResultadoCombate.VITORIA;
         }
-        switch (combateExecutor.aprovacaoDerrota) {
-            case "InimigoComSerieDeAtaqueVencidoConsecutivo_2":
-                if (combateExecutor.inimigos.find((inimigoI) => inimigoI.exeSerieDeAtaqueVencidoConsecutivo >= 2)) {
+        switch (combateAprovacaoDerrota.toLowerCase()) {
+            case "InimigoComSerieDeAtaqueVencidoConsecutivo_2".toLowerCase():
+                if (combateInimigos.find((inimigoI) => inimigoI.exeSerieDeAtaqueVencidoConsecutivo >= 2)) {
                     return EResultadoCombate.DERROTA;
                 }
                 break;

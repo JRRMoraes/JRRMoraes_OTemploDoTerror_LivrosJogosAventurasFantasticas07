@@ -38,3 +38,5 @@ export const ProvedorLivro = ({ children }: IChildrenProps) => {
         </ContextoBaseLivro.Provider>
     );
 };
+
+export default ProvedorLivro;

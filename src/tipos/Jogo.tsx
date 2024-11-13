@@ -1,16 +1,14 @@
-import { RefObject } from "react";
 import { EProcesso, TextosIguais } from "../uteis";
-import { IEfeito, IDestino, PAGINA_INICIAL, PAGINA_ZERADA } from "./Livro";
-import { DieContainerRef } from "react-dice-complete/dist/DiceContainer";
-
-export interface IItem {
-    idItem: string;
-    quantidade: number;
-}
+import { IEfeito, PAGINA_INICIAL, PAGINA_ZERADA } from "./Livro";
 
 export enum EJogoNivel {
     _NORMAL = "Normal",
     FACIL = "Fácil",
+}
+
+export interface IItem {
+    idItem: string;
+    quantidade: number;
 }
 
 export interface IPanilha {
@@ -88,30 +86,6 @@ export const ROLAGEM_PARA_PANILHA_NOVA_ZERADA: IRolagemParaPanilhaNova = {
         sorte: 0,
     },
 };
-
-export interface IRolagemParaDestino {
-    processoRolagem: EProcesso;
-    total: number;
-    destino: IDestino;
-}
-
-export const ROLAGEM_PARA_DESTINO_ZERADA: IRolagemParaDestino = {
-    processoRolagem: EProcesso._ZERO,
-    total: 0,
-    destino: null!,
-};
-
-export interface IRolagemParaCombate {
-    exeIdRolagemCombate: number;
-    exeProcessoRolagem: EProcesso;
-    exeProcessoSorteConfirmacao: EProcesso;
-    exeDadosJogadorRef: RefObject<DieContainerRef>;
-    exeRolagemTotalJogador: number;
-    exeDadosInimigoRef: RefObject<DieContainerRef>;
-    exeRolagemTotalInimigo: number;
-    exeDadosSorteRef: RefObject<DieContainerRef>;
-    exeRolagemTotalSorte: number;
-}
 
 export function AjustarSeForNovoJogo(jogoSalvo: IJogo) {
     if (!jogoSalvo.dataCriacao) {

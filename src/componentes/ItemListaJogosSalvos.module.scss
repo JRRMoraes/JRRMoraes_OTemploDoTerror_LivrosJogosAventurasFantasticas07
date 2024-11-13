@@ -19,8 +19,9 @@
     background-color: #f2f2f2;
     box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.08);
     font-size: 1rem;
+
     width: 400px;
-    @media (max-width: var(--CELULAR_MAX_WIDTH)) {
+    @media (max-width: var(--LARGURA_LIMITE_CELULAR_PX)) {
         width: auto;
     }
 

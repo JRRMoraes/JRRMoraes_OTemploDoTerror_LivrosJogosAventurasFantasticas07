@@ -2,13 +2,13 @@
     &_normal {
         border: 4px green solid;
         border-radius: 8px;
-        padding: 8px 16px;
         margin: 16px 0 0 0;
         background-color: #b1eb9b;
         transition: border-color 0.25s;
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 
-        @media screen and (max-width: var(--CELULAR_MAX_WIDTH)) {
+        padding: 8px 16px;
+        @media screen and (max-width: var(--LARGURA_LIMITE_CELULAR_PX)) {
             padding: 8px;
         }
     }
@@ -24,8 +24,9 @@
 
     &_tituloESalvar {
         display: flex;
+        width: 100%;
         flex-direction: row;
-        align-items: center;
+        //align-items: center;
         justify-content: space-between;
         margin: 0 0 12px 0;
         font-style: italic;
@@ -123,7 +124,7 @@
     }
 }
 
-@media screen and (max-width: var(--CELULAR_MAX_WIDTH)) {
+@media screen and (max-width: var(--LARGURA_LIMITE_CELULAR_PX)) {
     .destinos {
         &_normal {
             padding: 8px;

@@ -1,5 +1,5 @@
 import styles from "./TelaCombate.module.scss";
-import { IInimigoExecucao, EPosturaInimigo } from "../tipos";
+import { IInimigoExecucao, EPosturaInimigo, EResultadoDados } from "../tipos";
 import { ControleCombate } from "../controles";
 import { BarraEnergia, Botao } from "../componentes";
 import iconJogadorAtacando from "/Icon.Atacando.6_26.png";
@@ -15,7 +15,13 @@ import { EProcesso } from "../uteis";
 export const TelaCombate = () => {
     const {
         jogoAtual,
-        combateExecutor,
+        combateInimigos,
+        combateAliado,
+        combateTextosDerrota,
+        combateSerieDeAtaqueAtual,
+        combateDadosJogadorRef,
+        combateDadosInimigoRef,
+        combateDadosSorteRef,
         ContextosReprovados,
         AprovarTextosDerrota,
         AprovarBotaoRolarCombate,
@@ -27,26 +33,26 @@ export const TelaCombate = () => {
         AoConcluirRolarCombateJogador,
         AoConcluirRolarCombateInimigo,
         AoConcluirTestarSorte,
-        ObterRolagemCombateViaInimigo,
+        ObterJogadorOuAliado,
     } = ControleCombate();
 
-    if (ContextosReprovados(true)) {
+    if (ContextosReprovados()) {
         return <></>;
     }
     return (
         <div className={styles.combate}>
             <div className={styles.combate_titulo}>
                 <h3>Vença o Combate:</h3>
-                <h4>{"Série de ataque " + combateExecutor.serieDeAtaqueAtual.toString()}</h4>
+                <h4>{"Série de ataque " + combateSerieDeAtaqueAtual.toString()}</h4>
             </div>
             <div className={styles.combate_derrota}>{MontarRetorno_Derrota()}</div>
-            <div className={styles.combate_arena}>{combateExecutor.inimigos.map((inimigoI, indiceI) => MontarRetorno_Arena(inimigoI, indiceI))}</div>
+            <div className={styles.combate_arena}>{combateInimigos.map((inimigoI, indiceI) => MontarRetorno_Arena(inimigoI, indiceI))}</div>
         </div>
     );
 
     function MontarRetorno_Derrota() {
         if (AprovarTextosDerrota()) {
-            combateExecutor.textosDerrota.map((textoI) => {
+            combateTextosDerrota.map((textoI) => {
                 return <p>{textoI}</p>;
             });
         } else {
@@ -54,7 +60,7 @@ export const TelaCombate = () => {
         }
     }
 
-    function MontarRetorno_Arena(inimigo: IInimigoExecucao, indiceI: number) {
+    function MontarRetorno_Arena(inimigo: IInimigoExecucao, indice: number) {
         let _estilo = "";
         switch (inimigo.exePosturaInimigo) {
             case EPosturaInimigo.MORTO:
@@ -73,26 +79,25 @@ export const TelaCombate = () => {
         }
         return (
             <div
-                key={indiceI}
+                key={indice}
                 className={_estilo}
             >
                 <div className={styles.combate_arena_versus}>
-                    {MontarRetorno_Jogador(inimigo)}
-                    {MontarRetorno_Inimigo(inimigo)}
+                    {MontarRetorno_Jogador(inimigo, indice)}
+                    {MontarRetorno_Inimigo(inimigo, indice)}
                 </div>
-                {MontarRetorno_Comandos(inimigo)}
+                {MontarRetorno_Comandos(inimigo, indice)}
             </div>
         );
     }
 
-    function MontarRetorno_Jogador(inimigo: IInimigoExecucao) {
+    function MontarRetorno_Jogador(inimigo: IInimigoExecucao, indice: number) {
         let _estilo = styles.combate_arena_versus_lado + " " + styles.combate_esquerda + " ";
         let _icone = "";
         let _alt = "";
         let _total = "= ? =";
-        const _rolagem = ObterRolagemCombateViaInimigo(inimigo);
-        if (_rolagem && [EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(_rolagem.exeProcessoRolagem)) {
-            _total = "= " + _rolagem.exeRolagemTotalJogador + " =";
+        if ([EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(inimigo.exeProcessoRolagemAtaque)) {
+            _total = "= " + inimigo.exeRolagemTotalJogador + " =";
         }
         switch (inimigo.exePosturaInimigo) {
             case EPosturaInimigo.APOIO:
@@ -110,21 +115,27 @@ export const TelaCombate = () => {
             default:
                 return <div className={_estilo}></div>;
         }
-        if (!combateExecutor.aliado) {
-            return (
-                <div className={_estilo}>
+        let _tamanho = 64;
+        if (inimigo.exeRolagemResultadoAtaque === EResultadoDados.VITORIA) {
+            _tamanho = 80;
+        } else if (inimigo.exeRolagemResultadoAtaque === EResultadoDados.DERROTA) {
+            _tamanho = 48;
+        }
+        return (
+            <div className={_estilo}>
+                <div className={styles.combate_arena_versus_lado_2}>
                     <div className={styles.combate_esquerda + " " + styles.combate_infos}>
-                        <h4>{jogoAtual.panilha.nome}</h4>
-                        <span>{"Energia: " + jogoAtual.panilha.energia + " / " + jogoAtual.panilha.energiaInicial}</span>
-                        {BarraEnergia(jogoAtual.panilha.energia, jogoAtual.panilha.energiaInicial)}
+                        <h4>{ObterJogadorOuAliado().aliado}</h4>
+                        <span>{"Energia: " + ObterJogadorOuAliado().exeEnergiaAtual + " / " + ObterJogadorOuAliado().energia}</span>
+                        {BarraEnergia(ObterJogadorOuAliado().exeEnergiaAtual, ObterJogadorOuAliado().energia)}
                     </div>
                     <div className={styles.combate_lados}>
                         <div className={styles.combate_esquerda + " " + styles.combate_infos}>
-                            <span>{"Habilidade: " + jogoAtual.panilha.habilidade}</span>
+                            <span>{"Habilidade: " + ObterJogadorOuAliado().habilidade}</span>
                             <ReactDice
                                 numDice={2}
-                                ref={_rolagem?.exeDadosJogadorRef}
-                                rollDone={AoConcluirRolarCombateJogador(inimigo)}
+                                ref={combateDadosJogadorRef[indice]}
+                                rollDone={AoConcluirRolarCombateJogador(inimigo, indice)}
                                 faceColor={COR_HABILIDADE}
                                 dotColor={COR_HABILIDADE_DOTS}
                                 defaultRoll={1}
@@ -137,25 +148,23 @@ export const TelaCombate = () => {
                             <img
                                 src={_icone}
                                 alt={_alt}
-                                height={64}
-                                width={64}
+                                height={_tamanho}
+                                width={_tamanho}
                             />
                         </div>
                     </div>
                 </div>
-            );
-        } else {
-        }
+            </div>
+        );
     }
 
-    function MontarRetorno_Inimigo(inimigo: IInimigoExecucao) {
+    function MontarRetorno_Inimigo(inimigo: IInimigoExecucao, indice: number) {
         let _estilo = styles.combate_arena_versus_lado + " " + styles.combate_direita + " ";
         let _icone = "";
         let _alt = "";
         let _total = "= ? =";
-        const _rolagem = ObterRolagemCombateViaInimigo(inimigo);
-        if (_rolagem && [EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(_rolagem.exeProcessoRolagem)) {
-            _total = "= " + _rolagem.exeRolagemTotalInimigo + " =";
+        if ([EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(inimigo.exeProcessoRolagemAtaque)) {
+            _total = "= " + inimigo.exeRolagemTotalInimigo + " =";
         }
         switch (inimigo.exePosturaInimigo) {
             case EPosturaInimigo.MORTO:
@@ -180,50 +189,89 @@ export const TelaCombate = () => {
                 _alt = "Inimigo Aguardando";
                 break;
         }
-        return (
-            <div className={_estilo}>
-                <div className={styles.combate_direita + " " + styles.combate_infos}>
-                    <h4>{inimigo.inimigo}</h4>
-                    <span>{"Energia: " + inimigo.exeEnergiaAtual + " / " + inimigo.energia}</span>
-                    {BarraEnergia(inimigo.exeEnergiaAtual, inimigo.energia)}
-                </div>
-                <div className={styles.combate_lados}>
-                    <div className={styles.combate_esquerda + " " + styles.combate_infos}>
-                        <h4>{_total}</h4>
-                        <img
-                            src={_icone}
-                            alt={_alt}
-                            height={64}
-                            width={64}
-                        />
+        switch (inimigo.exePosturaInimigo) {
+            case EPosturaInimigo.APOIO:
+            case EPosturaInimigo.ATACANTE:
+                let _tamanho = 64;
+                if (inimigo.exeRolagemResultadoAtaque === EResultadoDados.DERROTA) {
+                    _tamanho = 80;
+                } else if (inimigo.exeRolagemResultadoAtaque === EResultadoDados.VITORIA) {
+                    _tamanho = 48;
+                }
+                return (
+                    <div className={_estilo}>
+                        <div className={styles.combate_arena_versus_lado_2}>
+                            <div className={styles.combate_direita + " " + styles.combate_infos}>
+                                <h4>{inimigo.inimigo}</h4>
+                                <span>{"Energia: " + inimigo.exeEnergiaAtual + " / " + inimigo.energia}</span>
+                                {BarraEnergia(inimigo.exeEnergiaAtual, inimigo.energia)}
+                            </div>
+                            <div className={styles.combate_lados}>
+                                <div className={styles.combate_esquerda + " " + styles.combate_infos}>
+                                    <h4>{_total}</h4>
+                                    <img
+                                        src={_icone}
+                                        alt={_alt}
+                                        height={_tamanho}
+                                        width={_tamanho}
+                                    />
+                                </div>
+                                <div className={styles.combate_direita + " " + styles.combate_infos}>
+                                    <span>{"Habilidade: " + inimigo.habilidade}</span>
+                                    <ReactDice
+                                        numDice={2}
+                                        ref={combateDadosInimigoRef[indice]}
+                                        rollDone={AoConcluirRolarCombateInimigo(inimigo, indice)}
+                                        faceColor={"#ff0000"}
+                                        dotColor={"#ffffff"}
+                                        defaultRoll={1}
+                                        disableIndividual={true}
+                                        rollTime={TEMPO_DADOS_ROLANDO_SEGUNDOS}
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className={styles.combate_direita + " " + styles.combate_infos}>
-                        <span>{"Habilidade: " + inimigo.habilidade}</span>
-                        <ReactDice
-                            numDice={2}
-                            ref={_rolagem?.exeDadosInimigoRef}
-                            rollDone={AoConcluirRolarCombateInimigo(inimigo)}
-                            faceColor={"#ff0000"}
-                            dotColor={"#ffffff"}
-                            defaultRoll={1}
-                            disableIndividual={true}
-                            rollTime={TEMPO_DADOS_ROLANDO_SEGUNDOS}
-                        />
+                );
+                break;
+            case EPosturaInimigo.MORTO:
+            case EPosturaInimigo._AGUARDANDO:
+            default:
+                return (
+                    <div className={_estilo}>
+                        <div className={styles.combate_arena_versus_lado_2}>
+                            <div className={styles.combate_lados}>
+                                <div className={styles.combate_esquerda + " " + styles.combate_infos}>
+                                    <img
+                                        src={_icone}
+                                        alt={_alt}
+                                        height={48}
+                                        width={48}
+                                    />
+                                </div>
+                                <div className={styles.combate_direita + " " + styles.combate_infos}>
+                                    <h4>{inimigo.inimigo}</h4>
+                                    <span>{"Energia: " + inimigo.exeEnergiaAtual + " / " + inimigo.energia}</span>
+                                    {BarraEnergia(inimigo.exeEnergiaAtual, inimigo.energia)}
+                                    <span>{"Habilidade: " + inimigo.habilidade}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        );
+                );
+                break;
+        }
     }
 
-    function MontarRetorno_Comandos(inimigo: IInimigoExecucao) {
+    function MontarRetorno_Comandos(inimigo: IInimigoExecucao, indice: number) {
         if (!AprovarBotaoRolarCombate(inimigo) && !AprovarBotaoTestarSorte(inimigo) && !AprovarBotaoConfirmar(inimigo)) {
             return <></>;
         }
         return (
             <div className={styles.combate_arena_comandos}>
-                {AprovarBotaoRolarCombate(inimigo) && <Botao aoClicar={AoRolarCombate(inimigo)}>{"COMBATER!!!"}</Botao>}
-                {AprovarBotaoTestarSorte(inimigo) && <Botao aoClicar={AoTestarSorte(inimigo)}>{"Testar SORTE!"}</Botao>}
-                {AprovarBotaoConfirmar(inimigo) && <Botao aoClicar={AoConfirmar(inimigo)}>{"Confirmar"}</Botao>}
+                {AprovarBotaoRolarCombate(inimigo) && <Botao aoClicar={AoRolarCombate(inimigo, indice)}>{"COMBATER!!!"}</Botao>}
+                {AprovarBotaoTestarSorte(inimigo) && <Botao aoClicar={AoTestarSorte(inimigo, indice)}>{"Testar SORTE!"}</Botao>}
+                {AprovarBotaoConfirmar(inimigo) && <Botao aoClicar={AoConfirmar(inimigo, indice)}>{"Confirmar"}</Botao>}
             </div>
         );
     }

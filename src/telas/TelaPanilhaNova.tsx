@@ -6,7 +6,7 @@ import { IRolagemParaPanilhaNova, EJogoNivel, ROLAGEM_PARA_PANILHA_NOVA_ZERADA }
 import { Botao } from "../componentes";
 import ReactDice, { ReactDiceRef } from "react-dice-complete";
 import { EProcesso } from "../uteis";
-import { COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_ENERGIA, COR_ENERGIA_DOTS, COR_SORTE, COR_SORTE_DOTS, TEMPO_DADOS_ROLANDO_MILESIMOS, TEMPO_DADOS_ROLANDO_SEGUNDOS } from "../globais/Constantes";
+import { COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_ENERGIA, COR_ENERGIA_DOTS, COR_SORTE, COR_SORTE_DOTS, TEMPO_DADOS_RESULTADO_MILESIMOS, TEMPO_DADOS_ROLANDO_SEGUNDOS } from "../globais/Constantes";
 
 export const TelaPanilhaNova = () => {
     const { jogoAtual, CriarPanilhaNoJogoAtualViaRolagens } = ContextoJogos();
@@ -45,7 +45,7 @@ export const TelaPanilhaNova = () => {
                 setRolagemDados((prevRolandoDados) => {
                     return { ...prevRolandoDados, processoRolagem: EProcesso.CONCLUIDO };
                 });
-            }, TEMPO_DADOS_ROLANDO_MILESIMOS);
+            }, TEMPO_DADOS_RESULTADO_MILESIMOS);
         } else if (rolagemDados.processoRolagem === EProcesso.CONCLUIDO) {
             setRolagemDados((prevRolandoDados) => {
                 return { ...prevRolandoDados, processoRolagem: EProcesso.DESTRUIDO };

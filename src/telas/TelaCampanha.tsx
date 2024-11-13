@@ -1,13 +1,15 @@
 import styles from "./TelaCampanha.module.scss";
-import { ContextoJogos } from "../contextos";
+import { ContextoJogos, ContextoPagina } from "../contextos";
 import TelaHistorias from "./TelaHistorias";
 import TelaCombate from "./TelaCombate";
 import TelaDestinos from "./TelaDestinos";
 
 export const TelaCampanha = () => {
-    const { jogoAtual, paginaExecutor } = ContextoJogos();
+    const { jogoAtual } = ContextoJogos();
 
-    if (!jogoAtual || !paginaExecutor) {
+    const { pagina } = ContextoPagina();
+
+    if (!jogoAtual || !pagina) {
         return <></>;
     }
     return (
@@ -20,10 +22,10 @@ export const TelaCampanha = () => {
     );
 
     function MontarRetorno_IndiceTitulo() {
-        if (paginaExecutor.titulo) {
-            return <h1 className={styles.campanha_titulo}>{paginaExecutor.titulo}</h1>;
-        } else if (paginaExecutor.idPagina > 0) {
-            return <h1 className={styles.campanha_indice}>{paginaExecutor.idPagina}</h1>;
+        if (pagina.titulo) {
+            return <h1 className={styles.campanha_titulo}>{pagina.titulo}</h1>;
+        } else if (pagina.idPagina > 0) {
+            return <h1 className={styles.campanha_indice}>{pagina.idPagina}</h1>;
         } else {
             return <></>;
         }

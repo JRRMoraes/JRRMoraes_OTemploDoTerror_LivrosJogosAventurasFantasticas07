@@ -8,7 +8,7 @@ import { FLIP_BOOK_ALTURA_MINIMA, FLIP_BOOK_LARGURA_MINIMA, TEMPO_ANIMACAO_NORMA
 import { ContextoLivro } from "../contextos";
 
 export const PaginaLivroJogo2 = () => {
-    const { flipBookRef, EhDesktop } = ControlePaginaLivroJogo2();
+    const { flipBookRef, EhDispositivoTabletOuDesktop } = ControlePaginaLivroJogo2();
 
     const { CaminhoImagem } = ContextoLivro();
 
@@ -28,7 +28,7 @@ export const PaginaLivroJogo2 = () => {
         }
     }, []);
 
-    if (EhDesktop()) {
+    if (EhDispositivoTabletOuDesktop()) {
         return (
             <div
                 className={styles.livroJogo_Desktop}

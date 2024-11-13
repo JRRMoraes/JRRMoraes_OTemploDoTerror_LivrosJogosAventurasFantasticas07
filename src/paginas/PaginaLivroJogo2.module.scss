@@ -1,8 +1,8 @@
 .livroJogo_Desktop {
     height: 100vh;
-    min-height: var(--CELULAR_MAX_WIDTH);
+    min-height: var(--LARGURA_LIMITE_CELULAR_PX);
     width: 100vw;
-    min-width: var(--CELULAR_MAX_WIDTH);
+    min-width: var(--LARGURA_LIMITE_CELULAR_PX);
     box-sizing: border-box;
     border: 0;
     margin: 0;
@@ -66,7 +66,7 @@
 .livroJogo_Celular {
     min-height: 100vh;
     width: 100vw;
-    min-width: var(--CELULAR_MAX_WIDTH);
+    min-width: var(--LARGURA_LIMITE_CELULAR_PX);
     box-sizing: border-box;
     border: 0;
     margin: 0;

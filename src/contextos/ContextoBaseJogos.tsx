@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from "react";
-import { ECampanhaCapitulo, ICombateExecutor, IDestinosExecutor, IHistoriasExecutor, IJogo, IPaginaExecutor } from "../tipos";
+import { IJogo, ECampanhaCapitulo, IEfeitoExecucao } from "../tipos";
 
 export type TContextoBaseJogos = {
     jogoSalvo1: IJogo;
@@ -10,16 +10,10 @@ export type TContextoBaseJogos = {
     setJogoSalvo3: Dispatch<SetStateAction<IJogo>>;
     jogoAtual: IJogo;
     setJogoAtual: Dispatch<SetStateAction<IJogo>>;
-    paginaExecutor: IPaginaExecutor;
-    setPaginaExecutor: Dispatch<SetStateAction<IPaginaExecutor>>;
-    historiasExecutor: IHistoriasExecutor;
-    setHistoriasExecutor: Dispatch<SetStateAction<IHistoriasExecutor>>;
-    combateExecutor: ICombateExecutor;
-    setCombateExecutor: Dispatch<SetStateAction<ICombateExecutor>>;
-    destinosExecutor: IDestinosExecutor;
-    setDestinosExecutor: Dispatch<SetStateAction<IDestinosExecutor>>;
     padraoCapitulo: ECampanhaCapitulo;
     setPadraoCapitulo: Dispatch<SetStateAction<ECampanhaCapitulo>>;
+    jogadorEfeitosAplicados: IEfeitoExecucao[];
+    setJogadorEfeitosAplicados: Dispatch<SetStateAction<IEfeitoExecucao[]>>;
 };
 
 export const ContextoBaseJogos = createContext<TContextoBaseJogos>(null!);

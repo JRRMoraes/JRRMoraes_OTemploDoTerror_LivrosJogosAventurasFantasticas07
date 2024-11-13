@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IJogo, IPaginaExecutor, ECampanhaCapitulo, CriarJogoNulo, IHistoriasExecutor, ICombateExecutor, IDestinosExecutor } from "../tipos";
+import { IJogo, ECampanhaCapitulo, IEfeitoExecucao, CriarJogoNulo } from "../tipos";
 import { ContextoBaseJogos } from "../contextos";
 import { IChildrenProps, CriarStateComLocalStorage } from "../uteis";
 
@@ -14,15 +14,9 @@ export const ProvedorJogos = ({ children }: IChildrenProps) => {
 
     const [jogoAtual, setJogoAtual] = useState<IJogo>(null!);
 
-    const [paginaExecutor, setPaginaExecutor] = useState<IPaginaExecutor>(null!);
-
-    const [historiasExecutor, setHistoriasExecutor] = useState<IHistoriasExecutor>(null!);
-
-    const [combateExecutor, setCombateExecutor] = useState<ICombateExecutor>(null!);
-
-    const [destinosExecutor, setDestinosExecutor] = useState<IDestinosExecutor>(null!);
-
     const [padraoCapitulo, setPadraoCapitulo] = useState<ECampanhaCapitulo>(ECampanhaCapitulo.PAGINAS_INICIAIS);
+
+    const [jogadorEfeitosAplicados, setJogadorEfeitosAplicados] = useState<IEfeitoExecucao[]>([]);
 
     return (
         <ContextoBaseJogos.Provider
@@ -35,19 +29,15 @@ export const ProvedorJogos = ({ children }: IChildrenProps) => {
                 setJogoSalvo3,
                 jogoAtual,
                 setJogoAtual,
-                paginaExecutor,
-                setPaginaExecutor,
-                historiasExecutor,
-                setHistoriasExecutor,
-                combateExecutor,
-                setCombateExecutor,
-                destinosExecutor,
-                setDestinosExecutor,
                 padraoCapitulo,
                 setPadraoCapitulo,
+                jogadorEfeitosAplicados,
+                setJogadorEfeitosAplicados,
             }}
         >
             {children}
         </ContextoBaseJogos.Provider>
     );
 };
+
+export default ProvedorJogos;
