@@ -41,13 +41,19 @@ export const ReprodutorAudio = () => {
     function MontarRetorno_Controles() {
         if (audioExecutor.mudo) {
             return (
-                <Botao aoClicar={() => OuvirAudio()}>
+                <Botao
+                    aoClicar={OuvirAudio}
+                    dica="Ouvir música e efeitos sonoros"
+                >
                     <VolumeUpOutlinedIcon />
                 </Botao>
             );
         } else {
             return (
-                <Botao aoClicar={() => MutarAudio()}>
+                <Botao
+                    aoClicar={MutarAudio}
+                    dica="Mudo"
+                >
                     <VolumeOffOutlinedIcon />
                 </Botao>
             );

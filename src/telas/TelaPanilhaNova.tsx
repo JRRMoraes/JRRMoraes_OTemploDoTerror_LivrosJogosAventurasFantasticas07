@@ -12,6 +12,7 @@ export const TelaPanilhaNova = () => {
     const { jogoAtual, CriarPanilhaNoJogoAtualViaRolagens } = ContextoJogos();
 
     const [nome, setNome] = useState("");
+    const [avisoNomeInvalido, setAvisoNomeInvalido] = useState(false);
 
     const [nivel, setNivel] = useState<EJogoNivel>(EJogoNivel._NORMAL);
 
@@ -93,7 +94,15 @@ export const TelaPanilhaNova = () => {
     }
 
     function AoAlterarNome(evento: ChangeEvent<HTMLInputElement>) {
-        setNome(evento.target.value);
+        const _nome = evento.target.value;
+        const _regex = /^[a-zA-Z0-9À-ÿ\s]*$/;
+        const _filtrado = _nome
+            .split("")
+            .filter((letraI) => _regex.test(letraI))
+            .join("");
+        if (_filtrado.length <= 20) {
+            setNome(_filtrado);
+        }
     }
 
     function MontarRetorno_EntradaNivel() {
@@ -125,7 +134,8 @@ export const TelaPanilhaNova = () => {
     }
 
     function AoAlterarNivel(evento: ChangeEvent<HTMLInputElement>) {
-        setNivel(evento.target.value as EJogoNivel);
+        const _nivel = evento.target.value as EJogoNivel;
+        setNivel(_nivel);
     }
 
     function MontarRetorno_Rolagens() {
@@ -255,6 +265,7 @@ export const TelaPanilhaNova = () => {
                         >
                             <h4>Você ACEITA essas rolagens?</h4>
                         </Botao>
+                        {MontarRetorno_AvisoNomeInvalido()}
                     </div>
                 </div>
             );
@@ -283,6 +294,7 @@ export const TelaPanilhaNova = () => {
                         >
                             <h4>Você ACEITA essas rolagens?</h4>
                         </Botao>
+                        {MontarRetorno_AvisoNomeInvalido()}
                     </div>
                 </div>
             );
@@ -304,6 +316,7 @@ export const TelaPanilhaNova = () => {
                         >
                             <h4>Você DEVE ACEITAR essas rolagens</h4>
                         </Botao>
+                        {MontarRetorno_AvisoNomeInvalido()}
                     </div>
                 </div>
             );
@@ -356,10 +369,20 @@ export const TelaPanilhaNova = () => {
 
     function AceitarRolagem() {
         if (!nome || nome === "") {
-            //alerta
+            setAvisoNomeInvalido(true);
             return;
+        } else {
+            setAvisoNomeInvalido(false);
         }
         CriarPanilhaNoJogoAtualViaRolagens(rolagemDados.totais, nome, nivel);
+    }
+
+    function MontarRetorno_AvisoNomeInvalido() {
+        if (avisoNomeInvalido) {
+            return <div className={styles.panilhaNova_botoes_avisoInvalido}>Informe o nome do seu guerreiro!</div>;
+        } else {
+            return <></>;
+        }
     }
 };
 

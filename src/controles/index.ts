@@ -1,3 +1,4 @@
+export * from "./ControlePaginaInicial";
 export * from "./ControlePaginaLivroJogo";
 export * from "./ControlePaginaLivroJogo2";
 export * from "./ControlePanilha";

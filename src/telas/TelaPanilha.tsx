@@ -1,7 +1,7 @@
 import styles from "./TelaPanilha.module.scss";
 import "../globais/CoresHES.scss";
 import { ControlePanilha, EPanilhaFormato } from "../controles";
-import { BarraEnergia, Botao } from "../componentes";
+import { BarraEnergia, Botao, NumeroAlteravel } from "../componentes";
 
 export const TelaPanilha = () => {
     const {
@@ -103,7 +103,7 @@ export const TelaPanilha = () => {
             <td className="coresHES_habilidade">
                 <span className={styles.panilha_titulo}>{"Habilidade:   "}</span>
                 {ObterElementoEfeitoHabilidade()}
-                <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.habilidade}</span>
+                <NumeroAlteravel numeroAtual={jogoAtual.panilha.habilidade} />
                 <span className={styles.panilha_fonteNormal}>{" / "}</span>
                 <span>{jogoAtual.panilha.habilidadeInicial}</span>
             </td>
@@ -120,7 +120,7 @@ export const TelaPanilha = () => {
                 <div>
                     <span className={styles.panilha_titulo}>{"Energia:   "}</span>
                     {ObterElementoEfeitoEnergia()}
-                    <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.energia}</span>
+                    <NumeroAlteravel numeroAtual={jogoAtual.panilha.energia} />
                     <span className={styles.panilha_fonteNormal}>{" / "}</span>
                     <span>{jogoAtual.panilha.energiaInicial}</span>
                 </div>
@@ -134,7 +134,7 @@ export const TelaPanilha = () => {
             <td className="coresHES_sorte">
                 <span className={styles.panilha_titulo}>{"Sorte:   "}</span>
                 {ObterElementoEfeitoSorte()}
-                <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.sorte}</span>
+                <NumeroAlteravel numeroAtual={jogoAtual.panilha.sorte} />
                 <span className={styles.panilha_fonteNormal}>{" / "}</span>
                 <span>{jogoAtual.panilha.sorteInicial}</span>
             </td>
@@ -146,7 +146,7 @@ export const TelaPanilha = () => {
             <td>
                 <span className={styles.panilha_titulo}>{"Ouro:   "}</span>
                 {ObterElementoEfeitoOuro()}
-                <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.ouro}</span>
+                <NumeroAlteravel numeroAtual={jogoAtual.panilha.ouro} />
             </td>
         );
     }
@@ -156,7 +156,7 @@ export const TelaPanilha = () => {
             <td>
                 <span className={styles.panilha_titulo}>{"Provisões:   "}</span>
                 {ObterElementoEfeitoProvisao()}
-                <span className={styles.panilha_numeroAtual}>{jogoAtual.panilha.provisao}</span>
+                <NumeroAlteravel numeroAtual={jogoAtual.panilha.provisao} />
             </td>
         );
     }

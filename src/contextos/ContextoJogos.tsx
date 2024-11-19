@@ -13,6 +13,7 @@ import {
     RetornarPanilhaEncantosAtualizados,
     RetornarPanilhaItensAtualizados,
     IEfeito,
+    EFEITO_SORTE_CUSTO_NO_JOGADOR,
 } from "../tipos";
 import { EProcesso } from "../uteis";
 import { ContextoBaseJogos } from ".";
@@ -57,10 +58,10 @@ export const ContextoJogos = () => {
                     if (efeitoI.exeProcessoEfeito === EProcesso._ZERO) {
                         efeitoI.exeProcessoEfeito = EProcesso.INICIANDO;
                     } else if (efeitoI.exeProcessoEfeito === EProcesso.INICIANDO) {
+                        AplicarEfeitoDoJogadorEfeitosAplicadosExeProcessoEfeitoIniciando(efeitoI);
                         efeitoI.exeProcessoEfeito = EProcesso.PROCESSANDO;
                         setTimeout(() => {
                             ImporJogadorEfeitosAplicadosExeProcessoEfeito(indiceI, EProcesso.CONCLUIDO);
-                            AplicarEfeitoDoJogadorEfeitosAplicadosExeProcessoEfeitoProcessando(efeitoI);
                         }, TEMPO_ANIMACAO_NORMAL);
                     } else if (efeitoI.exeProcessoEfeito === EProcesso.CONCLUIDO) {
                         efeitoI.exeProcessoEfeito = EProcesso.DESTRUIDO;
@@ -93,7 +94,7 @@ export const ContextoJogos = () => {
         ImporJogoAtualViaDestino,
         CriarPanilhaNoJogoAtualViaRolagens,
         AdicionarEmJogadorEfeitosAplicados,
-        ObterJogadorEfeitoAplicadoDoAtributo,
+        ObterJogadorEfeitosAplicadosDoAtributo,
         AplicarPenalidadeDeTestarSorte,
     };
 
@@ -188,8 +189,8 @@ export const ContextoJogos = () => {
         }
     }
 
-    function AplicarEfeitoDoJogadorEfeitosAplicadosExeProcessoEfeitoProcessando(efeito: IEfeitoExecucao) {
-        if (!efeito || efeito.exeProcessoEfeito !== EProcesso.PROCESSANDO) {
+    function AplicarEfeitoDoJogadorEfeitosAplicadosExeProcessoEfeitoIniciando(efeito: IEfeitoExecucao) {
+        if (!efeito || efeito.exeProcessoEfeito !== EProcesso.INICIANDO) {
             return;
         }
         switch (efeito.atributoEfeito) {
@@ -260,18 +261,15 @@ export const ContextoJogos = () => {
         });
     }
 
-    function ObterJogadorEfeitoAplicadoDoAtributo(atributo: EAtributo): IEfeito {
+    function ObterJogadorEfeitosAplicadosDoAtributo(atributo: EAtributo): IEfeito[] {
         if (!jogadorEfeitosAplicados || !jogadorEfeitosAplicados.length) {
             return null!;
         }
-        return jogadorEfeitosAplicados.find((efeitoI) => efeitoI.atributoEfeito === atributo && [EProcesso._ZERO, EProcesso.INICIANDO, EProcesso.PROCESSANDO].includes(efeitoI.exeProcessoEfeito))!;
+        return jogadorEfeitosAplicados.filter((efeitoI) => efeitoI.atributoEfeito === atributo && [EProcesso._ZERO, EProcesso.INICIANDO, EProcesso.PROCESSANDO].includes(efeitoI.exeProcessoEfeito))!;
     }
 
     function AplicarPenalidadeDeTestarSorte() {
-        setJogoAtual((prevJogoAtual) => {
-            prevJogoAtual.panilha.sorte = Math.max(prevJogoAtual.panilha.sorte - 1, 0);
-            return { ...prevJogoAtual };
-        });
+        AdicionarEmJogadorEfeitosAplicados(EFEITO_SORTE_CUSTO_NO_JOGADOR());
     }
 };
 

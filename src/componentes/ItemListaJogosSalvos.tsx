@@ -56,7 +56,7 @@ export const ItemListaJogosSalvos = ({ jogoSalvo }: IItemListaJogosSalvosProps) 
             return (
                 <div>
                     <div className={styles.itemLista_infos}>
-                        <p>{"Habilidade: " + jogoSalvo.panilha?.habilidade + ", Energia: " + jogoSalvo.panilha?.energia + " e Sorte: " + jogoSalvo.panilha?.sorte}</p>
+                        <p>{"Habilidade: " + jogoSalvo.panilha.habilidade + ", Energia: " + jogoSalvo.panilha.energia + " e Sorte: " + jogoSalvo.panilha.sorte}</p>
                     </div>
                     <div className={styles.itemLista_comandos}>
                         {MontarRetorno_BotaoJogar()}

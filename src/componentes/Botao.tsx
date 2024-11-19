@@ -6,23 +6,35 @@ interface IBotaoProps {
     aoClicar: () => void;
     tipo?: "button" | "submit" | "reset";
     desativado?: boolean;
+    dica?: string;
 }
 
-export const Botao = ({ children, aoClicar, tipo = "button", desativado = false }: IBotaoProps) => {
+export const Botao = ({ children, aoClicar, tipo = "button", desativado = false, dica = "" }: IBotaoProps) => {
     return (
-        <button
-            className={styles.botao}
-            type={tipo}
-            onClick={() => AoClicar()}
-            disabled={desativado}
-        >
-            {children}
-        </button>
+        <div className={styles.botao}>
+            <button
+                className={styles.botao}
+                type={tipo}
+                onClick={() => AoClicar()}
+                disabled={desativado}
+            >
+                {children}
+            </button>
+            {MontarRetorno_Dica()}
+        </div>
     );
 
     function AoClicar() {
         if (aoClicar) {
             aoClicar();
+        }
+    }
+
+    function MontarRetorno_Dica() {
+        if (dica) {
+            return <span className={styles.botao_dica}>{dica}</span>;
+        } else {
+            return <></>;
         }
     }
 };

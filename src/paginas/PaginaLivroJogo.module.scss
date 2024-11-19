@@ -1,7 +1,7 @@
 @import "../globais/EstilosGlobais.scss";
 
 .livroJogo_Desktop {
-    height: 200vh;
+    min-height: 100vh;
     width: 100vw;
     box-sizing: border-box;
     border: 0;
@@ -12,6 +12,7 @@
     background-size: 100% auto;
 
     &_2 {
+        height: 100%;
         width: calc(100% - PixelParaVW(20));
         box-sizing: border-box;
         display: flex;
@@ -21,8 +22,7 @@
     }
 
     &_campanha {
-        min-height: 100%;
-        width: 70%;
+        flex: 1;
         box-sizing: border-box;
         background: url("/fundo_pergaminho_papel_antigo_5.png");
         background-position: center;
@@ -36,6 +36,7 @@
 
     &_panilha {
         width: 30%;
+        min-width: PixelParaVW(360);
 
         &_2 {
             width: 100%;
@@ -49,10 +50,10 @@
             padding: PixelParaVW(80) PixelParaVW(30) PixelParaVW(80) PixelParaVW(30);
         }
 
-        &_audio {
+        &_comandos {
             display: flex;
             align-items: flex-end;
-            justify-content: start;
+            justify-content: flex-end;
         }
     }
 }
@@ -124,7 +125,7 @@
         }
     }
 
-    &_audio {
+    &_comandos {
         width: 100%;
         display: flex;
         align-items: flex-end;

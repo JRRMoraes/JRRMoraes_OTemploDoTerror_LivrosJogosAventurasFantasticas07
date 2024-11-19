@@ -1,5 +1,8 @@
+@use "sass:math";
+
 @function PixelParaVW($pixels, $larguraMaxima: 1360) {
-    @return #{$pixels / $larguraMaxima * 100}vw;
+    $vw: calc(math.div($pixels, $larguraMaxima) * 100);
+    @return #{$vw}vw;
 }
 
 :root {
@@ -39,7 +42,7 @@ html {
         font-size: PixelParaVW(20);
     }
     @media screen and (max-width: 768px) {
-        font-size: PixelParaVW(26);
+        font-size: PixelParaVW(32);
     }
 }
 

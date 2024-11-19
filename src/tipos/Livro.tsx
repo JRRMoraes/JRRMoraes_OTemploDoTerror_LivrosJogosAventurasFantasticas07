@@ -5,6 +5,7 @@ import {
     ATAQUE_DANO_INIMIGO,
     ATAQUE_DANO_JOGADOR,
     MORTE_DANO_JOGADOR,
+    SORTE_CUSTO_JOGADOR,
     SORTE_DERROTA_CURA_INIMIGO,
     SORTE_DERROTA_DANO_JOGADOR,
     SORTE_VITORIA_CURA_JOGADOR,
@@ -80,6 +81,10 @@ export function EFEITO_SORTE_DERROTA_EM_DEFESA_DO_JOGADOR(): IEfeitoExecucao[] {
     return ObterEfeitosExecucaoDeEnergia(99103, "AZAR!!!", SORTE_DERROTA_DANO_JOGADOR);
 }
 
+export function EFEITO_SORTE_CUSTO_NO_JOGADOR(): IEfeitoExecucao[] {
+    return ObterEfeitosExecucaoDeEnergia(99200, "CUSTO DA SORTE", SORTE_CUSTO_JOGADOR);
+}
+
 export function ObterEfeitosInimigoExecucaoDeEnergia(idEfeito: number, idInimigo: number, texto: string, quantidade: number): IEfeitoInimigoExecucao[] {
     return [
         {
@@ -136,7 +141,8 @@ export enum EPosturaInimigo {
 }
 
 export enum EResultadoCombate {
-    _COMBATENDO = "Combatendo",
+    _NULO = "_",
+    COMBATENDO = "Combatendo",
     VITORIA = "Vitória",
     DERROTA = "Derrota",
 }
@@ -155,11 +161,9 @@ export interface IInimigo {
 }
 
 export interface IInimigoExecucao extends IInimigo {
+    exeIdInimigo: number;
     exeEnergiaAtual: number;
-    exePosturaInimigo: EPosturaInimigo;
     exeSerieDeAtaqueVencidoConsecutivo: number;
-    exeProcessoRolagemAtaque: EProcesso;
-    exeProcessoRolagemSorteConfirmacao: EProcesso;
     exeRolagemTotalJogador: number;
     exeRolagemTotalInimigo: number;
     exeRolagemTotalSorte: number;

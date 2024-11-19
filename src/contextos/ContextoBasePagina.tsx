@@ -1,4 +1,4 @@
-import { createContext, Dispatch, SetStateAction, MutableRefObject } from "react";
+import { Dispatch, SetStateAction, MutableRefObject, createContext } from "react";
 import {
     IPagina,
     ECampanhaCapitulo,
@@ -12,6 +12,7 @@ import {
     EResultadoCombate,
     IDestino,
     IDestinoExecucao,
+    EPosturaInimigo,
 } from "../tipos";
 import { EProcesso } from "../uteis";
 import { DieContainerRef } from "react-dice-complete/dist/DiceContainer";
@@ -41,6 +42,12 @@ export type TContextoBasePagina = {
     setHistoriaProcessoIndice: Dispatch<SetStateAction<EProcesso>>;
     combateInimigos: IInimigoExecucao[];
     setCombateInimigos: Dispatch<SetStateAction<IInimigoExecucao[]>>;
+    combateInimigos_PosturaInimigo: EPosturaInimigo[];
+    setCombateInimigos_PosturaInimigo: Dispatch<SetStateAction<EPosturaInimigo[]>>;
+    combateInimigos_ProcessoRolagemAtaque: EProcesso[];
+    setCombateInimigos_ProcessoRolagemAtaque: Dispatch<SetStateAction<EProcesso[]>>;
+    combateInimigos_ProcessoRolagemSorteConfirmacao: EProcesso[];
+    setCombateInimigos_ProcessoRolagemSorteConfirmacao: Dispatch<SetStateAction<EProcesso[]>>;
     combateInimigosEfeitosAplicados: IEfeitoInimigoExecucao[];
     setCombateInimigosEfeitosAplicados: Dispatch<SetStateAction<IEfeitoInimigoExecucao[]>>;
     combateAliado: IAliadoExecucao;
@@ -59,10 +66,10 @@ export type TContextoBasePagina = {
     setCombateSerieDeAtaqueAtual: Dispatch<SetStateAction<number>>;
     combateProcessoSerieDeAtaque: EProcesso;
     setCombateProcessoSerieDeAtaque: Dispatch<SetStateAction<EProcesso>>;
-    combateResultadoSerieDeAtaque: EResultadoCombate;
-    setCombateResultadoSerieDeAtaque: Dispatch<SetStateAction<EResultadoCombate>>;
-    combateResultadoFinal: EResultadoCombate;
-    setCombateResultadoFinal: Dispatch<SetStateAction<EResultadoCombate>>;
+    combateResultadoFinalDerrota: EResultadoCombate;
+    setCombateResultadoFinalDerrota: Dispatch<SetStateAction<EResultadoCombate>>;
+    combateResultadoFinalInimigos: EResultadoCombate;
+    setCombateResultadoFinalInimigos: Dispatch<SetStateAction<EResultadoCombate>>;
     combateIdPaginaDestinoDerrota: number;
     setCombateIdPaginaDestinoDerrota: Dispatch<SetStateAction<number>>;
     combateDadosJogadorRef: MutableRefObject<DieContainerRef | null>[];

@@ -1,3 +1,4 @@
+import styles from "../telas/TelaCombate.module.scss";
 import { ContextoJogos, ContextoPagina } from ".";
 import { IAprovacaoDestino, EAtributo, EComparacao, EResultadoCombate, EPosturaInimigo } from "../tipos";
 import { TextosIguais } from "../uteis";
@@ -5,12 +6,13 @@ import { TextosIguais } from "../uteis";
 export const OperacoesJogoLivro = () => {
     const { jogoAtual } = ContextoJogos();
 
-    const { combateInimigos, combateAprovacaoDerrota, combateSerieDeAtaqueAtual } = ContextoPagina();
+    const { combateInimigos, combateInimigos_PosturaInimigo, combateAprovacaoDerrota, combateSerieDeAtaqueAtual, setCombateResultadoFinalDerrota, setCombateResultadoFinalInimigos } = ContextoPagina();
 
     return {
         ValidarAprovacoesDestino,
         AvaliarResultadoCombateDoCombateExecutorProcessoIniciando,
         AvaliarResultadoCombateDoCombateExecutorProcessoDestruido,
+        MontarElementoCombateAprovacaoDerrota,
     };
 
     function ValidarAprovacoesDestino(aprovacoes: IAprovacaoDestino[]) {
@@ -103,28 +105,49 @@ export const OperacoesJogoLivro = () => {
         switch (combateAprovacaoDerrota.toLowerCase()) {
             case "SerieDeAtaqueEhMaiorOuIgualAHabilidade".toLowerCase():
                 if (combateSerieDeAtaqueAtual >= jogoAtual.panilha.habilidade) {
+                    setCombateResultadoFinalDerrota(EResultadoCombate.DERROTA);
                     return EResultadoCombate.DERROTA;
                 }
                 break;
         }
-        return EResultadoCombate._COMBATENDO;
+        return EResultadoCombate.COMBATENDO;
     }
 
     function AvaliarResultadoCombateDoCombateExecutorProcessoDestruido(): EResultadoCombate {
         if (jogoAtual.panilha.energia === 0) {
+            setCombateResultadoFinalInimigos(EResultadoCombate.DERROTA);
             return EResultadoCombate.DERROTA;
         }
-        if (!combateInimigos.find((inimigoI) => inimigoI.exePosturaInimigo !== EPosturaInimigo.MORTO)) {
+        if (!combateInimigos_PosturaInimigo.find((posturaInimigo) => posturaInimigo !== EPosturaInimigo.MORTO)) {
+            setCombateResultadoFinalInimigos(EResultadoCombate.VITORIA);
             return EResultadoCombate.VITORIA;
         }
         switch (combateAprovacaoDerrota.toLowerCase()) {
             case "InimigoComSerieDeAtaqueVencidoConsecutivo_2".toLowerCase():
                 if (combateInimigos.find((inimigoI) => inimigoI.exeSerieDeAtaqueVencidoConsecutivo >= 2)) {
+                    setCombateResultadoFinalDerrota(EResultadoCombate.DERROTA);
                     return EResultadoCombate.DERROTA;
                 }
                 break;
         }
-        return EResultadoCombate._COMBATENDO;
+        return EResultadoCombate.COMBATENDO;
+    }
+
+    function MontarElementoCombateAprovacaoDerrota() {
+        switch (combateAprovacaoDerrota.toLowerCase()) {
+            case "SerieDeAtaqueEhMaiorOuIgualAHabilidade".toLowerCase():
+                return (
+                    <div className={styles.combate_derrota_operacoesJogoLivro + " " + styles.combate_linhaUnica}>
+                        <span>{"[ Série de ataque"}</span>
+                        <span className={styles.combate_derrota_operacoesJogoLivro_numeroAtual}>{combateSerieDeAtaqueAtual}</span>
+                        <span>{">= Habilidade"}</span>
+                        <span className={styles.combate_derrota_operacoesJogoLivro_numeroAtual}>{jogoAtual.panilha.habilidade}</span>
+                        <span>{"]"}</span>
+                    </div>
+                );
+            default:
+                return <></>;
+        }
     }
 };
 

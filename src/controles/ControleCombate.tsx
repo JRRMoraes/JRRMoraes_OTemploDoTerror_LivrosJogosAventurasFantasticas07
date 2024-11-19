@@ -1,3 +1,4 @@
+import styles from "../telas/TelaCombate.module.scss";
 import { useEffect } from "react";
 import { ContextoJogos, ContextoPagina, OperacoesJogoLivro } from "../contextos";
 import {
@@ -14,20 +15,28 @@ import {
     EFEITO_SORTE_DERROTA_EM_ATAQUE_NO_INIMIGO,
     EFEITO_SORTE_VITORIA_EM_DEFESA_DO_JOGADOR,
     EFEITO_SORTE_DERROTA_EM_DEFESA_DO_JOGADOR,
+    EAtributo,
+    IEfeito,
 } from "../tipos";
-import { EProcesso } from "../uteis";
-import { TEMPO_ANIMACAO_PEQUENO, TEMPO_DADOS_RESULTADO_MILESIMOS } from "../globais/Constantes";
+import { EProcesso, FormatarNumberInteiro } from "../uteis";
+import { TEMPO_DADOS_RESULTADO_MILESIMOS } from "../globais/Constantes";
 
 export const ControleCombate = () => {
+    const { jogoAtual, AdicionarEmJogadorEfeitosAplicados, AplicarPenalidadeDeTestarSorte } = ContextoJogos();
+
     const {
         paginaEstado,
         setPaginaEstado,
         combateInimigos,
         setCombateInimigos,
+        combateInimigos_PosturaInimigo,
+        combateInimigos_ProcessoRolagemAtaque,
+        combateInimigos_ProcessoRolagemSorteConfirmacao,
         combateAliado,
         setCombateAliado,
         combateProcesso,
         setCombateProcesso,
+        combateAprovacaoDerrota,
         combateTextosDerrota,
         combateMultiplo_2osApoio,
         combateSerieDeAtaqueAtual,
@@ -37,31 +46,31 @@ export const ControleCombate = () => {
         combateDadosSorteRef,
         combateProcessoSerieDeAtaque,
         setCombateProcessoSerieDeAtaque,
+        combateResultadoFinalDerrota,
+        combateResultadoFinalInimigos,
         AtualizarCombateExecutorNoProcessoInicial,
+        ObterCombateAliadoEfeitosAplicadosDoAtributo,
+        ImporCombateInimigos_PosturaInimigo,
+        ObterCombateInimigosEfeitosAplicados,
         AdicionarEmCombateInimigosEfeitosAplicados,
-        ImporCombateInimigosExeProcessoRolagem,
-        ImporCombateInimigosExeProcessoSorteConfirmacao,
-        ImporCombateInimigosExeRolagemResultadoAtaque,
-        ImporCombateInimigosExeRolagemResultadoSorte,
+        ImporCombateInimigos_ProcessoRolagemAtaque,
+        ImporCombateInimigos_ProcessoRolagemSorteConfirmacao,
         AdicionarEmCombateAliadosEfeitosAplicados,
+        ImporCombateInimigosExeSerieDeAtaqueVencidoConsecutivo,
     } = ContextoPagina();
 
-    const { jogoAtual, AdicionarEmJogadorEfeitosAplicados, AplicarPenalidadeDeTestarSorte } = ContextoJogos();
-
-    const { AvaliarResultadoCombateDoCombateExecutorProcessoIniciando, AvaliarResultadoCombateDoCombateExecutorProcessoDestruido } = OperacoesJogoLivro();
+    const { AvaliarResultadoCombateDoCombateExecutorProcessoIniciando, AvaliarResultadoCombateDoCombateExecutorProcessoDestruido, MontarElementoCombateAprovacaoDerrota } = OperacoesJogoLivro();
 
     let _unicoSetCombateSerieDeAtaqueAtual: boolean = true;
-    let _unicosCombateInimigosExeProcessoRolagemDestruido: boolean[] = Array(combateInimigos.length).fill(true);
-    let _unicosCombateInimigosExeProcessoRolagemSorteConfirmacao: boolean[] = Array(combateInimigos.length).fill(true);
 
     useEffect(() => {
         if (!jogoAtual || paginaEstado !== EPaginaExecutorEstado.COMBATE) {
-            setCombateProcessoSerieDeAtaque(EProcesso._ZERO);
-            setCombateProcesso(EProcesso._ZERO);
             return;
         }
         switch (combateProcesso) {
             case EProcesso._ZERO:
+                setCombateProcessoSerieDeAtaque(EProcesso._ZERO);
+                setCombateProcesso(EProcesso._ZERO);
                 AtualizarCombateExecutorNoProcessoInicial();
                 break;
             case EProcesso.INICIANDO:
@@ -82,8 +91,7 @@ export const ControleCombate = () => {
         }
         switch (combateProcessoSerieDeAtaque) {
             case EProcesso._ZERO:
-                ImporCombateExecutorDoProcessoZeroDaSerieDeAtaque();
-                setCombateProcessoSerieDeAtaque(EProcesso.INICIANDO);
+                ImporCombateInimigosExecutorDoProcessoZeroDaSerieDeAtaque();
                 break;
             case EProcesso.INICIANDO:
                 switch (AvaliarResultadoCombateDoCombateExecutorProcessoIniciando()) {
@@ -96,143 +104,22 @@ export const ControleCombate = () => {
                         setCombateProcessoSerieDeAtaque(EProcesso.DESTRUIDO);
                         setCombateProcesso(EProcesso.CONCLUIDO);
                         break;
-                    case EResultadoCombate._COMBATENDO:
+                    case EResultadoCombate.COMBATENDO:
                     default:
                         setCombateProcessoSerieDeAtaque(EProcesso.PROCESSANDO);
                         break;
                 }
                 break;
-            case EProcesso.PROCESSANDO:
-                const _indiceAtaque = combateInimigos.findIndex(
-                    (inimigoI, indiceI) => inimigoI.exeProcessoRolagemAtaque === EProcesso.CONCLUIDO && inimigoI.exeRolagemResultadoAtaque === EResultadoDados._NULO
-                );
-                if (_indiceAtaque >= 0) {
-                    setCombateInimigos((prevCombateInimigo) => {
-                        prevCombateInimigo = prevCombateInimigo.map((inimigoI, indiceI) => {
-                            if (_indiceAtaque === indiceI) {
-                                if (_unicosCombateInimigosExeProcessoRolagemDestruido[_indiceAtaque]) {
-                                    _unicosCombateInimigosExeProcessoRolagemDestruido[_indiceAtaque] = false;
-                                    if (inimigoI.exeRolagemTotalJogador > inimigoI.exeRolagemTotalInimigo) {
-                                        inimigoI.exeRolagemResultadoAtaque = EResultadoDados.VITORIA;
-                                        AdicionarEmCombateInimigosEfeitosAplicados(EFEITO_ATAQUE_NO_INIMIGO(indiceI));
-                                    } else if (inimigoI.exeRolagemTotalJogador < inimigoI.exeRolagemTotalInimigo) {
-                                        inimigoI.exeRolagemResultadoAtaque = EResultadoDados.DERROTA;
-                                        AdicionarEmCombateAliadosEfeitosAplicados(EFEITO_ATAQUE_NO_JOGADOR());
-                                    } else if (inimigoI.exeRolagemTotalJogador === inimigoI.exeRolagemTotalInimigo) {
-                                        inimigoI.exeRolagemResultadoAtaque = EResultadoDados.EMPATE;
-                                    }
-                                    inimigoI.exeProcessoRolagemSorteConfirmacao = EProcesso.INICIANDO;
-                                    inimigoI.exeProcessoRolagemAtaque = EProcesso.DESTRUIDO;
-                                }
-                            }
-                            return { ...inimigoI };
-                        });
-                        return [...prevCombateInimigo];
-                    });
-                    return;
-                }
-                const _indiceSorte = combateInimigos.findIndex(
-                    (inimigoI, indiceI) => inimigoI.exeProcessoRolagemSorteConfirmacao === EProcesso.CONCLUIDO && inimigoI.exeRolagemResultadoSorte === EResultadoDados._NULO
-                );
-                if (_indiceSorte >= 0) {
-                    setCombateInimigos((prevCombateInimigo) => {
-                        prevCombateInimigo = prevCombateInimigo.map((inimigoI, indiceI) => {
-                            if (_indiceAtaque === indiceI) {
-                                if (_unicosCombateInimigosExeProcessoRolagemSorteConfirmacao[_indiceSorte]) {
-                                    _unicosCombateInimigosExeProcessoRolagemSorteConfirmacao[_indiceSorte] = false;
-                                    if (jogoAtual.panilha.sorte <= inimigoI.exeRolagemTotalSorte) {
-                                        inimigoI.exeRolagemResultadoSorte = EResultadoDados.VITORIA;
-                                        if (inimigoI.exeRolagemResultadoAtaque === EResultadoDados.VITORIA) {
-                                            AdicionarEmCombateInimigosEfeitosAplicados(EFEITO_SORTE_VITORIA_EM_ATAQUE_NO_INIMIGO(indiceI));
-                                        } else if (inimigoI.exeRolagemResultadoAtaque === EResultadoDados.DERROTA) {
-                                            AdicionarEmCombateAliadosEfeitosAplicados(EFEITO_SORTE_VITORIA_EM_DEFESA_DO_JOGADOR());
-                                        }
-                                    } else if (jogoAtual.panilha.sorte > inimigoI.exeRolagemTotalSorte) {
-                                        inimigoI.exeRolagemResultadoSorte = EResultadoDados.DERROTA;
-                                        if (inimigoI.exeRolagemResultadoAtaque === EResultadoDados.VITORIA) {
-                                            AdicionarEmCombateInimigosEfeitosAplicados(EFEITO_SORTE_DERROTA_EM_ATAQUE_NO_INIMIGO(indiceI));
-                                        } else if (inimigoI.exeRolagemResultadoAtaque === EResultadoDados.DERROTA) {
-                                            AdicionarEmCombateAliadosEfeitosAplicados(EFEITO_SORTE_DERROTA_EM_DEFESA_DO_JOGADOR());
-                                        }
-                                    }
-                                    AplicarPenalidadeDeTestarSorte();
-                                    inimigoI.exeProcessoRolagemSorteConfirmacao = EProcesso.DESTRUIDO;
-                                }
-                            }
-                            return { ...inimigoI };
-                        });
-                        return [...prevCombateInimigo];
-                    });
-                    return;
-                }
-
-                /*
-                combateInimigos.forEach((inimigoI, indiceI) => {
-                    if (
-                        inimigoI.exeProcessoRolagemAtaque === EProcesso.CONCLUIDO &&
-                        inimigoI.exeRolagemResultadoAtaque === EResultadoDados._NULO &&
-                        _unicosCombateInimigosExeProcessoRolagemDestruido[indiceI]
-                    ) {
-                        _unicosCombateInimigosExeProcessoRolagemDestruido[indiceI] = false;
-                        let _resultado = EResultadoDados._NULO;
-                        if (inimigoI.exeRolagemTotalJogador > inimigoI.exeRolagemTotalInimigo) {
-                            _resultado = ImporCombateInimigosExeRolagemResultadoAtaque(indiceI, EResultadoDados.VITORIA);
-                        } else if (inimigoI.exeRolagemTotalJogador < inimigoI.exeRolagemTotalInimigo) {
-                            _resultado = ImporCombateInimigosExeRolagemResultadoAtaque(indiceI, EResultadoDados.DERROTA);
-                        } else if (inimigoI.exeRolagemTotalJogador === inimigoI.exeRolagemTotalInimigo) {
-                            _resultado = ImporCombateInimigosExeRolagemResultadoAtaque(indiceI, EResultadoDados.EMPATE);
-                        }
-                        if (_resultado === EResultadoDados.VITORIA) {
-                            AdicionarEmCombateInimigosEfeitosAplicados(EFEITO_ATAQUE_NO_INIMIGO(indiceI));
-                        } else if (_resultado === EResultadoDados.DERROTA) {
-                            AdicionarEmJogadorEfeitosAplicados(EFEITO_ATAQUE_NO_JOGADOR());
-                        }
-                        ImporCombateInimigosExeProcessoSorteConfirmacao(indiceI, EProcesso.INICIANDO);
-                        ImporCombateInimigosExeProcessoRolagem(indiceI, EProcesso.DESTRUIDO);
-                    }
-                    if (
-                        inimigoI.exeProcessoRolagemSorteConfirmacao === EProcesso.CONCLUIDO &&
-                        inimigoI.exeRolagemResultadoSorte === EResultadoDados._NULO &&
-                        _unicosCombateInimigosExeProcessoRolagemSorteConfirmacao[indiceI]
-                    ) {
-                        _unicosCombateInimigosExeProcessoRolagemSorteConfirmacao[indiceI] = false;
-                        let _resultado = EResultadoDados._NULO;
-                        if (jogoAtual.panilha.sorte <= inimigoI.exeRolagemTotalSorte) {
-                            _resultado = ImporCombateInimigosExeRolagemResultadoSorte(indiceI, EResultadoDados.VITORIA);
-                        } else if (jogoAtual.panilha.sorte > inimigoI.exeRolagemTotalSorte) {
-                            _resultado = ImporCombateInimigosExeRolagemResultadoSorte(indiceI, EResultadoDados.DERROTA);
-                        }
-                        if (_resultado === EResultadoDados.VITORIA) {
-                            if (inimigoI.exeRolagemResultadoAtaque === EResultadoDados.VITORIA) {
-                                AdicionarEmCombateInimigosEfeitosAplicados(EFEITO_SORTE_VITORIA_EM_ATAQUE_NO_INIMIGO(indiceI));
-                            } else if (inimigoI.exeRolagemResultadoAtaque === EResultadoDados.DERROTA) {
-                                AdicionarEmJogadorEfeitosAplicados(EFEITO_SORTE_VITORIA_EM_DEFESA_DO_JOGADOR());
-                            }
-                        } else if (_resultado === EResultadoDados.DERROTA) {
-                            if (inimigoI.exeRolagemResultadoAtaque === EResultadoDados.VITORIA) {
-                                AdicionarEmCombateInimigosEfeitosAplicados(EFEITO_SORTE_DERROTA_EM_ATAQUE_NO_INIMIGO(indiceI));
-                            } else if (inimigoI.exeRolagemResultadoAtaque === EResultadoDados.DERROTA) {
-                                AdicionarEmJogadorEfeitosAplicados(EFEITO_SORTE_DERROTA_EM_DEFESA_DO_JOGADOR());
-                            }
-                        }
-                        AplicarPenalidadeDeTestarSorte();
-                        ImporCombateInimigosExeProcessoSorteConfirmacao(indiceI, EProcesso.DESTRUIDO);
-                    }
-                });
-                /*/
-                break;
             case EProcesso.DESTRUIDO:
                 switch (AvaliarResultadoCombateDoCombateExecutorProcessoDestruido()) {
                     case EResultadoCombate.VITORIA:
-                        //setCombateProcessoSerieDeAtaque(EProcesso.DESTRUIDO);
                         setCombateProcesso(EProcesso.CONCLUIDO);
                         break;
                     case EResultadoCombate.DERROTA:
                         AplicarEfeitoDerrota();
-                        //setCombateProcessoSerieDeAtaque(EProcesso.DESTRUIDO);
                         setCombateProcesso(EProcesso.CONCLUIDO);
                         break;
-                    case EResultadoCombate._COMBATENDO:
+                    case EResultadoCombate.COMBATENDO:
                     default:
                         setCombateProcessoSerieDeAtaque(EProcesso._ZERO);
                         _unicoSetCombateSerieDeAtaqueAtual = true;
@@ -240,17 +127,144 @@ export const ControleCombate = () => {
                 }
                 break;
         }
-    }, [combateProcessoSerieDeAtaque, combateInimigos]);
+    }, [combateProcessoSerieDeAtaque, combateInimigos, combateInimigos_PosturaInimigo]);
+
+    useEffect(() => {
+        if (
+            !jogoAtual ||
+            !combateInimigos ||
+            !combateInimigos.length ||
+            paginaEstado !== EPaginaExecutorEstado.COMBATE ||
+            combateProcesso !== EProcesso.PROCESSANDO ||
+            combateProcessoSerieDeAtaque !== EProcesso.PROCESSANDO
+        ) {
+            return;
+        }
+        //// Descobrir se inimigo está morto
+        let _indiceIdInimigo = combateInimigos.findIndex((inimigoI) => inimigoI.exeEnergiaAtual === 0 && combateInimigos_PosturaInimigo[inimigoI.exeIdInimigo] !== EPosturaInimigo.MORTO);
+        if (_indiceIdInimigo >= 0) {
+            ImporCombateInimigos_PosturaInimigo(_indiceIdInimigo, EPosturaInimigo.MORTO);
+            ImporCombateInimigos_ProcessoRolagemAtaque(_indiceIdInimigo, EProcesso.DESTRUIDO);
+            ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(_indiceIdInimigo, EProcesso.DESTRUIDO);
+            setCombateProcessoSerieDeAtaque(EProcesso.DESTRUIDO);
+            return;
+        }
+        //// Rolagem de ataque Concluído, mas sem resultado
+        _indiceIdInimigo = combateInimigos.findIndex(
+            (inimigoI) => combateInimigos_ProcessoRolagemAtaque[inimigoI.exeIdInimigo] === EProcesso.CONCLUIDO && inimigoI.exeRolagemResultadoAtaque === EResultadoDados._NULO
+        );
+        if (_indiceIdInimigo >= 0) {
+            setCombateInimigos((prevCombateInimigo) => {
+                prevCombateInimigo = prevCombateInimigo.map((inimigoI, indiceI) => {
+                    if (_indiceIdInimigo === indiceI) {
+                        if (inimigoI.exeRolagemTotalJogador > inimigoI.exeRolagemTotalInimigo) {
+                            inimigoI.exeRolagemResultadoAtaque = EResultadoDados.VITORIA;
+                        } else if (inimigoI.exeRolagemTotalJogador < inimigoI.exeRolagemTotalInimigo) {
+                            inimigoI.exeRolagemResultadoAtaque = EResultadoDados.DERROTA;
+                        } else if (inimigoI.exeRolagemTotalJogador === inimigoI.exeRolagemTotalInimigo) {
+                            inimigoI.exeRolagemResultadoAtaque = EResultadoDados.EMPATE;
+                        }
+                    }
+                    return inimigoI;
+                });
+                return prevCombateInimigo;
+            });
+            return;
+        }
+        //// Rolagem de ataque Concluído e com resultado
+        _indiceIdInimigo = combateInimigos.findIndex(
+            (inimigoI) => combateInimigos_ProcessoRolagemAtaque[inimigoI.exeIdInimigo] === EProcesso.CONCLUIDO && inimigoI.exeRolagemResultadoAtaque !== EResultadoDados._NULO
+        );
+        if (_indiceIdInimigo >= 0 && combateInimigos[_indiceIdInimigo]) {
+            ImporCombateInimigos_ProcessoRolagemAtaque(_indiceIdInimigo, EProcesso.DESTRUIDO);
+            if ((combateInimigos[_indiceIdInimigo].exeRolagemResultadoAtaque = EResultadoDados.VITORIA)) {
+                AdicionarEmCombateInimigosEfeitosAplicados(EFEITO_ATAQUE_NO_INIMIGO(_indiceIdInimigo));
+                ImporCombateInimigosExeSerieDeAtaqueVencidoConsecutivo(_indiceIdInimigo, false);
+                ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(_indiceIdInimigo, EProcesso.INICIANDO);
+            } else if ((combateInimigos[_indiceIdInimigo].exeRolagemResultadoAtaque = EResultadoDados.DERROTA)) {
+                AdicionarEmCombateAliadosEfeitosAplicados(EFEITO_ATAQUE_NO_JOGADOR());
+                ImporCombateInimigosExeSerieDeAtaqueVencidoConsecutivo(_indiceIdInimigo, true);
+                ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(_indiceIdInimigo, EProcesso.INICIANDO);
+            } else if ((combateInimigos[_indiceIdInimigo].exeRolagemResultadoAtaque = EResultadoDados.EMPATE)) {
+                ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(_indiceIdInimigo, EProcesso.DESTRUIDO);
+            }
+            return;
+        }
+        //// Rolagem de sorte e confirmação Concluído, mas sem resultado
+        _indiceIdInimigo = combateInimigos.findIndex(
+            (inimigoI) => combateInimigos_ProcessoRolagemSorteConfirmacao[inimigoI.exeIdInimigo] === EProcesso.CONCLUIDO && inimigoI.exeRolagemResultadoSorte === EResultadoDados._NULO
+        );
+        if (_indiceIdInimigo >= 0) {
+            setCombateInimigos((prevCombateInimigo) => {
+                prevCombateInimigo = prevCombateInimigo.map((inimigoI, indiceI) => {
+                    if (_indiceIdInimigo === indiceI) {
+                        if (jogoAtual.panilha.sorte <= inimigoI.exeRolagemTotalSorte) {
+                            inimigoI.exeRolagemResultadoSorte = EResultadoDados.VITORIA;
+                        } else if (jogoAtual.panilha.sorte > inimigoI.exeRolagemTotalSorte) {
+                            inimigoI.exeRolagemResultadoSorte = EResultadoDados.DERROTA;
+                        }
+                    }
+                    return inimigoI;
+                });
+                return prevCombateInimigo;
+            });
+            return;
+        }
+        //// Rolagem de sorte e confirmação Concluído e com resultado
+        _indiceIdInimigo = combateInimigos.findIndex(
+            (inimigoI) => combateInimigos_ProcessoRolagemSorteConfirmacao[inimigoI.exeIdInimigo] === EProcesso.CONCLUIDO && inimigoI.exeRolagemResultadoSorte !== EResultadoDados._NULO
+        );
+        if (_indiceIdInimigo >= 0 && combateInimigos[_indiceIdInimigo]) {
+            ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(_indiceIdInimigo, EProcesso.DESTRUIDO);
+            if (combateInimigos[_indiceIdInimigo].exeRolagemResultadoSorte === EResultadoDados.VITORIA) {
+                if (combateInimigos[_indiceIdInimigo].exeRolagemResultadoAtaque === EResultadoDados.VITORIA) {
+                    AdicionarEmCombateInimigosEfeitosAplicados(EFEITO_SORTE_VITORIA_EM_ATAQUE_NO_INIMIGO(_indiceIdInimigo));
+                } else if (combateInimigos[_indiceIdInimigo].exeRolagemResultadoAtaque === EResultadoDados.DERROTA) {
+                    AdicionarEmCombateAliadosEfeitosAplicados(EFEITO_SORTE_VITORIA_EM_DEFESA_DO_JOGADOR());
+                }
+            } else if (combateInimigos[_indiceIdInimigo].exeRolagemResultadoSorte === EResultadoDados.DERROTA) {
+                if (combateInimigos[_indiceIdInimigo].exeRolagemResultadoAtaque === EResultadoDados.VITORIA) {
+                    AdicionarEmCombateInimigosEfeitosAplicados(EFEITO_SORTE_DERROTA_EM_ATAQUE_NO_INIMIGO(_indiceIdInimigo));
+                } else if (combateInimigos[_indiceIdInimigo].exeRolagemResultadoAtaque === EResultadoDados.DERROTA) {
+                    AdicionarEmCombateAliadosEfeitosAplicados(EFEITO_SORTE_DERROTA_EM_DEFESA_DO_JOGADOR());
+                }
+            }
+            AplicarPenalidadeDeTestarSorte();
+            return;
+        }
+        //// Verificando fim da serie de ataque
+        const _quantidadeInimigosAtacanteEApoio = combateInimigos.filter((inimigoI) =>
+            [EPosturaInimigo.ATACANTE, EPosturaInimigo.APOIO].includes(combateInimigos_PosturaInimigo[inimigoI.exeIdInimigo])
+        ).length;
+        if (_quantidadeInimigosAtacanteEApoio === 0) {
+            setCombateProcessoSerieDeAtaque(EProcesso.DESTRUIDO);
+            return;
+        }
+        const _quantidadeInimigosAtacanteEApoioDestruidos = combateInimigos.filter(
+            (inimigoI) =>
+                [EPosturaInimigo.ATACANTE, EPosturaInimigo.APOIO].includes(combateInimigos_PosturaInimigo[inimigoI.exeIdInimigo]) &&
+                combateInimigos_ProcessoRolagemAtaque[inimigoI.exeIdInimigo] === EProcesso.DESTRUIDO &&
+                combateInimigos_ProcessoRolagemSorteConfirmacao[inimigoI.exeIdInimigo] === EProcesso.DESTRUIDO
+        ).length;
+        if (_quantidadeInimigosAtacanteEApoio === _quantidadeInimigosAtacanteEApoioDestruidos) {
+            setCombateProcessoSerieDeAtaque(EProcesso.DESTRUIDO);
+            return;
+        }
+    }, [combateProcessoSerieDeAtaque, combateInimigos, combateInimigos_ProcessoRolagemAtaque, combateInimigos_ProcessoRolagemSorteConfirmacao]);
 
     return {
         jogoAtual,
         combateInimigos,
+        combateInimigos_PosturaInimigo,
+        combateInimigos_ProcessoRolagemAtaque,
         combateAliado,
         combateTextosDerrota,
         combateSerieDeAtaqueAtual,
         combateDadosJogadorRef,
         combateDadosInimigoRef,
         combateDadosSorteRef,
+        combateResultadoFinalDerrota,
+        combateResultadoFinalInimigos,
         ContextosReprovados,
         AprovarTextosDerrota,
         AprovarBotaoRolarCombate,
@@ -263,6 +277,9 @@ export const ControleCombate = () => {
         AoConcluirRolarCombateInimigo,
         AoConcluirTestarSorte,
         ObterJogadorOuAliado,
+        ObterElementoEfeitoEnergiaDoJogadorAliado,
+        ObterElementoEfeitoEnergiaDoInimigo,
+        MontarElementoCombateAprovacaoDerrota,
     };
 
     function ContextosReprovados() {
@@ -276,35 +293,37 @@ export const ControleCombate = () => {
     }
 
     function AprovarTextosDerrota() {
-        return combateTextosDerrota && combateTextosDerrota.length;
+        return (combateTextosDerrota && combateTextosDerrota.length) || combateAprovacaoDerrota;
     }
 
-    function ImporCombateExecutorDoProcessoZeroDaSerieDeAtaque() {
-        let _ajustado = false;
-        let _temAtacante = false;
+    function ImporCombateInimigosExecutorDoProcessoZeroDaSerieDeAtaque() {
+        const _temAtacante = combateInimigos_PosturaInimigo.find((prevCombateInimigos_PosturaInimigo) => prevCombateInimigos_PosturaInimigo === EPosturaInimigo.ATACANTE);
+        if (!_temAtacante) {
+            let _indiceIdInimigo = -1;
+            if (combateMultiplo_2osApoio) {
+                _indiceIdInimigo = combateInimigos_PosturaInimigo.findIndex((posturaInimigoI) => posturaInimigoI === EPosturaInimigo.APOIO);
+            } else {
+                _indiceIdInimigo = combateInimigos_PosturaInimigo.findIndex((posturaInimigoI) => posturaInimigoI === EPosturaInimigo._AGUARDANDO);
+            }
+            if (_indiceIdInimigo >= 0) {
+                ImporCombateInimigos_PosturaInimigo(_indiceIdInimigo, EPosturaInimigo.ATACANTE);
+            }
+            return;
+        }
+        combateInimigos_PosturaInimigo.forEach((posturaInimigoI, indiceI) => {
+            if ([EPosturaInimigo.ATACANTE, EPosturaInimigo.APOIO].includes(posturaInimigoI)) {
+                ImporCombateInimigos_ProcessoRolagemAtaque(indiceI, EProcesso.INICIANDO);
+                ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(indiceI, EProcesso._ZERO);
+            } else if ([EPosturaInimigo._AGUARDANDO].includes(posturaInimigoI)) {
+                ImporCombateInimigos_ProcessoRolagemAtaque(indiceI, EProcesso._ZERO);
+                ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(indiceI, EProcesso._ZERO);
+            } else if ([EPosturaInimigo.MORTO].includes(posturaInimigoI)) {
+                ImporCombateInimigos_ProcessoRolagemAtaque(indiceI, EProcesso.DESTRUIDO);
+                ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(indiceI, EProcesso.DESTRUIDO);
+            }
+        });
         setCombateInimigos((prevCombateInimigo) => {
-            prevCombateInimigo = prevCombateInimigo.map((inimigoI, indiceI) => {
-                if (!_ajustado) {
-                    _temAtacante ||= inimigoI.exePosturaInimigo === EPosturaInimigo.ATACANTE;
-                    if (combateMultiplo_2osApoio) {
-                        if (!_temAtacante && inimigoI.exePosturaInimigo === EPosturaInimigo.APOIO) {
-                            inimigoI.exePosturaInimigo = EPosturaInimigo.ATACANTE;
-                            _ajustado = true;
-                        }
-                    } else {
-                        if (!_temAtacante && inimigoI.exePosturaInimigo === EPosturaInimigo._AGUARDANDO) {
-                            inimigoI.exePosturaInimigo = EPosturaInimigo.ATACANTE;
-                            _ajustado = true;
-                        }
-                    }
-                }
-                if ([EPosturaInimigo.ATACANTE, EPosturaInimigo.APOIO].includes(inimigoI.exePosturaInimigo)) {
-                    inimigoI.exeProcessoRolagemAtaque = EProcesso.INICIANDO;
-                    inimigoI.exeProcessoRolagemSorteConfirmacao = EProcesso._ZERO;
-                } else if ([EPosturaInimigo._AGUARDANDO].includes(inimigoI.exePosturaInimigo)) {
-                    inimigoI.exeProcessoRolagemAtaque = EProcesso._ZERO;
-                    inimigoI.exeProcessoRolagemSorteConfirmacao = EProcesso._ZERO;
-                }
+            prevCombateInimigo = prevCombateInimigo.map((inimigoI) => {
                 inimigoI.exeRolagemResultadoAtaque = EResultadoDados._NULO;
                 inimigoI.exeRolagemResultadoSorte = EResultadoDados._NULO;
                 inimigoI.exeRolagemTotalJogador = 0;
@@ -312,12 +331,13 @@ export const ControleCombate = () => {
                 inimigoI.exeRolagemTotalSorte = 0;
                 return inimigoI;
             });
-            return [...prevCombateInimigo];
+            return prevCombateInimigo;
         });
         if (_unicoSetCombateSerieDeAtaqueAtual) {
             _unicoSetCombateSerieDeAtaqueAtual = false;
             setCombateSerieDeAtaqueAtual((prevCombateSerieDeAtaqueAtual) => (prevCombateSerieDeAtaqueAtual += 1));
         }
+        setCombateProcessoSerieDeAtaque(EProcesso.INICIANDO);
     }
 
     function AplicarEfeitoDerrota() {
@@ -329,100 +349,103 @@ export const ControleCombate = () => {
     function AprovarBotaoRolarCombate(inimigo: IInimigoExecucao) {
         return (
             combateProcessoSerieDeAtaque === EProcesso.PROCESSANDO &&
-            [EPosturaInimigo.ATACANTE, EPosturaInimigo.APOIO].includes(inimigo.exePosturaInimigo) &&
-            inimigo.exeProcessoRolagemAtaque === EProcesso.INICIANDO
+            [EPosturaInimigo.ATACANTE, EPosturaInimigo.APOIO].includes(combateInimigos_PosturaInimigo[inimigo.exeIdInimigo]) &&
+            combateInimigos_ProcessoRolagemAtaque[inimigo.exeIdInimigo] === EProcesso.INICIANDO
         );
     }
 
     function AprovarBotaoTestarSorte(inimigo: IInimigoExecucao) {
         return (
             combateProcessoSerieDeAtaque === EProcesso.PROCESSANDO &&
-            [EPosturaInimigo.ATACANTE, EPosturaInimigo.APOIO].includes(inimigo.exePosturaInimigo) &&
-            inimigo.exeProcessoRolagemSorteConfirmacao === EProcesso.INICIANDO
+            [EPosturaInimigo.ATACANTE, EPosturaInimigo.APOIO].includes(combateInimigos_PosturaInimigo[inimigo.exeIdInimigo]) &&
+            combateInimigos_ProcessoRolagemSorteConfirmacao[inimigo.exeIdInimigo] === EProcesso.INICIANDO
         );
     }
     function AprovarBotaoConfirmar(inimigo: IInimigoExecucao) {
         return (
             combateProcessoSerieDeAtaque === EProcesso.PROCESSANDO &&
-            [EPosturaInimigo.ATACANTE, EPosturaInimigo.APOIO].includes(inimigo.exePosturaInimigo) &&
-            inimigo.exeProcessoRolagemSorteConfirmacao === EProcesso.INICIANDO
+            [EPosturaInimigo.ATACANTE, EPosturaInimigo.APOIO].includes(combateInimigos_PosturaInimigo[inimigo.exeIdInimigo]) &&
+            combateInimigos_ProcessoRolagemSorteConfirmacao[inimigo.exeIdInimigo] === EProcesso.INICIANDO
         );
     }
 
-    function AoRolarCombate(inimigo: IInimigoExecucao, indice: number) {
+    function AoRolarCombate(inimigo: IInimigoExecucao) {
         const _aoClicar = () => {
-            combateDadosJogadorRef[indice]?.current?.rollAll();
-            combateDadosInimigoRef[indice]?.current?.rollAll();
-            ImporCombateInimigosExeProcessoRolagem(indice, EProcesso.PROCESSANDO);
+            combateDadosJogadorRef[inimigo.exeIdInimigo]?.current?.rollAll();
+            combateDadosInimigoRef[inimigo.exeIdInimigo]?.current?.rollAll();
+            ImporCombateInimigos_ProcessoRolagemAtaque(inimigo.exeIdInimigo, EProcesso.PROCESSANDO);
             setTimeout(() => {
-                ImporCombateInimigosExeProcessoRolagem(indice, EProcesso.CONCLUIDO);
+                ImporCombateInimigos_ProcessoRolagemAtaque(inimigo.exeIdInimigo, EProcesso.CONCLUIDO);
             }, TEMPO_DADOS_RESULTADO_MILESIMOS);
         };
         return _aoClicar;
     }
 
-    function AoTestarSorte(inimigo: IInimigoExecucao, indice: number) {
+    function AoTestarSorte(inimigo: IInimigoExecucao) {
         const _aoClicar = () => {
-            combateDadosSorteRef[indice]?.current?.rollAll();
-            ImporCombateInimigosExeProcessoSorteConfirmacao(indice, EProcesso.PROCESSANDO);
-            setCombateProcessoSerieDeAtaque(EProcesso.CONCLUIDO);
+            combateDadosSorteRef[inimigo.exeIdInimigo]?.current?.rollAll();
+            ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(inimigo.exeIdInimigo, EProcesso.PROCESSANDO);
             setTimeout(() => {
-                ImporCombateInimigosExeProcessoSorteConfirmacao(indice, EProcesso.CONCLUIDO);
-                setCombateProcessoSerieDeAtaque(EProcesso.DESTRUIDO);
+                ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(inimigo.exeIdInimigo, EProcesso.CONCLUIDO);
             }, TEMPO_DADOS_RESULTADO_MILESIMOS);
         };
         return _aoClicar;
     }
 
-    function AoConfirmar(inimigo: IInimigoExecucao, indice: number) {
+    function AoConfirmar(inimigo: IInimigoExecucao) {
         const _aoClicar = () => {
-            setCombateProcessoSerieDeAtaque(EProcesso.DESTRUIDO);
-            ImporCombateInimigosExeProcessoSorteConfirmacao(indice, EProcesso.CONCLUIDO);
+            ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(inimigo.exeIdInimigo, EProcesso.DESTRUIDO);
         };
         return _aoClicar;
     }
 
-    function AoConcluirRolarCombateJogador(inimigo: IInimigoExecucao, indice: number) {
+    function AoConcluirRolarCombateJogador(inimigo: IInimigoExecucao) {
         const _aoConcluir = (totalValue: number, values: number[]) => {
+            //if (inimigo.exeRolagemTotalJogador !== totalValue + ObterJogadorOuAliado().habilidade) {
             setCombateInimigos((prevCombateInimigo) => {
-                prevCombateInimigo = prevCombateInimigo.map((inimigoI, indiceI) => {
-                    if (indice === indiceI) {
+                prevCombateInimigo = prevCombateInimigo.map((inimigoI) => {
+                    if (inimigo.exeIdInimigo === inimigoI.exeIdInimigo) {
                         inimigoI.exeRolagemTotalJogador = totalValue + ObterJogadorOuAliado().habilidade;
                     }
-                    return { ...inimigoI };
+                    return inimigoI;
                 });
-                return [...prevCombateInimigo];
+                return prevCombateInimigo;
             });
+            //}
         };
         return _aoConcluir;
     }
 
-    function AoConcluirRolarCombateInimigo(inimigo: IInimigoExecucao, indice: number) {
+    function AoConcluirRolarCombateInimigo(inimigo: IInimigoExecucao) {
         const _aoConcluir = (totalValue: number, values: number[]) => {
+            //if (inimigo.exeRolagemTotalInimigo !== totalValue + inimigo.habilidade) {
             setCombateInimigos((prevCombateInimigo) => {
-                prevCombateInimigo = prevCombateInimigo.map((inimigoI, indiceI) => {
-                    if (indice === indiceI) {
+                prevCombateInimigo = prevCombateInimigo.map((inimigoI) => {
+                    if (inimigo.exeIdInimigo === inimigoI.exeIdInimigo) {
                         inimigoI.exeRolagemTotalInimigo = totalValue + inimigoI.habilidade;
                     }
-                    return { ...inimigoI };
+                    return inimigoI;
                 });
-                return [...prevCombateInimigo];
+                return prevCombateInimigo;
             });
+            //}
         };
         return _aoConcluir;
     }
 
-    function AoConcluirTestarSorte(inimigo: IInimigoExecucao, indice: number) {
+    function AoConcluirTestarSorte(inimigo: IInimigoExecucao) {
         const _aoConcluir = (totalValue: number, values: number[]) => {
+            //if (inimigo.exeRolagemTotalSorte !== totalValue) {
             setCombateInimigos((prevCombateInimigo) => {
-                prevCombateInimigo = prevCombateInimigo.map((inimigoI, indiceI) => {
-                    if (indice === indiceI && totalValue > 0) {
+                prevCombateInimigo = prevCombateInimigo.map((inimigoI) => {
+                    if (inimigo.exeIdInimigo === inimigoI.exeIdInimigo && totalValue > 0) {
                         inimigoI.exeRolagemTotalSorte = totalValue;
                     }
-                    return { ...inimigoI };
+                    return inimigoI;
                 });
-                return [...prevCombateInimigo];
+                return prevCombateInimigo;
             });
+            //}
         };
         return _aoConcluir;
     }
@@ -447,6 +470,42 @@ export const ControleCombate = () => {
                     exeEstaVivo: combateAliado.exeEnergiaAtual > 0,
                 };
         return _jogadorOuAliado;
+    }
+
+    function ObterElementoEfeitoEnergiaDoJogadorAliado() {
+        return MontarElementosDosEfeitosPorQuantidade(ObterCombateAliadoEfeitosAplicadosDoAtributo(EAtributo.ENERGIA));
+    }
+
+    function ObterElementoEfeitoEnergiaDoInimigo(inimigo: IInimigoExecucao) {
+        return MontarElementosDosEfeitosPorQuantidade(ObterCombateInimigosEfeitosAplicados(inimigo.exeIdInimigo, EAtributo.ENERGIA));
+    }
+
+    function MontarElementosDosEfeitosPorQuantidade(efeitos: IEfeito[]) {
+        if (efeitos && efeitos.length) {
+            return efeitos.map((efeitoI, indiceI) => (
+                <span
+                    key={indiceI}
+                    className={MontarEstilo(efeitoI)}
+                >
+                    {FormatarNumberInteiro(efeitoI.quantidade)}
+                </span>
+            ));
+        } else {
+            return <></>;
+        }
+    }
+
+    function MontarEstilo(efeito: IEfeito) {
+        let _estilo = styles.combate_efeito;
+        if (efeito) {
+            _estilo += " " + styles.combate_efeito_popup;
+            if (efeito.quantidade >= 1) {
+                _estilo += " " + styles.combate_efeito_bom;
+            } else {
+                _estilo += " " + styles.combate_efeito_ruim;
+            }
+        }
+        return _estilo;
     }
 };
 

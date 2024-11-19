@@ -27,3 +27,6 @@ src/assets/LJAF07_OTemploDoTerror/imagens/originais/*
 public/LJAF07_OTemploDoTerror/imagens/originais/*
 public/originais/*
 .vercel
+tsconfig.app.tsbuildinfo
+package-lock.json
+tsconfig.app.tsbuildinfo

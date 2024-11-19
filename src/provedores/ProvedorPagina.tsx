@@ -13,6 +13,7 @@ import {
     IDestino,
     IDestinoExecucao,
     PAGINA_ZERADA,
+    EPosturaInimigo,
 } from "../tipos";
 import { ContextoBasePagina } from "../contextos";
 import { IChildrenProps, EProcesso } from "../uteis";
@@ -33,6 +34,9 @@ export const ProvedorPagina = ({ children }: IChildrenProps) => {
     const [historiaIndice, setHistoriaIndice] = useState(0);
     const [historiaProcessoIndice, setHistoriaProcessoIndice] = useState<EProcesso>(EProcesso._ZERO);
     const [combateInimigos, setCombateInimigos] = useState<IInimigoExecucao[]>([]);
+    const [combateInimigos_PosturaInimigo, setCombateInimigos_PosturaInimigo] = useState<EPosturaInimigo[]>([]);
+    const [combateInimigos_ProcessoRolagemAtaque, setCombateInimigos_ProcessoRolagemAtaque] = useState<EProcesso[]>([]);
+    const [combateInimigos_ProcessoRolagemSorteConfirmacao, setCombateInimigos_ProcessoRolagemSorteConfirmacao] = useState<EProcesso[]>([]);
     const [combateInimigosEfeitosAplicados, setCombateInimigosEfeitosAplicados] = useState<IEfeitoInimigoExecucao[]>([]);
     const [combateAliado, setCombateAliado] = useState<IAliadoExecucao>(null!);
     const [combateAliadoEfeitosAplicados, setCombateAliadoEfeitosAplicados] = useState<IEfeitoExecucao[]>([]);
@@ -42,8 +46,8 @@ export const ProvedorPagina = ({ children }: IChildrenProps) => {
     const [combateProcesso, setCombateProcesso] = useState<EProcesso>(EProcesso._ZERO);
     const [combateSerieDeAtaqueAtual, setCombateSerieDeAtaqueAtual] = useState(0);
     const [combateProcessoSerieDeAtaque, setCombateProcessoSerieDeAtaque] = useState<EProcesso>(EProcesso._ZERO);
-    const [combateResultadoSerieDeAtaque, setCombateResultadoSerieDeAtaque] = useState<EResultadoCombate>(EResultadoCombate._COMBATENDO);
-    const [combateResultadoFinal, setCombateResultadoFinal] = useState<EResultadoCombate>(EResultadoCombate._COMBATENDO);
+    const [combateResultadoFinalDerrota, setCombateResultadoFinalDerrota] = useState<EResultadoCombate>(EResultadoCombate.COMBATENDO);
+    const [combateResultadoFinalInimigos, setCombateResultadoFinalInimigos] = useState<EResultadoCombate>(EResultadoCombate.COMBATENDO);
     const [combateIdPaginaDestinoDerrota, setCombateIdPaginaDestinoDerrota] = useState(PAGINA_ZERADA.idPagina);
     const [combateDadosJogadorRef, setCombateDadosJogadorRef] = useState<MutableRefObject<DieContainerRef | null>[]>(CriarCombateDadosRef());
     const [combateDadosInimigoRef, setCombateDadosInimigoRef] = useState<MutableRefObject<DieContainerRef | null>[]>(CriarCombateDadosRef());
@@ -83,6 +87,12 @@ export const ProvedorPagina = ({ children }: IChildrenProps) => {
                 setHistoriaProcessoIndice,
                 combateInimigos,
                 setCombateInimigos,
+                combateInimigos_PosturaInimigo,
+                setCombateInimigos_PosturaInimigo,
+                combateInimigos_ProcessoRolagemAtaque,
+                setCombateInimigos_ProcessoRolagemAtaque,
+                combateInimigos_ProcessoRolagemSorteConfirmacao,
+                setCombateInimigos_ProcessoRolagemSorteConfirmacao,
                 combateInimigosEfeitosAplicados,
                 setCombateInimigosEfeitosAplicados,
                 combateAliado,
@@ -101,10 +111,10 @@ export const ProvedorPagina = ({ children }: IChildrenProps) => {
                 setCombateSerieDeAtaqueAtual,
                 combateProcessoSerieDeAtaque,
                 setCombateProcessoSerieDeAtaque,
-                combateResultadoSerieDeAtaque,
-                setCombateResultadoSerieDeAtaque,
-                combateResultadoFinal,
-                setCombateResultadoFinal,
+                combateResultadoFinalDerrota,
+                setCombateResultadoFinalDerrota,
+                combateResultadoFinalInimigos,
+                setCombateResultadoFinalInimigos,
                 combateIdPaginaDestinoDerrota,
                 setCombateIdPaginaDestinoDerrota,
                 combateDadosJogadorRef,

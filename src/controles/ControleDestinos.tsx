@@ -2,7 +2,7 @@ import "../componentes/Botao.module.scss";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ContextoJogos, ContextoPagina, OperacoesJogoLivro } from "../contextos";
-import { EAtributoDestinoTeste, ECampanhaCapitulo, EJogoNivel, EPaginaExecutorEstado, IDestino, PAGINA_ZERADA, PAGINA_FIM_DE_JOGO } from "../tipos";
+import { EAtributoDestinoTeste, EJogoNivel, EPaginaExecutorEstado, IDestino, PAGINA_ZERADA, PAGINA_FIM_DE_JOGO, EResultadoCombate } from "../tipos";
 import { EProcesso } from "../uteis";
 import { COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_SORTE, COR_SORTE_DOTS, TEMPO_ANIMACAO_GRANDE, TEMPO_DADOS_RESULTADO_MILESIMOS } from "../globais/Constantes";
 import ControlePaginaLivroJogo from "./ControlePaginaLivroJogo2";
@@ -15,6 +15,8 @@ export const ControleDestinos = () => {
         paginaIdPaginaDestino,
         paginaIdCapituloDestino,
         paginaEhJogoCarregado,
+        combateResultadoFinalDerrota,
+        combateResultadoFinalInimigos,
         destinoItens,
         destinoProcesso,
         destinoProcessoRolagem,
@@ -133,10 +135,10 @@ export const ControleDestinos = () => {
     }
 
     function EhFimDeJogo() {
-        const _fimDeJogo = jogoAtual.campanhaCapitulo === ECampanhaCapitulo.PAGINAS_CAMPANHA;
         const _estaMorto = !!(jogoAtual.panilha && jogoAtual.panilha.energia === 0);
         const _destinoMorte = !!destinoItens.find((destinoI) => destinoI.idPagina === PAGINA_FIM_DE_JOGO.idPagina);
-        return _fimDeJogo && (_estaMorto || _destinoMorte);
+        const _resultadoDerrota = combateResultadoFinalDerrota === EResultadoCombate.DERROTA || combateResultadoFinalInimigos === EResultadoCombate.DERROTA;
+        return _estaMorto || _destinoMorte || _resultadoDerrota;
     }
 
     function AoReiniciar() {

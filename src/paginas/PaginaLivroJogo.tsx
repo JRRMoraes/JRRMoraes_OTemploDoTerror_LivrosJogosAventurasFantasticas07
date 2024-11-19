@@ -2,9 +2,12 @@ import styles from "./PaginaLivroJogo.module.scss";
 import { TelaCampanha, TelaPanilha, TelaPanilhaNova } from "../telas";
 import { ReprodutorAudio } from "../componentes";
 import { ControlePaginaLivroJogo } from "../controles";
+import { UteisDimensoesPaginaHtml } from "../uteis";
 
 export const PaginaLivroJogo = () => {
-    const { ContextosReprovados, AprovarJogoAtualPanilha, EhDispositivoTabletOuDesktop } = ControlePaginaLivroJogo();
+    const { ContextosReprovados, AprovarJogoAtualPanilha } = ControlePaginaLivroJogo();
+
+    const { EhDispositivoTabletOuDesktop, MontarElemento_BotaoFullscreen } = UteisDimensoesPaginaHtml();
 
     if (ContextosReprovados()) {
         return <></>;
@@ -28,8 +31,9 @@ export const PaginaLivroJogo = () => {
                     <div className={styles.livroJogo_Celular_campanha}>
                         <div className={styles.livroJogo_Celular_campanha_2}>{MontarRetorno_CampanhaOuPanilhaNova()}</div>
                     </div>
-                    <div className={styles.livroJogo_Celular_audio}>
+                    <div className={styles.livroJogo_Celular_comandos}>
                         <ReprodutorAudio />
+                        {MontarElemento_BotaoFullscreen()}
                     </div>
                 </div>
             </div>
@@ -56,8 +60,9 @@ export const PaginaLivroJogo = () => {
                             <TelaPanilha />
                         </div>
                     </div>
-                    <div className={styles.livroJogo_Desktop_panilha_audio}>
+                    <div className={styles.livroJogo_Desktop_panilha_comandos}>
                         <ReprodutorAudio />
+                        {MontarElemento_BotaoFullscreen()}
                     </div>
                 </div>
             );

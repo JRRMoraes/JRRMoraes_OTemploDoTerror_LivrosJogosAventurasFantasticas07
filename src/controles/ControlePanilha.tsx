@@ -8,7 +8,7 @@ import { FormatarNumberInteiro, UteisDimensoesPaginaHtml } from "../uteis";
 export const ControlePanilha = () => {
     const [completo, setCompleto] = useState(true);
 
-    const { jogoAtual, ObterJogadorEfeitoAplicadoDoAtributo } = ContextoJogos();
+    const { jogoAtual, ObterJogadorEfeitosAplicadosDoAtributo } = ContextoJogos();
 
     const { EhDispositivoCelular, EhDispositivoTabletOuDesktop } = UteisDimensoesPaginaHtml();
 
@@ -39,66 +39,70 @@ export const ControlePanilha = () => {
     }
 
     function ObterElementoEfeitoHabilidade() {
-        const _efeito = ObterJogadorEfeitoAplicadoDoAtributo(EAtributo.HABILIDADE);
-        let _conteudo = "";
-        if (_efeito) {
-            _conteudo = FormatarNumberInteiro(_efeito.quantidade);
-        }
-        return <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
+        return MontarElementosDosEfeitosPorQuantidade(ObterJogadorEfeitosAplicadosDoAtributo(EAtributo.HABILIDADE));
     }
 
     function ObterElementoEfeitoEnergia() {
-        const _efeito = ObterJogadorEfeitoAplicadoDoAtributo(EAtributo.ENERGIA);
-        let _conteudo = "";
-        if (_efeito) {
-            _conteudo = FormatarNumberInteiro(_efeito.quantidade);
-        }
-        return <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
+        return MontarElementosDosEfeitosPorQuantidade(ObterJogadorEfeitosAplicadosDoAtributo(EAtributo.ENERGIA));
     }
 
     function ObterElementoEfeitoSorte() {
-        const _efeito = ObterJogadorEfeitoAplicadoDoAtributo(EAtributo.SORTE);
-        let _conteudo = "";
-        if (_efeito) {
-            _conteudo = FormatarNumberInteiro(_efeito.quantidade);
-        }
-        return <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
+        return MontarElementosDosEfeitosPorQuantidade(ObterJogadorEfeitosAplicadosDoAtributo(EAtributo.SORTE));
     }
 
     function ObterElementoEfeitoOuro() {
-        const _efeito = ObterJogadorEfeitoAplicadoDoAtributo(EAtributo.OURO);
-        let _conteudo = "";
-        if (_efeito) {
-            _conteudo = FormatarNumberInteiro(_efeito.quantidade);
-        }
-        return <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
+        return MontarElementosDosEfeitosPorQuantidade(ObterJogadorEfeitosAplicadosDoAtributo(EAtributo.OURO));
     }
 
     function ObterElementoEfeitoProvisao() {
-        const _efeito = ObterJogadorEfeitoAplicadoDoAtributo(EAtributo.PROVISAO);
-        let _conteudo = "";
-        if (_efeito) {
-            _conteudo = FormatarNumberInteiro(_efeito.quantidade);
-        }
-        return <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
+        return MontarElementosDosEfeitosPorQuantidade(ObterJogadorEfeitosAplicadosDoAtributo(EAtributo.PROVISAO));
     }
 
     function ObterElementoEfeitoItens() {
-        const _efeito = ObterJogadorEfeitoAplicadoDoAtributo(EAtributo.ITENS);
-        let _conteudo = "";
-        if (_efeito) {
-            _conteudo = _efeito.quantidade + " x " + _efeito.nomeEfeito;
+        const _efeitos = ObterJogadorEfeitosAplicadosDoAtributo(EAtributo.ITENS);
+        if (_efeitos && _efeitos.length) {
+            return _efeitos.map((efeitoI, indiceI) => (
+                <span
+                    key={indiceI}
+                    className={MontarEstilo(efeitoI)}
+                >
+                    {efeitoI.quantidade + " x " + efeitoI.nomeEfeito}
+                </span>
+            ));
+        } else {
+            return <></>;
         }
-        return <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
     }
 
     function ObterElementoEfeitoEncantos() {
-        const _efeito = ObterJogadorEfeitoAplicadoDoAtributo(EAtributo.ENCANTOS);
-        let _conteudo = "";
-        if (_efeito) {
-            _conteudo = _efeito.nomeEfeito;
+        const _efeitos = ObterJogadorEfeitosAplicadosDoAtributo(EAtributo.ENCANTOS);
+        if (_efeitos && _efeitos.length) {
+            return _efeitos.map((efeitoI, indiceI) => (
+                <span
+                    key={indiceI}
+                    className={MontarEstilo(efeitoI)}
+                >
+                    {efeitoI.nomeEfeito}
+                </span>
+            ));
+        } else {
+            return <></>;
         }
-        return <span className={MontarEstilo(_efeito)}>{_conteudo}</span>;
+    }
+
+    function MontarElementosDosEfeitosPorQuantidade(efeitos: IEfeito[]) {
+        if (efeitos && efeitos.length) {
+            return efeitos.map((efeitoI, indiceI) => (
+                <span
+                    key={indiceI}
+                    className={MontarEstilo(efeitoI)}
+                >
+                    {FormatarNumberInteiro(efeitoI.quantidade)}
+                </span>
+            ));
+        } else {
+            return <></>;
+        }
     }
 
     function MontarEstilo(efeito: IEfeito) {

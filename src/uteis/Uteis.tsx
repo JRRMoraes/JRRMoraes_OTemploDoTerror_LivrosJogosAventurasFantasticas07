@@ -1,6 +1,10 @@
 export function TextosIguais(texto1: string, texto2: string, ehCaseSensitive: boolean = false) {
-    if (!texto1) texto1 = "";
-    if (!texto2) texto2 = "";
+    if (!texto1) {
+        texto1 = "";
+    }
+    if (!texto2) {
+        texto2 = "";
+    }
     if (ehCaseSensitive) {
         return texto1 === texto2;
     } else {
@@ -20,12 +24,22 @@ export function ContemTexto(textoBuscado: string, textoCompleto: string, ehCaseS
 }
 
 export function SubstituirTexto(textoTratado: string, textoBuscado: string, textoSubstituto: string, saoTodos: boolean, ehCaseSensitive: boolean = false) {
-    if (!textoTratado) textoTratado = "";
-    if (!textoBuscado) textoBuscado = "";
-    if (!textoSubstituto) textoSubstituto = "";
+    if (!textoTratado) {
+        textoTratado = "";
+    }
+    if (!textoBuscado) {
+        textoBuscado = "";
+    }
+    if (!textoSubstituto) {
+        textoSubstituto = "";
+    }
     let _regexTexto = "";
-    if (saoTodos) _regexTexto += "g";
-    if (!ehCaseSensitive) _regexTexto += "i";
+    if (saoTodos) {
+        _regexTexto += "g";
+    }
+    if (!ehCaseSensitive) {
+        _regexTexto += "i";
+    }
     let _regex = new RegExp(textoBuscado, _regexTexto);
     return textoTratado.replace(_regex, textoSubstituto);
 }

@@ -1,41 +1,70 @@
+@import "../globais/EstilosGlobais.scss";
+
 .botao {
-    border-radius: 8px;
-    border: 2px solid #646cff;
-    padding: 8px 16px;
-    margin: 16px 32px;
-    font-size: 1rem;
-    font-weight: 600;
-    font-family: inherit;
-    line-height: 1.15;
-    background-color: #d9d9d9;
-    transition: border-color 0.25s;
-    overflow: visible;
-    cursor: pointer;
-    -webkit-appearance: button;
-    appearance: button;
+    position: relative;
+    display: inline-block;
 
-    &:hover {
-        border-color: #646cff;
-        box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-        transition: 0.2s;
-        -moz-transform: scale(1.2);
-        -webkit-transform: scale(1.2);
-        transform: scale(1.2);
+    button {
+        border-radius: 8px;
+        border: 2px solid #646cff;
+        padding: PixelParaVW(8) PixelParaVW(16);
+        margin: PixelParaVW(16) PixelParaVW(32);
+        font-size: 1rem;
+        font-weight: 600;
+        font-family: inherit;
+        line-height: 1.15;
+        background-color: #d9d9d9;
+        transition: border-color 0.25s;
+        overflow: visible;
+        cursor: pointer;
+        -webkit-appearance: button;
+        appearance: button;
 
-        &:active {
+        &:hover {
+            border-color: #646cff;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
             transition: 0.2s;
-            -moz-transform: scale(1.3);
-            -webkit-transform: scale(1.3);
-            transform: scale(1.3);
+            -moz-transform: scale(1.2);
+            -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+
+            &:active {
+                transition: 0.2s;
+                -moz-transform: scale(1.3);
+                -webkit-transform: scale(1.3);
+                transform: scale(1.3);
+            }
+        }
+
+        &:focus,
+        &:focus-visible {
+            outline: 4px auto hsl(147, 75%, 62%);
+        }
+
+        &:disabled {
+            cursor: not-allowed;
         }
     }
 
-    &:focus,
-    &:focus-visible {
-        outline: 4px auto hsl(147, 75%, 62%);
+    &_dica {
+        visibility: hidden;
+        width: PixelParaVW(200);
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 5px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: PixelParaVW(-100);
+        opacity: 0;
+        transition: opacity 0.3s;
     }
 
-    &:disabled {
-        cursor: not-allowed;
+    &:hover &_dica {
+        visibility: visible;
+        opacity: 1;
     }
 }

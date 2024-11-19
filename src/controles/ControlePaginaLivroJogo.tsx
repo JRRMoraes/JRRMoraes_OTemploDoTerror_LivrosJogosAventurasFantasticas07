@@ -1,13 +1,10 @@
 import { useEffect } from "react";
 import { ContextoJogos, ContextoPagina } from "../contextos";
-import { UteisDimensoesPaginaHtml } from "../uteis";
 
 export const ControlePaginaLivroJogo = () => {
     const { jogoAtual, ResetarJogo } = ContextoJogos();
 
     const { pagina } = ContextoPagina();
-
-    const { EhDispositivoTabletOuDesktop } = UteisDimensoesPaginaHtml();
 
     useEffect(() => {
         window.addEventListener("beforeunload", ProcessarRefresh);
@@ -16,7 +13,7 @@ export const ControlePaginaLivroJogo = () => {
         };
     }, []);
 
-    return { ContextosReprovados, AprovarJogoAtualPanilha, EhDispositivoTabletOuDesktop };
+    return { ContextosReprovados, AprovarJogoAtualPanilha };
 
     function ContextosReprovados() {
         return !jogoAtual || !pagina;
