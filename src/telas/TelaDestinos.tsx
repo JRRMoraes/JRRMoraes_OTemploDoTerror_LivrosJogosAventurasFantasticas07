@@ -2,24 +2,29 @@ import styles from "./TelaDestinos.module.scss";
 import "../componentes/Botao.module.scss";
 import { Botao } from "../componentes";
 import { IDestino } from "../tipos";
+import { ControleDestinos } from "../controles";
 import { EProcesso } from "../uteis";
 import ReactDice from "react-dice-complete";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { TEMPO_DADOS_ROLANDO_SEGUNDOS } from "../globais/Constantes";
-import { ControleDestinos } from "../controles";
 
 export const TelaDestinos = () => {
     const {
         destinoItens,
         destinoDadosRef,
         salvando,
+        curando,
         desativaBotoes,
         ContextosReprovados,
         EhFimDeJogo,
         AoReiniciar,
         AprovarSalvaJogoAtual,
+        DesativarBotaoCurarViaProvisao,
+        TextoBotaoCurarViaProvisao,
         EhSalvamentoAutomatico,
         AoSalvarJogoAtual,
+        AoCurarViaProvisao,
         AoClicarBotaoDestino,
         AoObterDesativaBotao,
         ObterTesteSorteHabilidade,
@@ -33,12 +38,12 @@ export const TelaDestinos = () => {
         return (
             <div className={styles.destinoItens}>
                 <div className={styles.destinos_morte}>
-                    <div className={styles.destinos_tituloESalvar}>
-                        <h3>VOCÊ MORREU - FIM DE JOGO</h3>
+                    <div className={styles.destinos_comandos}>
+                        <h3>{"VOCÊ MORREU - FIM DE JOGO"}</h3>
                     </div>
                     <div className={styles.destinos_conteudo}>
                         <div className={styles.destinos_conteudo_pagina}>
-                            <Botao aoClicar={() => AoReiniciar()}>Voltar a página inicial</Botao>
+                            <Botao aoClicar={() => AoReiniciar()}>{"Voltar a página inicial"}</Botao>
                         </div>
                     </div>
                 </div>
@@ -48,8 +53,9 @@ export const TelaDestinos = () => {
         return (
             <div className={styles.destinoItens}>
                 <div className={styles.destinos_normal}>
-                    <div className={styles.destinos_tituloESalvar}>
+                    <div className={styles.destinos_comandos}>
                         <h3>Escolha o seu Destino:</h3>
+                        {MontarRetorno_CurarViaProvisao()}
                         {MontarRetorno_SalvaJogoAtual()}
                     </div>
                     {MontarRetorno_Destinos()}
@@ -69,14 +75,14 @@ export const TelaDestinos = () => {
                     return <></>;
                 } else {
                     return (
-                        <div className={styles.destinos_tituloESalvar_salvar}>
+                        <div className={styles.destinos_comandos_funcao}>
                             <Botao
                                 aoClicar={() => AoSalvarJogoAtual()}
                                 desativado={desativaBotoes}
                             >
-                                <div className={styles.destinos_tituloESalvar_salvar_2}>
+                                <div className={styles.destinos_comandos_funcao_2}>
                                     <SaveOutlinedIcon />
-                                    <p>SALVAR JOGO ?</p>
+                                    <p>{"SALVAR JOGO ?"}</p>
                                 </div>
                             </Botao>
                         </div>
@@ -84,16 +90,51 @@ export const TelaDestinos = () => {
                 }
             case (EProcesso.INICIANDO, EProcesso.PROCESSANDO):
                 return (
-                    <div className={styles.destinos_tituloESalvar_salvar}>
+                    <div className={styles.destinos_comandos_funcao + " " + styles.destinos_comandos_funcao_borda}>
                         <SaveOutlinedIcon />
-                        <p>... SALVANDO O JOGO ...</p>
+                        <p>{"... SALVANDO O JOGO ..."}</p>
                     </div>
                 );
             case EProcesso.CONCLUIDO:
                 return (
-                    <div className={styles.destinos_tituloESalvar_salvar}>
+                    <div className={styles.destinos_comandos_funcao + " " + styles.destinos_comandos_funcao_borda}>
                         <SaveOutlinedIcon />
-                        <p>JOGO SALVO !</p>
+                        <p>{"JOGO SALVO !"}</p>
+                    </div>
+                );
+            default:
+                return <></>;
+        }
+    }
+
+    function MontarRetorno_CurarViaProvisao() {
+        switch (curando) {
+            case EProcesso._ZERO:
+                return (
+                    <div className={styles.destinos_comandos_funcao}>
+                        <Botao
+                            aoClicar={() => AoCurarViaProvisao()}
+                            desativado={DesativarBotaoCurarViaProvisao(desativaBotoes)}
+                        >
+                            <div className={styles.destinos_comandos_funcao_2}>
+                                <AutoAwesomeIcon />
+                                <p>{TextoBotaoCurarViaProvisao()}</p>
+                            </div>
+                        </Botao>
+                    </div>
+                );
+            case (EProcesso.INICIANDO, EProcesso.PROCESSANDO):
+                return (
+                    <div className={styles.destinos_comandos_funcao + " " + styles.destinos_comandos_funcao_borda}>
+                        <AutoAwesomeIcon />
+                        <p>{"... CURANDO ..."}</p>
+                    </div>
+                );
+            case EProcesso.CONCLUIDO:
+                return (
+                    <div className={styles.destinos_comandos_funcao + " " + styles.destinos_comandos_funcao_borda}>
+                        <AutoAwesomeIcon />
+                        <p>{"CURADO !"}</p>
                     </div>
                 );
             default:

@@ -51,3 +51,16 @@ export function FormatarNumberInteiro(numero: number) {
         return numero.toString();
     }
 }
+
+export function obterEnumAleatorio<T extends Record<string, string | number>>(enumeracao: T): keyof T {
+    const _enumeracoes = Object.keys(enumeracao) as Array<keyof T>;
+    const _indice = Math.floor(Math.random() * _enumeracoes.length);
+    return _enumeracoes[_indice];
+}
+
+export function obterEnumAleatorioExcluindoItem<T extends Record<string, string | number>>(enumeracao: T, excluido: keyof T): keyof T {
+    let _enumeracoes = Object.keys(enumeracao) as Array<keyof T>;
+    _enumeracoes = _enumeracoes.filter((itemI) => itemI !== excluido);
+    const _indice = Math.floor(Math.random() * _enumeracoes.length);
+    return _enumeracoes[_indice];
+}

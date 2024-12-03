@@ -8,7 +8,15 @@ import { COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_SORTE, COR_SORTE_DOTS, TEMPO_A
 import ControlePaginaLivroJogo from "./ControlePaginaLivroJogo2";
 
 export const ControleDestinos = () => {
-    const { jogoAtual, ImporJogoAtualViaDestino, SalvarJogoAtualNoSalvo, AplicarPenalidadeDeTestarSorte } = ContextoJogos();
+    const [desativaBotoes, setDesativaBotoes] = useState(false);
+
+    const [salvando, setSalvando] = useState(EProcesso._ZERO);
+
+    const [curando, setCurando] = useState(EProcesso._ZERO);
+
+    const navegador = useNavigate();
+
+    const { jogoAtual, ImporJogoAtualViaDestino, SalvarJogoAtualNoSalvo, AplicarPenalidadeDeTestarSorte, AplicarCuraEnergiaECustoProvisao } = ContextoJogos();
 
     const {
         paginaEstado,
@@ -32,13 +40,7 @@ export const ControleDestinos = () => {
 
     const { IniciarMudancaFlipPagina } = ControlePaginaLivroJogo();
 
-    const [desativaBotoes, setDesativaBotoes] = useState(false);
-
-    const [salvando, setSalvando] = useState(EProcesso._ZERO);
-
     const { ValidarAprovacoesDestino } = OperacoesJogoLivro();
-
-    const navegador = useNavigate();
 
     useEffect(() => {
         if (!jogoAtual || !destinoItens || !destinoItens.length || paginaEstado !== EPaginaExecutorEstado.DESTINOS) {
@@ -51,6 +53,7 @@ export const ControleDestinos = () => {
             case EProcesso.INICIANDO:
                 setDesativaBotoes(false);
                 setSalvando(EProcesso._ZERO);
+                setCurando(EProcesso._ZERO);
                 setDestinoProcesso(EProcesso.PROCESSANDO);
                 break;
             case EProcesso.PROCESSANDO:
@@ -76,6 +79,17 @@ export const ControleDestinos = () => {
             }, 2000);
         }
     }, [salvando]);
+
+    useEffect(() => {
+        if (curando === EProcesso.INICIANDO) {
+            setCurando(EProcesso.PROCESSANDO);
+            AplicarCuraEnergiaECustoProvisao();
+            setTimeout(() => {
+                setDesativaBotoes(false);
+                setCurando(EProcesso.CONCLUIDO);
+            }, 2000);
+        }
+    }, [curando]);
 
     useEffect(() => {
         if (destinoProcessoRolagem === EProcesso.INICIANDO) {
@@ -111,13 +125,17 @@ export const ControleDestinos = () => {
         destinoItens,
         destinoDadosRef,
         salvando,
+        curando,
         desativaBotoes,
         ContextosReprovados,
         EhFimDeJogo,
         AoReiniciar,
         AprovarSalvaJogoAtual,
+        DesativarBotaoCurarViaProvisao,
+        TextoBotaoCurarViaProvisao,
         EhSalvamentoAutomatico,
         AoSalvarJogoAtual,
+        AoCurarViaProvisao,
         AoClicarBotaoDestino,
         AoObterDesativaBotao,
         ObterTesteSorteHabilidade,
@@ -150,6 +168,20 @@ export const ControleDestinos = () => {
         return paginaEhJogoCarregado;
     }
 
+    function DesativarBotaoCurarViaProvisao(desativaBotoes: boolean) {
+        return !jogoAtual.panilha || jogoAtual.panilha.provisao === 0 || desativaBotoes;
+    }
+
+    function TextoBotaoCurarViaProvisao() {
+        if (DesativarBotaoCurarViaProvisao(false)) {
+            return "Cura indisponível";
+        } else if (jogoAtual.panilha.provisao === 1) {
+            return "CURAR ( 1 provisão )";
+        } else {
+            return "CURAR ( " + jogoAtual.panilha.provisao.toString() + " provisões )";
+        }
+    }
+
     function EhSalvamentoAutomatico() {
         return jogoAtual.panilha && jogoAtual.panilha.nivel === EJogoNivel._NORMAL;
     }
@@ -157,6 +189,11 @@ export const ControleDestinos = () => {
     function AoSalvarJogoAtual() {
         setDesativaBotoes(true);
         setSalvando(EProcesso.INICIANDO);
+    }
+
+    function AoCurarViaProvisao() {
+        setDesativaBotoes(true);
+        setCurando(EProcesso.INICIANDO);
     }
 
     function AoClicarBotaoDestino(destino: IDestino) {

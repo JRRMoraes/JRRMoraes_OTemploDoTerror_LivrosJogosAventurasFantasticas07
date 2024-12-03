@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ILivro, IAudioExecutor } from "../tipos";
+import { ILivro, IAudioExecutor, IAudioMusica, EAudioMomentoMusica, IAudioEfeito } from "../tipos";
 import { IChildrenProps } from "../uteis";
 import { ContextoBaseLivro } from "../contextos";
 import axios from "axios";
@@ -8,14 +8,19 @@ export const ProvedorLivro = ({ children }: IChildrenProps) => {
     const [livro, setLivro] = useState<ILivro>(null!);
 
     const [audioExecutor, setAudioExecutor] = useState<IAudioExecutor>({
-        audioRef: useRef<HTMLAudioElement>(null),
-        inicializado: false,
         mudo: false,
-        volume: 0.4,
-        musicaAtual: "/The Storyteller.mp3",
-        tipoAtual: "audio/mpeg",
-        loopAtual: true,
+        audioMusicaRef: useRef<HTMLAudioElement>(null),
+        volumeMusica: 0.5,
+        audioEfeitoRef: useRef<HTMLAudioElement>(null),
+        volumeEfeito: 1,
     });
+
+    const [audioMusica, setAudioMusica] = useState<IAudioMusica>({
+        momento: EAudioMomentoMusica._NULO,
+        atual: "",
+    });
+
+    const [audioEfeitos, setAudioEfeitos] = useState<IAudioEfeito[]>([]);
 
     useEffect(() => {
         if (!livro) {
@@ -32,6 +37,10 @@ export const ProvedorLivro = ({ children }: IChildrenProps) => {
                 setLivro,
                 audioExecutor,
                 setAudioExecutor,
+                audioMusica,
+                setAudioMusica,
+                audioEfeitos,
+                setAudioEfeitos,
             }}
         >
             {children}

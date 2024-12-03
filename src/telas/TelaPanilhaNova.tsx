@@ -88,6 +88,7 @@ export const TelaPanilhaNova = () => {
                     type="text"
                     value={nome}
                     onChange={AoAlterarNome}
+                    autoComplete="off"
                 />
             </>
         );

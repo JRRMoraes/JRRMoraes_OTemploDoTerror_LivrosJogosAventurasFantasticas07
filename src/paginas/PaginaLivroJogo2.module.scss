@@ -12,7 +12,7 @@
     align-content: flex-start;
     align-items: flex-start;
     justify-content: center;
-    background-image: url("/fundo_mesa_madeira_bruta.jpg");
+    background-image: url("/imagens/fundo_mesa_madeira_bruta.jpg");
     background-repeat: repeat;
     background-size: 100% auto;
 
@@ -22,7 +22,7 @@
     }
 
     &_campanha {
-        // background: url("/fundo_pergaminho_papel_antigo_5.png");
+        // background: url("/imagens/fundo_pergaminho_papel_antigo_5.png");
         // background-position: center;
         // background-repeat: no-repeat;
         // background-size: 100% 100%;
@@ -39,7 +39,7 @@
         }
     }
     &_panilha {
-        //: url("/fundo_pergaminho_papel_antigo_1.png");
+        //: url("/imagens/fundo_pergaminho_papel_antigo_1.png");
         //background-position: center;
         //background-repeat: no-repeat;
         //background-size: 100% 100%;
@@ -75,7 +75,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: url("/fundo_mesa_madeira_bruta.jpg");
+    background-image: url("/imagens/fundo_mesa_madeira_bruta.jpg");
     background-repeat: repeat-y;
 
     ::-webkit-scrollbar {
@@ -96,7 +96,7 @@
     }
 
     &_fundo {
-        background: url("/fundo_pergaminho_papel_antigo_1.png");
+        background: url("/imagens/fundo_pergaminho_papel_antigo_1.png");
         background-position: center;
         background-repeat: no-repeat;
         background-size: 140% 100%;

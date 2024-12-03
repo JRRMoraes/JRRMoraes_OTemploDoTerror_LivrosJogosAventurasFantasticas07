@@ -16,6 +16,7 @@ export const COR_ENERGIA = "#d32f2f";
 export const COR_ENERGIA_DOTS = "#ffffff";
 export const COR_SORTE = "#800080";
 export const COR_SORTE_DOTS = "#ffffff";
+export const COR_OURO = "#ffd700";
 
 export const MORTE_DANO_JOGADOR = -999;
 export const ATAQUE_DANO_JOGADOR = -2;
@@ -25,3 +26,8 @@ export const SORTE_DERROTA_DANO_JOGADOR = -1;
 export const SORTE_VITORIA_DANO_INIMIGO = -2;
 export const SORTE_DERROTA_CURA_INIMIGO = 1;
 export const SORTE_CUSTO_JOGADOR = -1;
+export const CURAR_CURA_ENERGIA_JOGADOR = 4;
+export const CURAR_CUSTO_PROVISAO_JOGADOR = -1;
+
+export const COMBATE_APROVACAO_DERROTA__SERIE_DE_ATAQUE_EH_MAIOR_OU_IGUAL_A_HABILIDADE = "SerieDeAtaqueEhMaiorOuIgualAHabilidade";
+export const COMBATE_APROVACAO_DERROTA__INIMIGO_COM_SERIE_DE_ATAQUE_VENCIDO_CONSECUTIVO_2 = "InimigoComSerieDeAtaqueVencidoConsecutivo_2";

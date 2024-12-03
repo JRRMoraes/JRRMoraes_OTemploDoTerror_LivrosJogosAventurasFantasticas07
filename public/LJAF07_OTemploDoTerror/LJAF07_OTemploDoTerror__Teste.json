@@ -81,6 +81,11 @@
                             "textoEfeito": "Deu bom, 6 energia mas vai ser 4 na verdade",
                             "atributoEfeito": "ENERGIA",
                             "quantidade": 6
+                        },
+                        {
+                            "textoEfeito": "Ainda ganhou 10 provisões",
+                            "atributoEfeito": "PROVISAO",
+                            "quantidade": 10
                         }
                     ]
                 }
@@ -337,6 +342,7 @@
             "destinos": [
                 {
                     "idPagina": 1,
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Vá para 1."
                 }
             ]
@@ -368,6 +374,7 @@
             "destinos": [
                 {
                     "idPagina": 34,
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Para fazer sua escolha, vá para 34."
                 }
             ]

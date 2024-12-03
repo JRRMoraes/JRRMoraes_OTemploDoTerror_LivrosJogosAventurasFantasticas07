@@ -1,39 +1,91 @@
+import { useEffect } from "react";
 import { ContextoLivro } from "../contextos";
+import { EAudioMomentoMusica } from "../tipos";
 import { Botao } from "./Botao";
 import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
 import VolumeOffOutlinedIcon from "@mui/icons-material/VolumeOffOutlined";
-import { useEffect } from "react";
 
 export const ReprodutorAudio = () => {
-    const { audioExecutor, setAudioExecutor } = ContextoLivro();
+    const { audioExecutor, setAudioExecutor, audioMusica, audioEfeitos, setAudioEfeitos, ImporAudioMusicaViaMomento, ExcluirNoAudioEfeitosPrimeiroItem } = ContextoLivro();
+
+    const AUDIO_TIPO = "audio/mpeg";
 
     useEffect(() => {
-        if (!audioExecutor.audioRef.current) {
+        if (!audioExecutor.audioMusicaRef.current || !audioMusica || audioMusica.momento === EAudioMomentoMusica._NULO) {
             return;
         }
-        if (!audioExecutor.inicializado) {
-            audioExecutor.audioRef.current.play();
-            audioExecutor.inicializado = true;
+        audioExecutor.audioMusicaRef.current.volume = audioExecutor.volumeMusica;
+        TocarMusica();
+
+        async function TocarMusica() {
+            try {
+                if (audioExecutor.audioMusicaRef.current) {
+                    await audioExecutor.audioMusicaRef.current.play();
+                }
+            } catch (_erro) {
+                console.error("Reprodução de áudio da música interrompida:", _erro);
+            }
         }
-        if (!audioExecutor.audioRef.current.played && audioExecutor.inicializado) {
-            audioExecutor.inicializado = false;
+    }, [audioExecutor, audioMusica]);
+
+    useEffect(() => {
+        if (!audioExecutor.audioEfeitoRef.current || !audioEfeitos || !audioEfeitos.length) {
+            return;
         }
-    }, [audioExecutor]);
+        audioExecutor.audioEfeitoRef.current.volume = audioExecutor.volumeEfeito;
+        TocarEfeito();
+
+        async function TocarEfeito() {
+            try {
+                if (audioExecutor.audioEfeitoRef.current && audioEfeitos && audioEfeitos.length) {
+                    await audioExecutor.audioEfeitoRef.current.play();
+                    if (!audioEfeitos[0].tocando) {
+                        setAudioEfeitos((prevAudioEfeitos) => {
+                            prevAudioEfeitos = prevAudioEfeitos.map((efeitoI, indiceI) => {
+                                if (indiceI === 0) {
+                                    efeitoI.tocando = true;
+                                }
+                                return efeitoI;
+                            });
+                            return [...prevAudioEfeitos];
+                        });
+                    }
+                }
+            } catch (_erro) {
+                console.error("Reprodução de áudio do efeito interrompida:", _erro);
+            }
+        }
+    }, [audioExecutor, audioEfeitos]);
 
     return (
         <div>
             {MontarRetorno_Controles()}
             <audio
-                ref={audioExecutor.audioRef}
+                ref={audioExecutor.audioMusicaRef}
                 muted={audioExecutor.mudo}
-                loop={audioExecutor.loopAtual}
-                //autoPlay={true}
+                onEnded={AoTerminarMusica}
+                controls={false}
             >
-                <source
-                    src={audioExecutor.musicaAtual}
-                    type={audioExecutor.tipoAtual}
-                />
-                Seu navegador não suporta o elemento de áudio.
+                {audioMusica && audioMusica.atual && (
+                    <source
+                        src={audioMusica.atual}
+                        type={AUDIO_TIPO}
+                    />
+                )}
+                <span>Seu navegador não suporta o elemento de áudio.</span>
+            </audio>
+            <audio
+                ref={audioExecutor.audioEfeitoRef}
+                muted={audioExecutor.mudo}
+                onEnded={AoTerminarEfeitoSonoro}
+                controls={false}
+            >
+                {audioEfeitos && audioEfeitos[0] && audioEfeitos[0].atual && (
+                    <source
+                        src={audioEfeitos[0].atual}
+                        type={AUDIO_TIPO}
+                    />
+                )}
             </audio>
         </div>
     );
@@ -42,7 +94,7 @@ export const ReprodutorAudio = () => {
         if (audioExecutor.mudo) {
             return (
                 <Botao
-                    aoClicar={OuvirAudio}
+                    aoClicar={AoOuvirAudio}
                     dica="Ouvir música e efeitos sonoros"
                 >
                     <VolumeUpOutlinedIcon />
@@ -51,7 +103,7 @@ export const ReprodutorAudio = () => {
         } else {
             return (
                 <Botao
-                    aoClicar={MutarAudio}
+                    aoClicar={AoMutarAudio}
                     dica="Mudo"
                 >
                     <VolumeOffOutlinedIcon />
@@ -60,16 +112,24 @@ export const ReprodutorAudio = () => {
         }
     }
 
-    function OuvirAudio() {
+    function AoOuvirAudio() {
         setAudioExecutor((prevAudioExecutor) => {
             return { ...prevAudioExecutor, mudo: false };
         });
     }
 
-    function MutarAudio() {
+    function AoMutarAudio() {
         setAudioExecutor((prevAudioExecutor) => {
             return { ...prevAudioExecutor, mudo: true };
         });
+    }
+
+    function AoTerminarMusica() {
+        ImporAudioMusicaViaMomento(audioMusica.momento, true);
+    }
+
+    function AoTerminarEfeitoSonoro() {
+        ExcluirNoAudioEfeitosPrimeiroItem();
     }
 };
 

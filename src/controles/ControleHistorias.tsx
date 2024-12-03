@@ -116,7 +116,6 @@ export const ControleHistorias = () => {
     return {
         historiaTextos,
         historiaEfeitos,
-        historiaImagens,
         velocidade,
         exibeBotao,
         ContextosReprovados,
@@ -125,6 +124,7 @@ export const ControleHistorias = () => {
         AprovarEfeitos,
         PularHistoria,
         FuncaoAoConcluirTexto,
+        ObterImagemDaHistoria,
     };
 
     function ContextosReprovados() {
@@ -171,6 +171,13 @@ export const ControleHistorias = () => {
 
     function FuncaoAoConcluirTexto() {
         ImporHistoriaTextosExeProcessoTexto(historiaIndice, EProcesso.CONCLUIDO);
+    }
+
+    function ObterImagemDaHistoria(indice: number) {
+        if (!historiaImagens || !historiaImagens[indice] || historiaImagens[indice].arquivo === "") {
+            return null;
+        }
+        return historiaImagens[indice];
     }
 };
 

@@ -1,16 +1,16 @@
 import styles from "./TelaCombate.module.scss";
 import { IInimigoExecucao, EPosturaInimigo, EResultadoDados, EResultadoCombate } from "../tipos";
 import { ControleCombate } from "../controles";
-import { BarraEnergia, Botao, NumeroAlteravel } from "../componentes";
-import iconJogadorAtacando from "/Icon.Atacando.6_26.png";
-import iconJogadorDefendendo from "/Icon.Defendendo.1_88.png";
-import iconInimigoAguardando from "/Icon.Aguardando.1_28.png";
-import iconInimigoAtacante from "/Icon.Garras.1_02.png";
-import iconInimigoApoio from "/Icon.ArcoEFecha.4_60.png";
-import iconInimigoMorto from "/Icon.Caixao.4_63.png";
+import { BarraEnergia, BarraEnergiaInimigo, Botao, NumeroAlteravel } from "../componentes";
 import ReactDice from "react-dice-complete";
 import { COR_HABILIDADE, COR_HABILIDADE_DOTS, COR_SORTE, COR_SORTE_DOTS, TEMPO_DADOS_ROLANDO_SEGUNDOS } from "../globais/Constantes";
 import { EProcesso } from "../uteis";
+import iconJogadorAtacando from "/imagens/Icon.Atacando.6_26.png";
+import iconJogadorDefendendo from "/imagens/Icon.Defendendo.1_88.png";
+import iconInimigoAguardando from "/imagens/Icon.Aguardando.1_28.png";
+import iconInimigoAtacante from "/imagens/Icon.Garras.1_02.png";
+import iconInimigoApoio from "/imagens/Icon.ArcoEFecha.4_60.png";
+import iconInimigoMorto from "/imagens/Icon.Caixao.4_63.png";
 
 export const TelaCombate = () => {
     const {
@@ -41,6 +41,7 @@ export const TelaCombate = () => {
         ObterElementoEfeitoEnergiaDoJogadorAliado,
         ObterElementoEfeitoEnergiaDoInimigo,
         MontarElementoCombateAprovacaoDerrota,
+        ExibirSerieDeAtaqueVencidoConsecutivo,
     } = ControleCombate();
 
     if (ContextosReprovados()) {
@@ -210,8 +211,12 @@ export const TelaCombate = () => {
         let _icone = "";
         let _alt = "";
         let _total = "?";
+        let _serieDeAtaqueVencidoConsecutivo = <></>;
         if ([EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(combateInimigos_ProcessoRolagemAtaque[inimigo.exeIdInimigo])) {
             _total = inimigo.exeRolagemTotalInimigo.toString();
+        }
+        if (ExibirSerieDeAtaqueVencidoConsecutivo(inimigo)) {
+            _serieDeAtaqueVencidoConsecutivo = <span>{"Série de ataques consecutivos vencidos: " + inimigo.exeSerieDeAtaqueVencidoConsecutivo}</span>;
         }
         switch (combateInimigos_PosturaInimigo[inimigo.exeIdInimigo]) {
             case EPosturaInimigo.MORTO:
@@ -257,7 +262,8 @@ export const TelaCombate = () => {
                                     <span>{"/"}</span>
                                     <span>{inimigo.energia}</span>
                                 </div>
-                                {BarraEnergia(inimigo.exeEnergiaAtual, inimigo.energia)}
+                                {BarraEnergiaInimigo(inimigo.exeEnergiaAtual, inimigo.energia)}
+                                {_serieDeAtaqueVencidoConsecutivo}
                             </div>
                             <div className={styles.combate_lados}>
                                 <div className={styles.combate_esquerda + " " + styles.combate_infos}>
@@ -333,7 +339,120 @@ export const TelaCombate = () => {
 
     function MontarRetorno_BotaoRolarCombate(inimigo: IInimigoExecucao) {
         if (AprovarBotaoRolarCombate(inimigo)) {
-            return <Botao aoClicar={AoRolarCombate(inimigo)}>{"COMBATER!!!"}</Botao>;
+            let _estiloJogador = styles.combate_arena_versus_lado + " " + styles.combate_esquerda + " ";
+            let _iconeJogador = "";
+            let _altJogador = "";
+            let _totalJogador = "?";
+            let _estiloInimigo = styles.combate_arena_versus_lado + " " + styles.combate_direita + " ";
+            let _iconeInimigo = "";
+            let _altInimigo = "";
+            let _totalInimigo = "?";
+            if ([EProcesso.CONCLUIDO, EProcesso.DESTRUIDO].includes(combateInimigos_ProcessoRolagemAtaque[inimigo.exeIdInimigo])) {
+                _totalJogador = inimigo.exeRolagemTotalJogador.toString();
+                _totalInimigo = inimigo.exeRolagemTotalInimigo.toString();
+            }
+            switch (combateInimigos_PosturaInimigo[inimigo.exeIdInimigo]) {
+                case EPosturaInimigo.APOIO:
+                    _estiloJogador += styles.combate_apoio;
+                    _iconeJogador = iconJogadorDefendendo;
+                    _altJogador = "Jogador Defendendo";
+                    _estiloInimigo += styles.combate_apoio;
+                    _iconeInimigo = iconInimigoApoio;
+                    _altInimigo = "Inimigo Apoiando";
+                    break;
+                case EPosturaInimigo.ATACANTE:
+                    _estiloJogador += styles.combate_atacando;
+                    _iconeJogador = iconJogadorAtacando;
+                    _altJogador = "Jogador Atacando";
+                    _estiloInimigo += styles.combate_atacando;
+                    _iconeInimigo = iconInimigoAtacante;
+                    _altInimigo = "Inimigo Atacante";
+                    break;
+            }
+            let _tamanhoJogador = 64;
+            let _tamanhoInimigo = 64;
+            if (inimigo.exeRolagemResultadoAtaque === EResultadoDados.VITORIA) {
+                _tamanhoJogador = 80;
+                _tamanhoInimigo = 48;
+            } else if (inimigo.exeRolagemResultadoAtaque === EResultadoDados.DERROTA) {
+                _tamanhoJogador = 48;
+                _tamanhoInimigo = 80;
+            }
+
+            return (
+                <Botao aoClicar={AoRolarCombate(inimigo)}>
+                    <div className={styles.combate_lados}>
+                        <div className={styles.combate_esquerda}>
+                            <div className={styles.combate_esquerda + " " + styles.combate_infos}>
+                                <div className={styles.combate_linhaUnica}>
+                                    <span>{"Habilidade:"}</span>
+                                    <span className={styles.combate_arena_numeroAtual}>{ObterJogadorOuAliado().habilidade}</span>
+                                </div>
+                                <div>
+                                    <span>{"+"}</span>
+                                    <ReactDice
+                                        numDice={2}
+                                        ref={combateDadosJogadorRef[inimigo.exeIdInimigo]}
+                                        rollDone={AoConcluirRolarCombateJogador(inimigo)}
+                                        faceColor={COR_HABILIDADE}
+                                        dotColor={COR_HABILIDADE_DOTS}
+                                        defaultRoll={1}
+                                        disableIndividual={true}
+                                        rollTime={TEMPO_DADOS_ROLANDO_SEGUNDOS}
+                                    />
+                                </div>
+                            </div>
+                            <div className={styles.combate_direita + " " + styles.combate_infos}>
+                                <h4 className={styles.combate_linhaUnica}>
+                                    <span>{"="}</span>
+                                    <span>{_totalJogador}</span>
+                                    <span>{"="}</span>
+                                </h4>
+                                <img
+                                    src={_iconeJogador}
+                                    alt={_altJogador}
+                                    height={_tamanhoJogador}
+                                    width={_tamanhoJogador}
+                                />
+                            </div>
+                        </div>
+                        <div className={styles.combate_direita}>
+                            <div className={styles.combate_esquerda + " " + styles.combate_infos}>
+                                <h4 className={styles.combate_linhaUnica}>
+                                    <span>{"="}</span>
+                                    <span>{_totalInimigo}</span>
+                                    <span>{"="}</span>
+                                </h4>
+                                <img
+                                    src={_iconeInimigo}
+                                    alt={_altInimigo}
+                                    height={_tamanhoInimigo}
+                                    width={_tamanhoInimigo}
+                                />
+                            </div>
+                            <div className={styles.combate_direita + " " + styles.combate_infos}>
+                                <div className={styles.combate_linhaUnica}>
+                                    <span>{"Habilidade:"}</span>
+                                    <span className={styles.combate_arena_numeroAtual}>{inimigo.habilidade}</span>
+                                </div>
+                                <div>
+                                    <span>{"+"}</span>
+                                    <ReactDice
+                                        numDice={2}
+                                        ref={combateDadosInimigoRef[inimigo.exeIdInimigo]}
+                                        rollDone={AoConcluirRolarCombateInimigo(inimigo)}
+                                        faceColor={"#ff0000"}
+                                        dotColor={"#ffffff"}
+                                        defaultRoll={1}
+                                        disableIndividual={true}
+                                        rollTime={TEMPO_DADOS_ROLANDO_SEGUNDOS}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Botao>
+            );
         } else {
             return <></>;
         }

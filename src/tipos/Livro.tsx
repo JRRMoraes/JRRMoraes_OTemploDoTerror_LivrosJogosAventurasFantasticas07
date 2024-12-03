@@ -4,6 +4,8 @@ import { ECampanhaCapitulo } from "./Jogo";
 import {
     ATAQUE_DANO_INIMIGO,
     ATAQUE_DANO_JOGADOR,
+    CURAR_CURA_ENERGIA_JOGADOR,
+    CURAR_CUSTO_PROVISAO_JOGADOR,
     MORTE_DANO_JOGADOR,
     SORTE_CUSTO_JOGADOR,
     SORTE_DERROTA_CURA_INIMIGO,
@@ -66,23 +68,56 @@ export function ObterEfeitosExecucaoDeEnergia(idEfeito: number, texto: string, q
 }
 
 export function EFEITO_MORTE_NO_JOGADOR(): IEfeitoExecucao[] {
-    return ObterEfeitosExecucaoDeEnergia(99100, "MORTE!!!", MORTE_DANO_JOGADOR);
+    return ObterEfeitosExecucaoDeEnergia(99000, "MORTE!!!", MORTE_DANO_JOGADOR);
 }
 
 export function EFEITO_ATAQUE_NO_JOGADOR(): IEfeitoExecucao[] {
-    return ObterEfeitosExecucaoDeEnergia(99101, "ATAQUE!!!", ATAQUE_DANO_JOGADOR);
+    return ObterEfeitosExecucaoDeEnergia(99001, "ATAQUE!!!", ATAQUE_DANO_JOGADOR);
 }
 
 export function EFEITO_SORTE_VITORIA_EM_DEFESA_DO_JOGADOR(): IEfeitoExecucao[] {
-    return ObterEfeitosExecucaoDeEnergia(99102, "SORTE!!!", SORTE_VITORIA_CURA_JOGADOR);
+    return ObterEfeitosExecucaoDeEnergia(99002, "SORTE!!!", SORTE_VITORIA_CURA_JOGADOR);
 }
 
 export function EFEITO_SORTE_DERROTA_EM_DEFESA_DO_JOGADOR(): IEfeitoExecucao[] {
-    return ObterEfeitosExecucaoDeEnergia(99103, "AZAR!!!", SORTE_DERROTA_DANO_JOGADOR);
+    return ObterEfeitosExecucaoDeEnergia(99003, "AZAR!!!", SORTE_DERROTA_DANO_JOGADOR);
 }
 
 export function EFEITO_SORTE_CUSTO_NO_JOGADOR(): IEfeitoExecucao[] {
-    return ObterEfeitosExecucaoDeEnergia(99200, "CUSTO DA SORTE", SORTE_CUSTO_JOGADOR);
+    return [
+        {
+            atributoEfeito: EAtributo.SORTE,
+            textoEfeito: "CUSTO DA SORTE",
+            nomeEfeito: "",
+            quantidade: SORTE_CUSTO_JOGADOR,
+            exeProcessoEfeito: EProcesso._ZERO,
+            exeIdEfeito: 99004,
+        },
+    ];
+}
+
+export function EFEITOS_CURA_VIA_PROVISAO_NO_JOGADOR(provisao: number): IEfeitoExecucao[] {
+    if (provisao <= 0) {
+        return [];
+    }
+    return [
+        {
+            atributoEfeito: EAtributo.ENERGIA,
+            textoEfeito: "CURANDO",
+            nomeEfeito: "",
+            quantidade: CURAR_CURA_ENERGIA_JOGADOR,
+            exeProcessoEfeito: EProcesso._ZERO,
+            exeIdEfeito: 99100 + provisao,
+        },
+        {
+            atributoEfeito: EAtributo.PROVISAO,
+            textoEfeito: "CUSTO DA CURA",
+            nomeEfeito: "",
+            quantidade: CURAR_CUSTO_PROVISAO_JOGADOR,
+            exeProcessoEfeito: EProcesso._ZERO,
+            exeIdEfeito: 99150 + provisao,
+        },
+    ];
 }
 
 export function ObterEfeitosInimigoExecucaoDeEnergia(idEfeito: number, idInimigo: number, texto: string, quantidade: number): IEfeitoInimigoExecucao[] {
@@ -131,6 +166,11 @@ export interface IHistoriaTextoExecucao {
 export interface IHistoriaEfeitoExecucao {
     efeitos: IEfeitoExecucao[];
     exeProcessoEfeito: EProcesso;
+}
+
+export interface IHistoriaImagemExecucao {
+    imagem: string;
+    arquivo: string;
 }
 
 export enum EPosturaInimigo {
@@ -283,11 +323,39 @@ export enum EPaginaExecutorEstado {
 }
 
 export interface IAudioExecutor {
-    audioRef: RefObject<HTMLAudioElement>;
-    inicializado: boolean;
     mudo: boolean;
-    volume: number;
-    musicaAtual: string;
-    tipoAtual: string;
-    loopAtual: boolean;
+    audioMusicaRef: RefObject<HTMLAudioElement>;
+    volumeMusica: number;
+    audioEfeitoRef: RefObject<HTMLAudioElement>;
+    volumeEfeito: number;
+}
+
+export interface IAudioMusica {
+    momento: EAudioMomentoMusica;
+    atual: string;
+}
+
+export interface IAudioEfeito {
+    momento: EAudioMomentoEfeitoSonoro;
+    atual: string;
+    tocando: boolean;
+}
+
+export enum EAudioMomentoMusica {
+    _NULO,
+    ABERTURA,
+    CAMPANHA,
+    COMBATE,
+    VITORIA_COMBATE,
+    VITORIA_JOGO,
+    DERROTA_COMBATE,
+    DERROTA_JOGO,
+}
+
+export enum EAudioMomentoEfeitoSonoro {
+    ROLANDO_DADOS,
+    MUDANDO_PAGINA,
+    VITORIA_SOBRE_INIMIGO,
+    VITORIA_SOBRE_SERIE_ATAQUE,
+    DERROTA_SOBRE_SERIE_ATAQUE,
 }

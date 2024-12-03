@@ -5,6 +5,7 @@ import {
     EPaginaExecutorEstado,
     IHistoriaTextoExecucao,
     IHistoriaEfeitoExecucao,
+    IHistoriaImagemExecucao,
     IEfeitoExecucao,
     IEfeitoInimigoExecucao,
     IInimigoExecucao,
@@ -29,7 +30,7 @@ export const ProvedorPagina = ({ children }: IChildrenProps) => {
 
     const [historiaTextos, setHistoriaTextos] = useState<IHistoriaTextoExecucao[]>([]);
     const [historiaEfeitos, setHistoriaEfeitos] = useState<IHistoriaEfeitoExecucao[]>([]);
-    const [historiaImagens, setHistoriaImagens] = useState<string[]>([]);
+    const [historiaImagens, setHistoriaImagens] = useState<IHistoriaImagemExecucao[]>([]);
     const [historiaProcesso, setHistoriaProcesso] = useState<EProcesso>(EProcesso._ZERO);
     const [historiaIndice, setHistoriaIndice] = useState(0);
     const [historiaProcessoIndice, setHistoriaProcessoIndice] = useState<EProcesso>(EProcesso._ZERO);

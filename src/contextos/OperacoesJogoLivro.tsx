@@ -2,6 +2,7 @@ import styles from "../telas/TelaCombate.module.scss";
 import { ContextoJogos, ContextoPagina } from ".";
 import { IAprovacaoDestino, EAtributo, EComparacao, EResultadoCombate, EPosturaInimigo } from "../tipos";
 import { TextosIguais } from "../uteis";
+import { COMBATE_APROVACAO_DERROTA__INIMIGO_COM_SERIE_DE_ATAQUE_VENCIDO_CONSECUTIVO_2, COMBATE_APROVACAO_DERROTA__SERIE_DE_ATAQUE_EH_MAIOR_OU_IGUAL_A_HABILIDADE } from "../globais/Constantes";
 
 export const OperacoesJogoLivro = () => {
     const { jogoAtual } = ContextoJogos();
@@ -13,6 +14,7 @@ export const OperacoesJogoLivro = () => {
         AvaliarResultadoCombateDoCombateExecutorProcessoIniciando,
         AvaliarResultadoCombateDoCombateExecutorProcessoDestruido,
         MontarElementoCombateAprovacaoDerrota,
+        AprovarExibicaoDeSerieDeAtaqueVencidoConsecutivo,
     };
 
     function ValidarAprovacoesDestino(aprovacoes: IAprovacaoDestino[]) {
@@ -103,7 +105,7 @@ export const OperacoesJogoLivro = () => {
 
     function AvaliarResultadoCombateDoCombateExecutorProcessoIniciando(): EResultadoCombate {
         switch (combateAprovacaoDerrota.toLowerCase()) {
-            case "SerieDeAtaqueEhMaiorOuIgualAHabilidade".toLowerCase():
+            case COMBATE_APROVACAO_DERROTA__SERIE_DE_ATAQUE_EH_MAIOR_OU_IGUAL_A_HABILIDADE.toLowerCase():
                 if (combateSerieDeAtaqueAtual >= jogoAtual.panilha.habilidade) {
                     setCombateResultadoFinalDerrota(EResultadoCombate.DERROTA);
                     return EResultadoCombate.DERROTA;
@@ -123,7 +125,7 @@ export const OperacoesJogoLivro = () => {
             return EResultadoCombate.VITORIA;
         }
         switch (combateAprovacaoDerrota.toLowerCase()) {
-            case "InimigoComSerieDeAtaqueVencidoConsecutivo_2".toLowerCase():
+            case COMBATE_APROVACAO_DERROTA__INIMIGO_COM_SERIE_DE_ATAQUE_VENCIDO_CONSECUTIVO_2.toLowerCase():
                 if (combateInimigos.find((inimigoI) => inimigoI.exeSerieDeAtaqueVencidoConsecutivo >= 2)) {
                     setCombateResultadoFinalDerrota(EResultadoCombate.DERROTA);
                     return EResultadoCombate.DERROTA;
@@ -135,7 +137,7 @@ export const OperacoesJogoLivro = () => {
 
     function MontarElementoCombateAprovacaoDerrota() {
         switch (combateAprovacaoDerrota.toLowerCase()) {
-            case "SerieDeAtaqueEhMaiorOuIgualAHabilidade".toLowerCase():
+            case COMBATE_APROVACAO_DERROTA__SERIE_DE_ATAQUE_EH_MAIOR_OU_IGUAL_A_HABILIDADE.toLowerCase():
                 return (
                     <div className={styles.combate_derrota_operacoesJogoLivro + " " + styles.combate_linhaUnica}>
                         <span>{"[ Série de ataque"}</span>
@@ -148,6 +150,10 @@ export const OperacoesJogoLivro = () => {
             default:
                 return <></>;
         }
+    }
+
+    function AprovarExibicaoDeSerieDeAtaqueVencidoConsecutivo() {
+        return combateAprovacaoDerrota && combateAprovacaoDerrota.toLowerCase() === COMBATE_APROVACAO_DERROTA__INIMIGO_COM_SERIE_DE_ATAQUE_VENCIDO_CONSECUTIVO_2.toLowerCase();
     }
 };
 

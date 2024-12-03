@@ -1,6 +1,6 @@
 import styles from "../telas/TelaCombate.module.scss";
 import { useEffect } from "react";
-import { ContextoJogos, ContextoPagina, OperacoesJogoLivro } from "../contextos";
+import { ContextoLivro, ContextoJogos, ContextoPagina, OperacoesJogoLivro } from "../contextos";
 import {
     EPaginaExecutorEstado,
     EResultadoCombate,
@@ -17,11 +17,15 @@ import {
     EFEITO_SORTE_DERROTA_EM_DEFESA_DO_JOGADOR,
     EAtributo,
     IEfeito,
+    EAudioMomentoEfeitoSonoro,
+    EAudioMomentoMusica,
 } from "../tipos";
 import { EProcesso, FormatarNumberInteiro } from "../uteis";
 import { TEMPO_DADOS_RESULTADO_MILESIMOS } from "../globais/Constantes";
 
 export const ControleCombate = () => {
+    const { ImporAudioMusicaViaMomento, AdicionarNoAudioEfeitosViaMomento } = ContextoLivro();
+
     const { jogoAtual, AdicionarEmJogadorEfeitosAplicados, AplicarPenalidadeDeTestarSorte } = ContextoJogos();
 
     const {
@@ -59,7 +63,12 @@ export const ControleCombate = () => {
         ImporCombateInimigosExeSerieDeAtaqueVencidoConsecutivo,
     } = ContextoPagina();
 
-    const { AvaliarResultadoCombateDoCombateExecutorProcessoIniciando, AvaliarResultadoCombateDoCombateExecutorProcessoDestruido, MontarElementoCombateAprovacaoDerrota } = OperacoesJogoLivro();
+    const {
+        AvaliarResultadoCombateDoCombateExecutorProcessoIniciando,
+        AvaliarResultadoCombateDoCombateExecutorProcessoDestruido,
+        MontarElementoCombateAprovacaoDerrota,
+        AprovarExibicaoDeSerieDeAtaqueVencidoConsecutivo,
+    } = OperacoesJogoLivro();
 
     let _unicoSetCombateSerieDeAtaqueAtual: boolean = true;
 
@@ -96,10 +105,12 @@ export const ControleCombate = () => {
             case EProcesso.INICIANDO:
                 switch (AvaliarResultadoCombateDoCombateExecutorProcessoIniciando()) {
                     case EResultadoCombate.VITORIA:
+                        ImporAudioMusicaViaMomento(EAudioMomentoMusica.VITORIA_COMBATE);
                         setCombateProcessoSerieDeAtaque(EProcesso.DESTRUIDO);
                         setCombateProcesso(EProcesso.CONCLUIDO);
                         break;
                     case EResultadoCombate.DERROTA:
+                        ImporAudioMusicaViaMomento(EAudioMomentoMusica.DERROTA_COMBATE);
                         AplicarEfeitoDerrota();
                         setCombateProcessoSerieDeAtaque(EProcesso.DESTRUIDO);
                         setCombateProcesso(EProcesso.CONCLUIDO);
@@ -113,9 +124,11 @@ export const ControleCombate = () => {
             case EProcesso.DESTRUIDO:
                 switch (AvaliarResultadoCombateDoCombateExecutorProcessoDestruido()) {
                     case EResultadoCombate.VITORIA:
+                        ImporAudioMusicaViaMomento(EAudioMomentoMusica.VITORIA_COMBATE);
                         setCombateProcesso(EProcesso.CONCLUIDO);
                         break;
                     case EResultadoCombate.DERROTA:
+                        ImporAudioMusicaViaMomento(EAudioMomentoMusica.DERROTA_COMBATE);
                         AplicarEfeitoDerrota();
                         setCombateProcesso(EProcesso.CONCLUIDO);
                         break;
@@ -143,6 +156,7 @@ export const ControleCombate = () => {
         //// Descobrir se inimigo está morto
         let _indiceIdInimigo = combateInimigos.findIndex((inimigoI) => inimigoI.exeEnergiaAtual === 0 && combateInimigos_PosturaInimigo[inimigoI.exeIdInimigo] !== EPosturaInimigo.MORTO);
         if (_indiceIdInimigo >= 0) {
+            AdicionarNoAudioEfeitosViaMomento(EAudioMomentoEfeitoSonoro.VITORIA_SOBRE_INIMIGO);
             ImporCombateInimigos_PosturaInimigo(_indiceIdInimigo, EPosturaInimigo.MORTO);
             ImporCombateInimigos_ProcessoRolagemAtaque(_indiceIdInimigo, EProcesso.DESTRUIDO);
             ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(_indiceIdInimigo, EProcesso.DESTRUIDO);
@@ -178,10 +192,12 @@ export const ControleCombate = () => {
         if (_indiceIdInimigo >= 0 && combateInimigos[_indiceIdInimigo]) {
             ImporCombateInimigos_ProcessoRolagemAtaque(_indiceIdInimigo, EProcesso.DESTRUIDO);
             if ((combateInimigos[_indiceIdInimigo].exeRolagemResultadoAtaque = EResultadoDados.VITORIA)) {
+                AdicionarNoAudioEfeitosViaMomento(EAudioMomentoEfeitoSonoro.VITORIA_SOBRE_SERIE_ATAQUE);
                 AdicionarEmCombateInimigosEfeitosAplicados(EFEITO_ATAQUE_NO_INIMIGO(_indiceIdInimigo));
                 ImporCombateInimigosExeSerieDeAtaqueVencidoConsecutivo(_indiceIdInimigo, false);
                 ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(_indiceIdInimigo, EProcesso.INICIANDO);
             } else if ((combateInimigos[_indiceIdInimigo].exeRolagemResultadoAtaque = EResultadoDados.DERROTA)) {
+                AdicionarNoAudioEfeitosViaMomento(EAudioMomentoEfeitoSonoro.DERROTA_SOBRE_SERIE_ATAQUE);
                 AdicionarEmCombateAliadosEfeitosAplicados(EFEITO_ATAQUE_NO_JOGADOR());
                 ImporCombateInimigosExeSerieDeAtaqueVencidoConsecutivo(_indiceIdInimigo, true);
                 ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(_indiceIdInimigo, EProcesso.INICIANDO);
@@ -280,6 +296,7 @@ export const ControleCombate = () => {
         ObterElementoEfeitoEnergiaDoJogadorAliado,
         ObterElementoEfeitoEnergiaDoInimigo,
         MontarElementoCombateAprovacaoDerrota,
+        ExibirSerieDeAtaqueVencidoConsecutivo,
     };
 
     function ContextosReprovados() {
@@ -371,6 +388,7 @@ export const ControleCombate = () => {
 
     function AoRolarCombate(inimigo: IInimigoExecucao) {
         const _aoClicar = () => {
+            AdicionarNoAudioEfeitosViaMomento(EAudioMomentoEfeitoSonoro.ROLANDO_DADOS);
             combateDadosJogadorRef[inimigo.exeIdInimigo]?.current?.rollAll();
             combateDadosInimigoRef[inimigo.exeIdInimigo]?.current?.rollAll();
             ImporCombateInimigos_ProcessoRolagemAtaque(inimigo.exeIdInimigo, EProcesso.PROCESSANDO);
@@ -383,6 +401,7 @@ export const ControleCombate = () => {
 
     function AoTestarSorte(inimigo: IInimigoExecucao) {
         const _aoClicar = () => {
+            AdicionarNoAudioEfeitosViaMomento(EAudioMomentoEfeitoSonoro.ROLANDO_DADOS);
             combateDadosSorteRef[inimigo.exeIdInimigo]?.current?.rollAll();
             ImporCombateInimigos_ProcessoRolagemSorteConfirmacao(inimigo.exeIdInimigo, EProcesso.PROCESSANDO);
             setTimeout(() => {
@@ -506,6 +525,14 @@ export const ControleCombate = () => {
             }
         }
         return _estilo;
+    }
+
+    function ExibirSerieDeAtaqueVencidoConsecutivo(inimigo: IInimigoExecucao) {
+        return (
+            AprovarExibicaoDeSerieDeAtaqueVencidoConsecutivo() &&
+            combateProcessoSerieDeAtaque === EProcesso.PROCESSANDO &&
+            [EPosturaInimigo.ATACANTE, EPosturaInimigo.APOIO].includes(combateInimigos_PosturaInimigo[inimigo.exeIdInimigo])
+        );
     }
 };
 

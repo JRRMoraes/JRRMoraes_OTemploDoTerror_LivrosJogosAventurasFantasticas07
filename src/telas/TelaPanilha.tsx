@@ -1,7 +1,7 @@
 import styles from "./TelaPanilha.module.scss";
 import "../globais/CoresHES.scss";
 import { ControlePanilha, EPanilhaFormato } from "../controles";
-import { BarraEnergia, Botao, NumeroAlteravel } from "../componentes";
+import { BarraEnergia, BarraHabilidade, BarraSorte, Botao, NumeroAlteravel } from "../componentes";
 
 export const TelaPanilha = () => {
     const {
@@ -99,13 +99,20 @@ export const TelaPanilha = () => {
     }
 
     function MontarRetorno_Habilidade() {
+        let _barraHabilidade = <></>;
+        if (completo) {
+            _barraHabilidade = <div className={styles.panilha_tabulacao}>{BarraHabilidade(jogoAtual.panilha.habilidade, jogoAtual.panilha.habilidadeInicial)}</div>;
+        }
         return (
             <td className="coresHES_habilidade">
-                <span className={styles.panilha_titulo}>{"Habilidade:   "}</span>
-                {ObterElementoEfeitoHabilidade()}
-                <NumeroAlteravel numeroAtual={jogoAtual.panilha.habilidade} />
-                <span className={styles.panilha_fonteNormal}>{" / "}</span>
-                <span>{jogoAtual.panilha.habilidadeInicial}</span>
+                <div>
+                    <span className={styles.panilha_titulo}>{"Habilidade:   "}</span>
+                    {ObterElementoEfeitoHabilidade()}
+                    <NumeroAlteravel numeroAtual={jogoAtual.panilha.habilidade} />
+                    <span className={styles.panilha_fonteNormal}>{" / "}</span>
+                    <span>{jogoAtual.panilha.habilidadeInicial}</span>
+                </div>
+                {_barraHabilidade}
             </td>
         );
     }
@@ -130,13 +137,20 @@ export const TelaPanilha = () => {
     }
 
     function MontarRetorno_Sorte() {
+        let _barraSorte = <></>;
+        if (completo) {
+            _barraSorte = <div className={styles.panilha_tabulacao}>{BarraSorte(jogoAtual.panilha.sorte, jogoAtual.panilha.sorteInicial)}</div>;
+        }
         return (
             <td className="coresHES_sorte">
-                <span className={styles.panilha_titulo}>{"Sorte:   "}</span>
-                {ObterElementoEfeitoSorte()}
-                <NumeroAlteravel numeroAtual={jogoAtual.panilha.sorte} />
-                <span className={styles.panilha_fonteNormal}>{" / "}</span>
-                <span>{jogoAtual.panilha.sorteInicial}</span>
+                <div>
+                    <span className={styles.panilha_titulo}>{"Sorte:   "}</span>
+                    {ObterElementoEfeitoSorte()}
+                    <NumeroAlteravel numeroAtual={jogoAtual.panilha.sorte} />
+                    <span className={styles.panilha_fonteNormal}>{" / "}</span>
+                    <span>{jogoAtual.panilha.sorteInicial}</span>
+                </div>
+                {_barraSorte}
             </td>
         );
     }

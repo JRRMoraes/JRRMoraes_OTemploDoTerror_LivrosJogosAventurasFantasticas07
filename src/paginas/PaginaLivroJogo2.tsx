@@ -95,7 +95,7 @@ export const PaginaLivroJogo2 = () => {
         return (
             <img
                 className={styles.livroJogo_Desktop_capa}
-                src={CaminhoImagem("Capa.png")}
+                src={CaminhoImagem("Capa")}
                 alt=""
                 height={parentFlipBookDimensoes.height}
                 width={parentFlipBookDimensoes.width / 2}

@@ -47,14 +47,12 @@
             "destinos": [
                 {
                     "idPagina": 2,
-                    "textoDestino": "Role os dados primeiro para continuar o jogo >>",
-                    "aprovacoes": [
-                        {
-                            "atributoAprovacao": "FUNCAO",
-                            "nomeAprovacao": "JogoAtual_Panilha",
-                            "comparacao": "POSSUIR"
-                        }
-                    ]
+                    "textoDestino": "Próximo >>"
+                },
+                {
+                    "idPagina": 1,
+                    "idCapitulo": "PAGINAS_CAMPANHA",
+                    "textoDestino": "Pule as introduções, jogar imediatamente >>"
                 }
             ]
         },
@@ -313,6 +311,7 @@
             "destinos": [
                 {
                     "idPagina": 1,
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Vá para 1."
                 }
             ]
@@ -342,6 +341,7 @@
             "destinos": [
                 {
                     "idPagina": 34,
+                    "idCapitulo": "PAGINAS_CAMPANHA",
                     "textoDestino": "Para fazer sua escolha, vá para 34."
                 }
             ]

@@ -1,0 +1,9 @@
+.barraAtributo {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: calc(24px * 12);
+
+    &_direita {
+        align-items: flex-end;
+    }
+}

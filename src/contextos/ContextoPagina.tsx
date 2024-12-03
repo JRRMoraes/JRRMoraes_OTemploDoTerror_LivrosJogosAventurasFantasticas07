@@ -15,13 +15,15 @@ import {
     IPagina,
     EResultadoDados,
     IEfeitoInimigoExecucao,
+    EAudioMomentoMusica,
+    IHistoriaImagemExecucao,
 } from "../tipos";
 import { EProcesso } from "../uteis";
 import { TEMPO_ANIMACAO_NORMAL } from "../globais/Constantes";
 import { ContextoBasePagina, ContextoJogos, ContextoLivro } from ".";
 
 export const ContextoPagina = () => {
-    const { livro, ObterPagina } = ContextoLivro();
+    const { livro, ObterPagina, CaminhoImagem, ImporAudioMusicaViaMomento, AdicionarNoAudioEfeitosViaMomento } = ContextoLivro();
 
     const { jogoAtual, padraoCapitulo, AdicionarEmJogadorEfeitosAplicados, ObterJogadorEfeitosAplicadosDoAtributo } = ContextoJogos();
 
@@ -338,7 +340,16 @@ export const ContextoPagina = () => {
                     exeProcessoEfeito: EProcesso._ZERO,
                 }))
             );
-            setHistoriaImagens(novaPagina.historias.map<string>((historiaI) => historiaI.imagem));
+            setHistoriaImagens(
+                novaPagina.historias.map<IHistoriaImagemExecucao>((historiaI) => {
+                    const _historiaImagemExecucao: IHistoriaImagemExecucao = { imagem: "", arquivo: "" };
+                    if (historiaI.imagem && historiaI.imagem !== "") {
+                        _historiaImagemExecucao.imagem = historiaI.imagem;
+                        _historiaImagemExecucao.arquivo = CaminhoImagem(historiaI.imagem);
+                    }
+                    return _historiaImagemExecucao;
+                })
+            );
         }
         setHistoriaProcesso(EProcesso._ZERO);
         setHistoriaProcessoIndice(EProcesso._ZERO);
@@ -413,6 +424,12 @@ export const ContextoPagina = () => {
         setDestinoProcessoRolagem(EProcesso._ZERO);
         setDestinoRolagemTotal(0);
         setDestinoRolagemDestino(null!);
+        if (novaPagina.combate && novaPagina.combate.inimigos && novaPagina.combate.inimigos.length) {
+            ImporAudioMusicaViaMomento(EAudioMomentoMusica.COMBATE);
+        } else {
+            ImporAudioMusicaViaMomento(EAudioMomentoMusica.CAMPANHA);
+        }
+        console.log(novaPagina);
     }
 
     function AtualizarCombateExecutorNoProcessoInicial() {

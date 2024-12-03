@@ -5,6 +5,7 @@ import {
     EPaginaExecutorEstado,
     IHistoriaTextoExecucao,
     IHistoriaEfeitoExecucao,
+    IHistoriaImagemExecucao,
     IEfeitoExecucao,
     IEfeitoInimigoExecucao,
     IInimigoExecucao,
@@ -32,8 +33,8 @@ export type TContextoBasePagina = {
     setHistoriaTextos: Dispatch<SetStateAction<IHistoriaTextoExecucao[]>>;
     historiaEfeitos: IHistoriaEfeitoExecucao[];
     setHistoriaEfeitos: Dispatch<SetStateAction<IHistoriaEfeitoExecucao[]>>;
-    historiaImagens: string[];
-    setHistoriaImagens: Dispatch<SetStateAction<string[]>>;
+    historiaImagens: IHistoriaImagemExecucao[];
+    setHistoriaImagens: Dispatch<SetStateAction<IHistoriaImagemExecucao[]>>;
     historiaProcesso: EProcesso;
     setHistoriaProcesso: Dispatch<SetStateAction<EProcesso>>;
     historiaIndice: number;

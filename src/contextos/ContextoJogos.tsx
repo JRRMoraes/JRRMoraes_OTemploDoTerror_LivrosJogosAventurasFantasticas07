@@ -14,6 +14,7 @@ import {
     RetornarPanilhaItensAtualizados,
     IEfeito,
     EFEITO_SORTE_CUSTO_NO_JOGADOR,
+    EFEITOS_CURA_VIA_PROVISAO_NO_JOGADOR,
 } from "../tipos";
 import { EProcesso } from "../uteis";
 import { ContextoBaseJogos } from ".";
@@ -96,6 +97,7 @@ export const ContextoJogos = () => {
         AdicionarEmJogadorEfeitosAplicados,
         ObterJogadorEfeitosAplicadosDoAtributo,
         AplicarPenalidadeDeTestarSorte,
+        AplicarCuraEnergiaECustoProvisao,
     };
 
     function ResetarJogo() {
@@ -270,6 +272,10 @@ export const ContextoJogos = () => {
 
     function AplicarPenalidadeDeTestarSorte() {
         AdicionarEmJogadorEfeitosAplicados(EFEITO_SORTE_CUSTO_NO_JOGADOR());
+    }
+
+    function AplicarCuraEnergiaECustoProvisao() {
+        AdicionarEmJogadorEfeitosAplicados(EFEITOS_CURA_VIA_PROVISAO_NO_JOGADOR(jogoAtual.panilha.provisao));
     }
 };
 

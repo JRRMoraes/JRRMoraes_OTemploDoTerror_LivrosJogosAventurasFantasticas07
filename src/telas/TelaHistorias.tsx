@@ -7,7 +7,6 @@ export const TelaHistorias = () => {
     const {
         historiaTextos,
         historiaEfeitos,
-        historiaImagens,
         velocidade,
         ContextosReprovados,
         AprovarExeProcessoHistoria,
@@ -15,6 +14,7 @@ export const TelaHistorias = () => {
         AprovarEfeitos,
         PularHistoria,
         FuncaoAoConcluirTexto,
+        ObterImagemDaHistoria,
     } = ControleHistorias();
 
     if (ContextosReprovados()) {
@@ -35,6 +35,7 @@ export const TelaHistorias = () => {
                             </div>
                             {MontarRetorno_BotaoPularHistoria(historiaTextoI)}
                             {MontarRetorno_Efeitos(historiaTextoI, indiceI)}
+                            {MontarRetorno_Imagem(indiceI)}
                         </div>
                     );
                 } else {
@@ -71,6 +72,20 @@ export const TelaHistorias = () => {
                         );
                     })}
                 </div>
+            );
+        } else {
+            return <></>;
+        }
+    }
+
+    function MontarRetorno_Imagem(indice: number) {
+        const _historiaImagemExecucao = ObterImagemDaHistoria(indice);
+        if (_historiaImagemExecucao) {
+            return (
+                <img
+                    src={_historiaImagemExecucao.arquivo}
+                    alt={_historiaImagemExecucao.imagem}
+                />
             );
         } else {
             return <></>;

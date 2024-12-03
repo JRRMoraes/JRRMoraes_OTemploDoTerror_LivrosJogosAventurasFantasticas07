@@ -1,12 +1,19 @@
 import { useEffect } from "react";
-import { ContextoJogos, ContextoPagina } from "../contextos";
+import { ContextoLivro, ContextoJogos, ContextoPagina } from "../contextos";
+import { EAudioMomentoMusica } from "../tipos";
 
 export const ControlePaginaLivroJogo = () => {
+    const { audioMusica, ImporAudioMusicaViaMomento } = ContextoLivro();
+
     const { jogoAtual, ResetarJogo } = ContextoJogos();
 
     const { pagina } = ContextoPagina();
 
     useEffect(() => {
+        if ([EAudioMomentoMusica._NULO, EAudioMomentoMusica.ABERTURA].includes(audioMusica.momento)) {
+            ImporAudioMusicaViaMomento(EAudioMomentoMusica.CAMPANHA);
+        }
+
         window.addEventListener("beforeunload", ProcessarRefresh);
         return () => {
             window.removeEventListener("beforeunload", ProcessarRefresh);

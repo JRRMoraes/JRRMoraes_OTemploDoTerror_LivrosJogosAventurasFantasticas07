@@ -7,7 +7,7 @@
     border: 0;
     margin: 0;
     display: flex;
-    background-image: url("/fundo_mesa_madeira_bruta.jpg");
+    background-image: url("/imagens/fundo_mesa_madeira_bruta.jpg");
     background-repeat: repeat-y;
     background-size: 100% auto;
 
@@ -24,7 +24,7 @@
     &_campanha {
         flex: 1;
         box-sizing: border-box;
-        background: url("/fundo_pergaminho_papel_antigo_5.png");
+        background: url("/imagens/fundo_pergaminho_papel_antigo_5.png");
         background-position: center;
         background-repeat: no-repeat;
         background-size: 100% 100%;
@@ -40,7 +40,7 @@
 
         &_2 {
             width: 100%;
-            background: url("/fundo_pergaminho_papel_antigo_1.png");
+            background: url("/imagens/fundo_pergaminho_papel_antigo_1.png");
             background-position: center;
             background-repeat: no-repeat;
             background-size: 100% 100%;
@@ -67,7 +67,7 @@
     gap: 10px;
     display: flex;
     flex-direction: column;
-    background-image: url("/fundo_mesa_madeira_bruta.jpg");
+    background-image: url("/imagens/fundo_mesa_madeira_bruta.jpg");
     background-repeat: repeat-y;
     background-size: 100% auto;
 
@@ -80,7 +80,7 @@
     &_panilha {
         width: 100%;
         box-sizing: border-box;
-        background: url("/fundo_pergaminho_papel_antigo_1.png");
+        background: url("/imagens/fundo_pergaminho_papel_antigo_1.png");
         background-repeat: no-repeat;
         background-position: center;
         background-size: calc(100% + PixelParaVW(100)) 100%;
@@ -104,7 +104,7 @@
     &_campanha {
         width: 100%;
         box-sizing: border-box;
-        background: url("/fundo_pergaminho_papel_antigo_5.png");
+        background: url("/imagens/fundo_pergaminho_papel_antigo_5.png");
         background-repeat: no-repeat;
         background-position: center;
         background-size: calc(100% + PixelParaVW(100)) 100%;
