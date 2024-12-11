@@ -92,7 +92,7 @@ export function AjustarSeForNovoJogo(jogoSalvo: IJogo) {
         jogoSalvo.dataCriacao = new Date();
         jogoSalvo.dataSalvo = jogoSalvo.dataCriacao;
     }
-    if (!jogoSalvo.campanhaCapitulo) {
+    if (!jogoSalvo.campanhaCapitulo || jogoSalvo.campanhaCapitulo === PAGINA_ZERADA.idCapitulo) {
         jogoSalvo.campanhaCapitulo = PAGINA_INICIAL.idCapitulo;
         jogoSalvo.campanhaIndice = PAGINA_INICIAL.idPagina;
         jogoSalvo.panilha = null!;

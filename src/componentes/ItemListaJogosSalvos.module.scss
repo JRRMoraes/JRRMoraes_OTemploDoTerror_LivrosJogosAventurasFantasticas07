@@ -1,10 +1,8 @@
-.itemSalvo {
-    height: 120px;
-}
+@import "../globais/EstilosGlobais.scss";
 
-//.itemNovo {
-//    height: 60px;/
-//}
+.itemSalvo {
+    height: PixelParaVW(120);
+}
 
 .itemLista {
     display: flex;
@@ -20,8 +18,8 @@
     box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.08);
     font-size: 1rem;
 
-    width: 400px;
-    @media (max-width: var(--LARGURA_LIMITE_CELULAR_PX)) {
+    width: PixelParaVW(400);
+    @media screen and (max-width: 768px) {
         width: auto;
     }
 

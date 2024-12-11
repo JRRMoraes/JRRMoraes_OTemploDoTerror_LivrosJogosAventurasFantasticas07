@@ -1,5 +1,7 @@
+@import "../globais/EstilosGlobais.scss";
+
 .panilhaNova {
-    margin: 0 40px;
+    margin: 0 PixelParaVW(40);
 
     table {
         width: 90%;
@@ -72,7 +74,7 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
             border-radius: 4px;
-            width: 300px;
+            width: PixelParaVW(300);
         }
     }
 }

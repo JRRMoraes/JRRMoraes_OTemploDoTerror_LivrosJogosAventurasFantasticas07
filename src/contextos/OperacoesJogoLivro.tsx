@@ -140,11 +140,15 @@ export const OperacoesJogoLivro = () => {
             case COMBATE_APROVACAO_DERROTA__SERIE_DE_ATAQUE_EH_MAIOR_OU_IGUAL_A_HABILIDADE.toLowerCase():
                 return (
                     <div className={styles.combate_derrota_operacoesJogoLivro + " " + styles.combate_linhaUnica}>
-                        <span>{"[ Série de ataque"}</span>
-                        <span className={styles.combate_derrota_operacoesJogoLivro_numeroAtual}>{combateSerieDeAtaqueAtual}</span>
-                        <span>{">= Habilidade"}</span>
-                        <span className={styles.combate_derrota_operacoesJogoLivro_numeroAtual}>{jogoAtual.panilha.habilidade}</span>
-                        <span>{"]"}</span>
+                        <span className={styles.combate_linhaUnica}>
+                            <span>{"Habilidade"}</span>
+                            <span className={styles.combate_derrota_operacoesJogoLivro_numeroAtual}>{jogoAtual.panilha.habilidade}</span>
+                        </span>
+                        <span>{"<"}</span>
+                        <span className={styles.combate_linhaUnica}>
+                            <span>{"Série de ataque"}</span>
+                            <span className={styles.combate_derrota_operacoesJogoLivro_numeroAtual}>{combateSerieDeAtaqueAtual}</span>
+                        </span>
                     </div>
                 );
             default:

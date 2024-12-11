@@ -260,6 +260,7 @@ export const ContextoPagina = () => {
         AtualizarCombateExecutorNoProcessoInicial,
         ImporHistoriaTextosExeProcessoTexto,
         ImporHistoriaEfeitosExeProcessoEfeito,
+        ImporHistoriaImagensExeProcessoImagem,
         ImporCombateInimigos_PosturaInimigo,
         ObterCombateInimigosEfeitosAplicados,
         AdicionarEmCombateInimigosEfeitosAplicados,
@@ -325,10 +326,16 @@ export const ContextoPagina = () => {
         setHistoriaImagens([]);
         if (novaPagina.historias && novaPagina.historias.length) {
             setHistoriaTextos(
-                novaPagina.historias.map<IHistoriaTextoExecucao>((historiaI) => ({
-                    textosHistoria: historiaI.textosHistoria,
-                    exeProcessoTexto: EProcesso._ZERO,
-                }))
+                novaPagina.historias.map<IHistoriaTextoExecucao>((historiaI) => {
+                    const _historiaTextoExecucao: IHistoriaTextoExecucao = {
+                        textosHistoria: historiaI.textosHistoria,
+                        exeProcessoTexto: EProcesso._ZERO,
+                    };
+                    if (!_historiaTextoExecucao.textosHistoria) {
+                        _historiaTextoExecucao.textosHistoria = [];
+                    }
+                    return _historiaTextoExecucao;
+                })
             );
             setHistoriaEfeitos(
                 novaPagina.historias.map<IHistoriaEfeitoExecucao>((historiaI) => ({
@@ -342,7 +349,7 @@ export const ContextoPagina = () => {
             );
             setHistoriaImagens(
                 novaPagina.historias.map<IHistoriaImagemExecucao>((historiaI) => {
-                    const _historiaImagemExecucao: IHistoriaImagemExecucao = { imagem: "", arquivo: "" };
+                    const _historiaImagemExecucao: IHistoriaImagemExecucao = { imagem: "", arquivo: "", exeProcessoImagem: EProcesso._ZERO };
                     if (historiaI.imagem && historiaI.imagem !== "") {
                         _historiaImagemExecucao.imagem = historiaI.imagem;
                         _historiaImagemExecucao.arquivo = CaminhoImagem(historiaI.imagem);
@@ -567,11 +574,11 @@ export const ContextoPagina = () => {
         }
     }
 
-    function ImporCombateAliadoEfeitosAplicadosExeProcessoEfeito(idInimigo: number, processo: EProcesso) {
-        if (combateAliadoEfeitosAplicados && combateAliadoEfeitosAplicados[idInimigo] && combateAliadoEfeitosAplicados[idInimigo].exeProcessoEfeito !== processo) {
+    function ImporCombateAliadoEfeitosAplicadosExeProcessoEfeito(indice: number, processo: EProcesso) {
+        if (combateAliadoEfeitosAplicados && combateAliadoEfeitosAplicados[indice] && combateAliadoEfeitosAplicados[indice].exeProcessoEfeito !== processo) {
             setCombateAliadoEfeitosAplicados((prevCombateAliadoEfeitosAplicados) => {
                 prevCombateAliadoEfeitosAplicados = prevCombateAliadoEfeitosAplicados.map((efeitoI, indiceI) => {
-                    if (idInimigo === indiceI) {
+                    if (indice === indiceI) {
                         efeitoI.exeProcessoEfeito = processo;
                     }
                     return efeitoI;
@@ -594,11 +601,11 @@ export const ContextoPagina = () => {
         });
     }
 
-    function ImporHistoriaTextosExeProcessoTexto(idInimigo: number, processo: EProcesso) {
-        if (historiaTextos && historiaTextos[idInimigo] && historiaTextos[idInimigo].exeProcessoTexto !== processo) {
+    function ImporHistoriaTextosExeProcessoTexto(indice: number, processo: EProcesso) {
+        if (historiaTextos && historiaTextos[indice] && historiaTextos[indice].exeProcessoTexto !== processo) {
             setHistoriaTextos((prevHistoriaTextos) => {
                 prevHistoriaTextos = prevHistoriaTextos.map((historiaI, indiceI) => {
-                    if (idInimigo === indiceI) {
+                    if (indice === indiceI) {
                         historiaI.exeProcessoTexto = processo;
                     }
                     return historiaI;
@@ -608,16 +615,30 @@ export const ContextoPagina = () => {
         }
     }
 
-    function ImporHistoriaEfeitosExeProcessoEfeito(idInimigo: number, processo: EProcesso) {
-        if (historiaEfeitos && historiaEfeitos[idInimigo] && historiaEfeitos[idInimigo].exeProcessoEfeito !== processo) {
+    function ImporHistoriaEfeitosExeProcessoEfeito(indice: number, processo: EProcesso) {
+        if (historiaEfeitos && historiaEfeitos[indice] && historiaEfeitos[indice].exeProcessoEfeito !== processo) {
             setHistoriaEfeitos((prevHistoriaEfeitos) => {
                 prevHistoriaEfeitos = prevHistoriaEfeitos.map((historiaI, indiceI) => {
-                    if (idInimigo === indiceI) {
+                    if (indice === indiceI) {
                         historiaI.exeProcessoEfeito = processo;
                     }
                     return historiaI;
                 });
                 return prevHistoriaEfeitos;
+            });
+        }
+    }
+
+    function ImporHistoriaImagensExeProcessoImagem(indice: number, processo: EProcesso) {
+        if (historiaImagens && historiaImagens[indice] && historiaImagens[indice].exeProcessoImagem !== processo) {
+            setHistoriaImagens((prevHistoriaImagens) => {
+                prevHistoriaImagens = prevHistoriaImagens.map((historiaI, indiceI) => {
+                    if (indice === indiceI) {
+                        historiaI.exeProcessoImagem = processo;
+                    }
+                    return historiaI;
+                });
+                return prevHistoriaImagens;
             });
         }
     }

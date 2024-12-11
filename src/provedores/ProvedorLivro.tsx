@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { ILivro, IAudioExecutor, IAudioMusica, EAudioMomentoMusica, IAudioEfeito } from "../tipos";
 import { IChildrenProps } from "../uteis";
 import { ContextoBaseLivro } from "../contextos";
+import { LIVRO_JOGO } from "../globais/ConstantesID";
 import axios from "axios";
 
 export const ProvedorLivro = ({ children }: IChildrenProps) => {
@@ -24,9 +25,7 @@ export const ProvedorLivro = ({ children }: IChildrenProps) => {
 
     useEffect(() => {
         if (!livro) {
-            axios.get("/LJAF07_OTemploDoTerror/LJAF07_OTemploDoTerror__Teste.json").then((resultado) => {
-                setLivro(resultado.data);
-            });
+            ConsultarJsonLivroJogo(LIVRO_JOGO);
         }
     }, [livro]);
 
@@ -46,6 +45,22 @@ export const ProvedorLivro = ({ children }: IChildrenProps) => {
             {children}
         </ContextoBaseLivro.Provider>
     );
+
+    async function ConsultarJsonLivroJogo(jsonLivroJogo: string) {
+        try {
+            const resultado = await axios.get(jsonLivroJogo, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                maxContentLength: Infinity,
+                maxBodyLength: Infinity,
+            });
+            const resultadoJson = typeof resultado.data === "string" ? JSON.parse(resultado.data) : resultado.data;
+            setLivro(resultadoJson);
+        } catch (erro) {
+            console.error("ConsultarJsonLivroJogo:: " + erro);
+        }
+    }
 };
 
 export default ProvedorLivro;

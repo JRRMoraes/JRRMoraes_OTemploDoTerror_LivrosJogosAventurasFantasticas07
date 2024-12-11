@@ -20,6 +20,7 @@ export const ControleHistorias = () => {
         setHistoriaProcessoIndice,
         ImporHistoriaTextosExeProcessoTexto,
         ImporHistoriaEfeitosExeProcessoEfeito,
+        ImporHistoriaImagensExeProcessoImagem,
     } = ContextoPagina();
 
     const { jogoAtual, AdicionarEmJogadorEfeitosAplicados } = ContextoJogos();
@@ -48,6 +49,7 @@ export const ControleHistorias = () => {
                 }
                 ImporHistoriaTextosExeProcessoTexto(historiaIndice, EProcesso._ZERO);
                 ImporHistoriaEfeitosExeProcessoEfeito(historiaIndice, EProcesso._ZERO);
+                ImporHistoriaImagensExeProcessoImagem(historiaIndice, EProcesso._ZERO);
                 setHistoriaProcessoIndice(EProcesso._ZERO);
                 setHistoriaProcesso(EProcesso.PROCESSANDO);
                 _unicoSetHistoriaIndice = true;
@@ -71,11 +73,13 @@ export const ControleHistorias = () => {
             case EProcesso._ZERO:
                 ImporHistoriaTextosExeProcessoTexto(historiaIndice, EProcesso.INICIANDO);
                 ImporHistoriaEfeitosExeProcessoEfeito(historiaIndice, EProcesso._ZERO);
+                ImporHistoriaImagensExeProcessoImagem(historiaIndice, EProcesso._ZERO);
                 setHistoriaProcessoIndice(EProcesso.INICIANDO);
                 break;
             case EProcesso.INICIANDO:
                 ImporHistoriaTextosExeProcessoTexto(historiaIndice, EProcesso.PROCESSANDO);
                 ImporHistoriaEfeitosExeProcessoEfeito(historiaIndice, EProcesso._ZERO);
+                ImporHistoriaImagensExeProcessoImagem(historiaIndice, EProcesso._ZERO);
                 setHistoriaProcessoIndice(EProcesso.PROCESSANDO);
                 break;
             case EProcesso.PROCESSANDO:
@@ -93,9 +97,14 @@ export const ControleHistorias = () => {
                             ImporHistoriaEfeitosExeProcessoEfeito(historiaIndice, EProcesso.CONCLUIDO);
                         }
                     } else if (ObterHistoriaEfeitosAtuais().exeProcessoEfeito === EProcesso.CONCLUIDO) {
-                        ImporHistoriaTextosExeProcessoTexto(historiaIndice, EProcesso.DESTRUIDO);
-                        ImporHistoriaEfeitosExeProcessoEfeito(historiaIndice, EProcesso.DESTRUIDO);
-                        setHistoriaProcessoIndice(EProcesso.CONCLUIDO);
+                        if (ObterHistoriaImagensAtuais().exeProcessoImagem === EProcesso._ZERO) {
+                            ImporHistoriaImagensExeProcessoImagem(historiaIndice, EProcesso.CONCLUIDO);
+                        } else if (ObterHistoriaImagensAtuais().exeProcessoImagem === EProcesso.CONCLUIDO) {
+                            ImporHistoriaTextosExeProcessoTexto(historiaIndice, EProcesso.DESTRUIDO);
+                            ImporHistoriaEfeitosExeProcessoEfeito(historiaIndice, EProcesso.DESTRUIDO);
+                            ImporHistoriaImagensExeProcessoImagem(historiaIndice, EProcesso.DESTRUIDO);
+                            setHistoriaProcessoIndice(EProcesso.CONCLUIDO);
+                        }
                     }
                 }
                 break;
@@ -111,7 +120,7 @@ export const ControleHistorias = () => {
                 }
                 break;
         }
-    }, [historiaProcesso, historiaProcessoIndice, historiaTextos, historiaEfeitos, historiaIndice]);
+    }, [historiaProcesso, historiaProcessoIndice, historiaTextos, historiaEfeitos, historiaImagens, historiaIndice]);
 
     return {
         historiaTextos,
@@ -143,6 +152,10 @@ export const ControleHistorias = () => {
 
     function ObterHistoriaEfeitosAtuais() {
         return historiaEfeitos[historiaIndice];
+    }
+
+    function ObterHistoriaImagensAtuais() {
+        return historiaImagens[historiaIndice];
     }
 
     function AprovarExeProcessoHistoria(historiaTexto: IHistoriaTextoExecucao) {

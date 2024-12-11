@@ -3,6 +3,17 @@
     "titulo": "O Templo do Terror",
     "autor": "Ian Livingstone",
     "capa": "Capa.png",
+	    "copyright": [
+        "ESTE APLICATIVO É UMA HOMENAGEM AO LIVRO-JOGO 'O TEMPLO DO TERROR'",
+        "Publicado por Puffin Books, Penguin Books Ltd.",
+        "Copyright © 1985 por Ian Livingstone",
+        "Copyright © 1985 das ilustrações por Bill Houston",
+        "Direitos exclusivos para o Brasil adquiridos por Marques Saraiva Gráficos e Editores S.A.",
+        "ISBN 85-85238-32-1",
+        "Este aplicativo não possui fins lucrativos e foi criado com o objetivo de prestar uma homenagem à obra original e a seus autores.",
+        "Todos os direitos sobre os textos e ilustrações são reservados aos seus respectivos criadores e detentores dos direitos autorais.",
+        "Se você é o detentor dos direitos autorais e tem alguma preocupação sobre o uso do conteúdo, por favor, entre em contato conosco para que possamos resolver a questão prontamente."
+    ],
     "apresentacoes": [
         {
             "textosApresentacao": [

@@ -66,7 +66,7 @@ export const TelaCombate = () => {
             }
             return (
                 <div className={styles.combate_derrota}>
-                    <div>
+                    <div className={styles.combate_derrota_2}>
                         <div>
                             {combateTextosDerrota.map((textoI, indiceI) => (
                                 <p key={indiceI}>{textoI}</p>

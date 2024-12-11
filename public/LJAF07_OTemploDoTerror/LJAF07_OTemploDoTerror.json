@@ -3,6 +3,17 @@
     "titulo": "O Templo do Terror",
     "autor": "Ian Livingstone",
     "capa": "Capa.png",
+    "copyright": [
+        "ESTE APLICATIVO É UMA HOMENAGEM AO LIVRO-JOGO 'O TEMPLO DO TERROR'",
+        "Publicado por Puffin Books, Penguin Books Ltd.",
+        "Copyright © 1985 por Ian Livingstone",
+        "Copyright © 1985 das ilustrações por Bill Houston",
+        "Direitos exclusivos para o Brasil adquiridos por Marques Saraiva Gráficos e Editores S.A.",
+        "ISBN 85-85238-32-1",
+        "Este aplicativo não possui fins lucrativos e foi criado com o objetivo de prestar uma homenagem à obra original e a seus autores.",
+        "Todos os direitos sobre os textos e ilustrações são reservados aos seus respectivos criadores e detentores dos direitos autorais.",
+        "Se você é o detentor dos direitos autorais e tem alguma preocupação sobre o uso do conteúdo, por favor, entre em contato conosco para que possamos resolver a questão prontamente."
+    ],
     "apresentacoes": [
         {
             "textosApresentacao": [
@@ -26,8 +37,6 @@
             ]
         }
     ],
-    "ilustrador": "Bill Houston",
-    "ISBN": "85-85238-32-1",
     "paginasIniciais": [
         {
             "idPagina": 1,
@@ -58,6 +67,25 @@
         },
         {
             "idPagina": 2,
+            "idCapitulo": "PAGINAS_INICIAIS",
+            "titulo": "O TEMPLO DO TERROR",
+            "historias": [
+                {
+                    "imagem": "Assombração com lanterna"
+                },
+                {
+                    "textosHistoria": ["Por Ian Livingstone", "Ilustrado por Bill Houston"]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 3,
+                    "textoDestino": "Próximo >>"
+                }
+            ]
+        },
+        {
+            "idPagina": 22,
             "titulo": "Habilidade, Energia e Sorte",
             "historias": [
                 {
@@ -66,7 +94,8 @@
                         "O seu índice de ENERGIA reflete sua constituição física geral, vontade de sobreviver, determinação e condição física como um todo; quanto mais alto for seu índice de ENERGIA, mais tempo você conseguirá sobreviver.",
                         "O seu índice de SORTE indica o quanto você é uma pessoa naturalmente de sorte. Sorte - e magia - é um fato da vida no reino da fantasia que você está prestes a explorar.",
                         "Embora você possa conquistar pontos adicionais de HABILIDADE, ENERGIA e SORTE, esses totais nunca poderão exceder seus índices Iniciais, a não ser em raríssimas ocasiões, quando haverá instruções específicas para você numa determinada página."
-                    ]
+                    ],
+                    "imagem": "Ossada no deserto"
                 }
             ],
             "destinos": [
@@ -127,15 +156,7 @@
                         "- Se o número obtido for igual ou menor do que seu índice de SORTE atual, você teve sorte, e o resultado será a seu favor.",
                         "- Se o número obtido for maior do que o seu índice de SORTE atual, você não teve sorte e sofrerá as consequências.",
                         "Esse procedimento é conhecido como Testar a sua Sorte. A cada vez que 'Testar a sua Sorte', você terá que subtrair um ponto do seu índice de SORTE atual. Portanto, você logo compreenderá que, quanto mais confiar na sua sorte, mais arriscado isso se tornará.",
-                        "Em certas páginas do livro, você será orientado a Testar a sua Sorte e será comunicado quanto às consequências de ter ou não ter sorte.",
-                        "Porém, nos combates, você tem sempre a opção de usar a sorte, seja para causar um ferimento mais grave numa criatura que você acabou de ferir, seja para minimizar os efeitos de um ferimento que a criatura acabou de causar em você.",
-                        "Se você tiver acabado de ferir a criatura, pode Testar a sua Sorte conforme descrito acima.",
-                        "- Se tiver sorte, terá causado um ferimento grave e poderá subtrair 2 pontos extras do índice de ENERGIA da criatura.",
-                        "- Porém, se não tiver sorte, o ferimento será um mero arranhão, e você terá que devolver 1 ponto à ENERGIA da criatura (isto é, em vez dos 2 pontos normais de danos, você terá conseguido apenas 1).",
-                        "Se a criatura tiver acabado de feri-lo, você poderá Testar a sua Sorte para tentar minimizar o ferimento.",
-                        "- Se tiver sorte, conseguiu evitar que o golpe o atingisse com toda força. Você recupera 1 ponto de ENERGIA (isto é, em lugar de causar os 2 pontos de danos, o golpe causa apenas 1).",
-                        "- Se não tiver sorte, você recebeu um ferimento mais grave. Subtraia 1 ponto extra de sua ENERGIA.",
-                        "Lembre-se que você tem que subtrair um ponto da sua própria SORTE sempre que Testar a sua Sorte."
+                        "Em certas páginas do livro, você será orientado a Testar a sua Sorte e será comunicado quanto às consequências de ter ou não ter sorte."
                     ]
                 }
             ],
@@ -153,15 +174,20 @@
         },
         {
             "idPagina": 5,
-            "titulo": "Recuperação de Habilidade",
+            "titulo": "O Uso de Sorte nos Combates",
             "historias": [
                 {
                     "textosHistoria": [
-                        "O índice de HABILIDADE não mudará muito durante uma aventura. Ocasionalmente, poderá haver instruções em uma página para aumentar ou diminuir o seu índice de HABILIDADE.",
-                        "Uma Arma Mágica pode aumentar sua HABILIDADE, mas lembre-se que você só pode usar uma arma de cada vez!",
-                        "Você não pode receber dois prêmios de HABILIDADE por estar carregando duas Espadas Mágicas.",
-                        "O seu índice de HABILIDADE jamais poderá ultrapassar seu valor Inicial, a não ser quando especificamente autorizado."
-                    ]
+                        "Porém, nos combates, você tem sempre a opção de usar a sorte, seja para causar um ferimento mais grave numa criatura que você acabou de ferir, seja para minimizar os efeitos de um ferimento que a criatura acabou de causar em você.",
+                        "Se você tiver acabado de ferir a criatura, pode Testar a sua Sorte conforme descrito acima.",
+                        "- Se tiver sorte, terá causado um ferimento grave e poderá subtrair 2 pontos extras do índice de ENERGIA da criatura.",
+                        "- Porém, se não tiver sorte, o ferimento será um mero arranhão, e você terá que devolver 1 ponto à ENERGIA da criatura (isto é, em vez dos 2 pontos normais de danos, você terá conseguido apenas 1).",
+                        "Se a criatura tiver acabado de feri-lo, você poderá Testar a sua Sorte para tentar minimizar o ferimento.",
+                        "- Se tiver sorte, conseguiu evitar que o golpe o atingisse com toda força. Você recupera 1 ponto de ENERGIA (isto é, em lugar de causar os 2 pontos de danos, o golpe causa apenas 1).",
+                        "- Se não tiver sorte, você recebeu um ferimento mais grave. Subtraia 1 ponto extra de sua ENERGIA.",
+                        "Lembre-se que você tem que subtrair um ponto da sua própria SORTE sempre que Testar a sua Sorte."
+                    ],
+                    "imagem": "Mensagem na parede"
                 }
             ],
             "destinos": [
@@ -178,17 +204,14 @@
         },
         {
             "idPagina": 6,
-            "titulo": "Recuperação de Energia e Provisões",
+            "titulo": "Recuperação de Habilidade",
             "historias": [
                 {
                     "textosHistoria": [
-                        "O seu índice de ENERGIA mudará muito durante a aventura, à medida que você lutar com monstros e empreender tarefas árduas.",
-                        "Quando estiver próximo de seu objetivo, seu índice de ENERGIA poderá estar perigosamente baixo, e os combates poderão ser particularmente arriscados; portanto, seja cuidadoso!",
-                        "Sua mochila contém Provisões suficientes para 10 refeições. Você pode descansar e comer em qualquer momento, exceto quando estiver lutando, mas só poderá fazer una refeição a cada vez.",
-                        "Comer uma refeição restaura 4 pontos de ENERGIA. Quando fizer uma refeição, adicione 4 pontos em seu índice de ENERGIA e deduza um ponto de suas Provisões.",
-                        "Um quadro separado das Provisões Remanescentes faz parte da Folha de Aventuras para registro dos detalhes sobre Provisões.",
-                        "Lembre-se que você tem um longo caminho a seguir e que, portanto, deve usar suas Provisões de maneira sensata!",
-                        "Lembre-se também que seu índice de ENERGIA nunca poderá exceder seu valor Inicial, a menos que isso seja especificamente indicado numa página."
+                        "O índice de HABILIDADE não mudará muito durante uma aventura. Ocasionalmente, poderá haver instruções em uma página para aumentar ou diminuir o seu índice de HABILIDADE.",
+                        "Uma Arma Mágica pode aumentar sua HABILIDADE, mas lembre-se que você só pode usar uma arma de cada vez!",
+                        "Você não pode receber dois prêmios de HABILIDADE por estar carregando duas Espadas Mágicas.",
+                        "O seu índice de HABILIDADE jamais poderá ultrapassar seu valor Inicial, a não ser quando especificamente autorizado."
                     ]
                 }
             ],
@@ -206,13 +229,17 @@
         },
         {
             "idPagina": 7,
-            "titulo": "Recuperação de Sorte",
+            "titulo": "Recuperação de Energia e Provisões",
             "historias": [
                 {
                     "textosHistoria": [
-                        "Acréscimos em seu índice de SORTE podem ser permitidos durante a aventura, quando você tiver uma dose especial de sorte.",
-                        "Detalhes são fornecidos nas páginas do livro.",
-                        "Lembre-se que, assim como seus índices de HABILIDADE e de ENERGIA, seu índice de SORTE jamais poderá exceder seu valor Inicial."
+                        "O seu índice de ENERGIA mudará muito durante a aventura, à medida que você lutar com monstros e empreender tarefas árduas.",
+                        "Quando estiver próximo de seu objetivo, seu índice de ENERGIA poderá estar perigosamente baixo, e os combates poderão ser particularmente arriscados; portanto, seja cuidadoso!",
+                        "Sua mochila contém Provisões suficientes para 10 refeições. Você pode descansar e comer em qualquer momento, exceto quando estiver lutando, mas só poderá fazer una refeição a cada vez.",
+                        "Comer uma refeição restaura 4 pontos de ENERGIA. Quando fizer uma refeição, adicione 4 pontos em seu índice de ENERGIA e deduza um ponto de suas Provisões.",
+                        "Um quadro separado das Provisões Remanescentes faz parte da Folha de Aventuras para registro dos detalhes sobre Provisões.",
+                        "Lembre-se que você tem um longo caminho a seguir e que, portanto, deve usar suas Provisões de maneira sensata!",
+                        "Lembre-se também que seu índice de ENERGIA nunca poderá exceder seu valor Inicial, a menos que isso seja especificamente indicado numa página."
                     ]
                 }
             ],
@@ -230,14 +257,13 @@
         },
         {
             "idPagina": 8,
-            "titulo": "Equipamento",
+            "titulo": "Recuperação de Sorte",
             "historias": [
                 {
                     "textosHistoria": [
-                        "Você começará sua aventura com o mínimo estritamente necessário de equipamento, mas poderá encontrar novos itens durante suas viagens.",
-                        "Está armado com uma espada e trajado com uma armadura de couro.",
-                        "Você tem uma mochila ou coisa semelhante nas costas para guardar suas Provisões e qualquer tesouro que vier a encontrar.",
-                        "Também leva uma lanterna para iluminar-lhe o caminho."
+                        "Acréscimos em seu índice de SORTE podem ser permitidos durante a aventura, quando você tiver uma dose especial de sorte.",
+                        "Detalhes são fornecidos nas páginas do livro.",
+                        "Lembre-se que, assim como seus índices de HABILIDADE e de ENERGIA, seu índice de SORTE jamais poderá exceder seu valor Inicial."
                     ]
                 }
             ],
@@ -255,6 +281,31 @@
         },
         {
             "idPagina": 9,
+            "titulo": "Equipamento",
+            "historias": [
+                {
+                    "textosHistoria": [
+                        "Você começará sua aventura com o mínimo estritamente necessário de equipamento, mas poderá encontrar novos itens durante suas viagens.",
+                        "Está armado com uma espada e trajado com uma armadura de couro.",
+                        "Você tem uma mochila ou coisa semelhante nas costas para guardar suas Provisões e qualquer tesouro que vier a encontrar.",
+                        "Também leva uma lanterna para iluminar-lhe o caminho."
+                    ]
+                }
+            ],
+            "destinos": [
+                {
+                    "idPagina": 10,
+                    "textoDestino": "Próximo >>"
+                },
+                {
+                    "idPagina": 1,
+                    "idCapitulo": "PAGINAS_CAMPANHA",
+                    "textoDestino": "Pule as introduções, jogar imediatamente >>"
+                }
+            ]
+        },
+        {
+            "idPagina": 10,
             "titulo": "DICAS PARA O JOGO",
             "historias": [
                 {
@@ -266,7 +317,8 @@
                         "Você perceberá que os itens não farão sentido se forem lidos em ordem numérica. É essencial que você leia somente os itens que for instruído a ler. Ler outros itens somente causa confusão e pode diminuir a graça do jogo.",
                         "O único caminho verdadeiro implica um mínimo de riscos, e qualquer jogador, por mais que seus índices iniciais sejam fracos, deverá ser capaz de chegar a seu textoDestino com bastante facilidade.",
                         "Que a sorte dos deuses o acompanhe na aventura a seguir!"
-                    ]
+                    ],
+                    "imagem": "Pulseira de Dragão"
                 }
             ],
             "destinos": [
@@ -287,6 +339,7 @@
         {
             "idPagina": 0,
             "idCapitulo": "PAGINAS_CAMPANHA",
+            "titulo": "HISTÓRIA",
             "historias": [
                 {
                     "textosHistoria": [
@@ -391,7 +444,7 @@
             "idPagina": 4,
             "historias": [
                 {
-                    "textosHistoria": ["A água fresca sacia sua sede. Você se sente imediatamente revigorado, já que a água contém raras substâncias fortificantes.", "Some 4 pontos de ENERGIA."],
+                    "textosHistoria": ["A água fresca sacia sua sede. Você se sente imediatamente revigorado, já que a água contém raras substâncias fortificantes."],
                     "efeitos": [
                         {
                             "textoEfeito": "Some 4 pontos de ENERGIA.",
@@ -556,7 +609,7 @@
                         "Na reverberação bruxuleante do calor do deserto, você vê de repente uma forma se movendo em sua direção.",
                         "Quando ela chega mais perto, você percebe que é alguém montado num camelo."
                     ],
-                    "imagem": "Alguém montado num camelo"
+                    "imagem": "Alguém montado num camelo IIIII"
                 }
             ],
             "destinos": [
@@ -611,7 +664,7 @@
                     "textosHistoria": [
                         "Yaztromo explica que seu encanto de Abrir Portas abrirá qualquer porta trancada.",
                         "Ele lhe revela as palavras necessárias para lançar o encanto, e diz que ele não consumirá demasiadamente as suas forças;",
-                        "somente 2 pontos de ENERGIA serão perdidos a cada vez que você usar o encanto."
+                        "Somente 2 pontos de ENERGIA serão perdidos a cada vez que você usar o encanto."
                     ],
                     "efeitos": [
                         {
@@ -694,7 +747,8 @@
                             "atributoEfeito": "ENERGIA",
                             "quantidade": 2
                         }
-                    ]
+                    ],
+                    "imagem": "Ossada no deserto IIIII"
                 },
                 {
                     "textosHistoria": ["Você joga sua mochila sobre os ombros e parte novamente."]
@@ -887,7 +941,8 @@
                 {
                     "textosHistoria": [
                         "Você anda até o esqueleto seco de alguma criatura grande e desconhecida e nota o canto de uma caixa de madeira que desponta na areia, no vão das costelas do animal morto."
-                    ]
+                    ],
+                    "imagem": "Ossada de animal e uma caixa IIIII"
                 }
             ],
             "destinos": [
@@ -1055,23 +1110,20 @@
                 }
             ]
         },
-        ///////////////
-        ///////////////
-        ///////////////
-        ///////////////
-        ///////////////
-        ///////////////
         {
             "idPagina": 31,
             "historias": [
                 {
-                    "textosHistoria": ["Por mais de 1 hora, você jaz inconsciente no deserto. Teste a sua Sorte. Se você tiver Sorte, vá para 220. Se não tiver Sorte, vá para 92."]
+                    "textosHistoria": ["Por mais de 1 hora, você jaz inconsciente no deserto."],
+                    "imagem": "Ossada no deserto IIIII"
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 220,
+                    "textosDestino": ["Teste a sua Sorte.", "Se você tiver Sorte, vá para 220.", "Se não tiver Sorte, vá para 92."],
+                    "testeAtributo": "SORTE",
+                    "idPaginaAzar": 92
                 }
             ]
         },
@@ -1079,15 +1131,30 @@
             "idPagina": 32,
             "historias": [
                 {
-                    "textosHistoria": [
-                        "Você pronuncia as palavras mágicas (descontando 1 ponto de sua ENERGIA), mas nada acontece. Sem que você soubesse, a chuva dourada roubou todos os seus poderes mágicos. Desconte 1 ponto de sua SORTE. Você não tem outra opção a não ser usar alguma coisa de sua mochila. Vá para 115."
+                    "textosHistoria": ["Você pronuncia as palavras mágicas, mas nada acontece."],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Descontando 1 ponto de sua ENERGIA",
+                            "atributoEfeito": "ENERGIA",
+                            "quantidade": -1
+                        }
+                    ]
+                },
+                {
+                    "textosHistoria": ["Sem que você soubesse, a chuva dourada roubou todos os seus poderes mágicos.", "Você não tem outra opção a não ser usar alguma coisa de sua mochila."],
+                    "efeitos": [
+                        {
+                            "textoEfeito": "Desconte 1 ponto de sua SORTE.",
+                            "atributoEfeito": "SORTE",
+                            "quantidade": -1
+                        }
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 115,
+                    "textoDestino": "Vá para 115."
                 }
             ]
         },
@@ -1096,14 +1163,30 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Você vira os sacos, mas eles contêm somente condimentos e grãos. Num rápido exame das roupas do Homem Lagarto, você encontra uma grande chave de ferro, que você desliza para o bolso da sua camisa. Você continua a andar e chega a uma outra encruzilhada em T. Se quiser virar à esquerda, vá para 125. Se quiser virar à direita, vá para 262."
+                        "Você vira os sacos, mas eles contêm somente condimentos e grãos.",
+                        "Num rápido exame das roupas do Homem Lagarto, você encontra uma grande chave de ferro, que você desliza para o bolso da sua camisa."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoefeito": "Você obteve uma grande chave de ferro",
+                            "atributoefeito": "ITENS",
+                            "nomeEfeito": "Grande chave de ferro",
+                            "quantidade": 1
+                        }
                     ]
+                },
+                {
+                    "textosHistoria": ["Você continua a andar e chega a uma outra encruzilhada em T."]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 125,
+                    "textoDestino": "Se quiser virar à esquerda, vá para 125."
+                },
+                {
+                    "idPagina": 262,
+                    "textoDestino": "Se quiser virar à direita, vá para 262."
                 }
             ]
         },
@@ -1296,20 +1379,30 @@
             "idPagina": 35,
             "historias": [
                 {
-                    "textosHistoria": [
-                        "Você pega cada um dos Dragões e os coloca no chão. Olha para eles cuidadosamente e pondera seu poder oculto. Qual Dragão você tentará destruir primeiro?",
-                        "O Dragão de Osso?                    Vá para 87",
-                        "O Dragão de Prata?                   Vá para 126",
-                        "O Dragão de Cristal?                 Vá para 204",
-                        "O Dragão de Ouro?                    Vá para 62",
-                        "O Dragão de Ébano?                   Vá para 324"
-                    ]
+                    "textosHistoria": ["Você pega cada um dos Dragões e os coloca no chão. Olha para eles cuidadosamente e pondera seu poder oculto.", "Qual Dragão você tentará destruir primeiro?"],
+                    "imagem": "Artefato do dragão IIIII"
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 87,
+                    "textoDestino": "O Dragão de Osso? Vá para 87"
+                },
+                {
+                    "idPagina": 126,
+                    "textoDestino": "O Dragão de Prata? Vá para 126"
+                },
+                {
+                    "idPagina": 204,
+                    "textoDestino": "O Dragão de Cristal? Vá para 204"
+                },
+                {
+                    "idPagina": 62,
+                    "textoDestino": "O Dragão de Ouro? Vá para 62"
+                },
+                {
+                    "idPagina": 324,
+                    "textoDestino": "O Dragão de Ébano? Vá para 324"
                 }
             ]
         },
@@ -1317,16 +1410,26 @@
             "idPagina": 36,
             "historias": [
                 {
+                    "textosHistoria": ["Instalado em sua montaria voadora, você grita as palavras do encanto da Flecha Mágica."],
+                    "efeitos": [
+                        {
+                            "textoefeito": "Desconte 2 pontos de ENERGIA",
+                            "atributoefeito": "ENERGIA",
+                            "quantidade": -2
+                        }
+                    ]
+                },
+                {
                     "textosHistoria": [
-                        "Instalado em sua montaria voadora, você grita as palavras do encanto da Flecha Mágica (desconte 2 pontos de ENERGIA). Um dardo reluzente aparece imediatamente na extremidade de seu dedo e voa para atingir o Pterodáctilo, que mergulha sobre você.",
-                        "O dardo penetra fundo embaixo de sua barriga, mas não o mata, e ele se aproxima velozmente para atacar (vá para 311)."
+                        "Um dardo reluzente aparece imediatamente na extremidade de seu dedo e voa para atingir o Pterodáctilo, que mergulha sobre você.",
+                        "O dardo penetra fundo embaixo de sua barriga, mas não o mata, e ele se aproxima velozmente para atacar."
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 311,
+                    "textoDestino": "Vá para 311."
                 }
             ]
         },
@@ -1334,15 +1437,23 @@
             "idPagina": 37,
             "historias": [
                 {
-                    "textosHistoria": [
-                        "Você lança o encanto (desconte 1 ponto de ENERGIA) e no mesmo instante torna-se capaz de ler os símbolos. Um aviso simples diz: NÃO BEBA! Mas você decide que nada de mal pode lhe acontecer se somente lavar suas feridas. Vá para 269."
+                    "textosHistoria": ["Você lança o encanto e no mesmo instante torna-se capaz de ler os símbolos."],
+                    "efeitos": [
+                        {
+                            "textoefeito": "Desconte 1 ponto de ENERGIA",
+                            "atributoefeito": "ENERGIA",
+                            "quantidade": -1
+                        }
                     ]
+                },
+                {
+                    "textosHistoria": ["Um aviso simples diz: NÃO BEBA! Mas você decide que nada de mal pode lhe acontecer se somente lavar suas feridas."]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 269,
+                    "textoDestino": "Vá para 269."
                 }
             ]
         },
@@ -1351,14 +1462,21 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Você continua percorrendo o corredor, que finalmente leva a uma grande câmara iluminada por tochas fixadas nas paredes altas. Na parte de cima, as paredes se inclinam para dentro para formar um magnífico teto dourado. Um ídolo de bronze maciço está de pé no meio da câmara erguendo um martelo de guerra. Você terá que passar pelo ídolo para chegar à entrada de um túnel na parede oposta. Se você andar pela esquerda do ídolo, vá para 291. Se você andar pela direita do ídolo, vá para 381."
-                    ]
+                        "Você continua percorrendo o corredor, que finalmente leva a uma grande câmara iluminada por tochas fixadas nas paredes altas.",
+                        "Na parte de cima, as paredes se inclinam para dentro para formar um magnífico teto dourado.",
+                        "Um ídolo de bronze maciço está de pé no meio da câmara erguendo um martelo de guerra. Você terá que passar pelo ídolo para chegar à entrada de um túnel na parede oposta."
+                    ],
+                    "imagem": "Estatua de homem com marreta IIIII"
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 291,
+                    "textoDestino": "Se você andar pela esquerda do ídolo, vá para 291."
+                },
+                {
+                    "idPagina": 381,
+                    "textoDestino": "Se você andar pela direita do ídolo, vá para 381."
                 }
             ]
         },
@@ -1366,15 +1484,21 @@
             "idPagina": 39,
             "historias": [
                 {
-                    "textosHistoria": [
-                        "Muito antes do final da tarde, você está desesperado de sede. Se você possuir um cantil, vá para 63. Se você souber e desejar lançar o encanto de Criar Água, vá para 281. Se você não tiver meios de beber qualquer líquido, vá para 355."
-                    ]
+                    "textosHistoria": ["Muito antes do final da tarde, você está desesperado de sede."]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 63,
+                    "textoDestino": "Se você possuir um cantil, vá para 63."
+                },
+                {
+                    "idPagina": 281,
+                    "textoDestino": "Se você souber e desejar lançar o encanto de Criar Água, vá para 281."
+                },
+                {
+                    "idPagina": 355,
+                    "textoDestino": "Se você não tiver meios de beber qualquer líquido, vá para 355."
                 }
             ]
         },
@@ -1383,14 +1507,18 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "As tapeçarias são grandes e coloridas, representando vários deuses e divindades, algumas das quais em forma humana, outras em forma animal, e umas poucas em parte humanas e em parte animais. Se você quiser puxar uma das tapeçarias da parede e colocá-la em sua mochila, volte para 19. Se você preferir simplesmente passar por elas, vá para 263."
+                        "As tapeçarias são grandes e coloridas, representando vários deuses e divindades, algumas das quais em forma humana, outras em forma animal, e umas poucas em parte humanas e em parte animais."
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 19,
+                    "textoDestino": "Se você quiser puxar uma das tapeçarias da parede e colocá-la em sua mochila, volte para 19."
+                },
+                {
+                    "idPagina": 263,
+                    "textoDestino": "Se você preferir simplesmente passar por elas, vá para 263."
                 }
             ]
         },
@@ -1398,15 +1526,24 @@
             "idPagina": 41,
             "historias": [
                 {
-                    "textosHistoria": [
-                        "Não há nada interessante entre os pertences dos Discípulos Negros, a não ser um punhal de sacrifícios comprido que você guarda na mochila. Você vê uma passagem em arco na parede atrás do altar e decide andar até ela. Vá para 341."
+                    "textosHistoria": ["Não há nada interessante entre os pertences dos Discípulos Negros, a não ser um punhal de sacrifícios comprido que você guarda na mochila."],
+                    "efeitos": [
+                        {
+                            "textoefeito": "Você obteve um punhal de sacrifícios comprido.",
+                            "atributoefeito": "ITENS",
+                            "nomeEfeito": "Punhal de sacrifícios comprido",
+                            "quantidade": 1
+                        }
                     ]
+                },
+                {
+                    "textosHistoria": ["Você vê uma passagem em arco na parede atrás do altar e decide andar até ela."]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 341,
+                    "textoDestino": "Vá para 341."
                 }
             ]
         },
@@ -1414,13 +1551,13 @@
             "idPagina": 42,
             "historias": [
                 {
-                    "textosHistoria": ["Passando pela entrada por sobre o corpo da Serpente-Guardiã, você se encontra no meio de uma praça deserta. Vá para 111."]
+                    "textosHistoria": ["Passando pela entrada por sobre o corpo da Serpente-Guardiã, você se encontra no meio de uma praça deserta."]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 111,
+                    "textoDestino": "Vá para 111."
                 }
             ]
         },
@@ -1429,15 +1566,30 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Ao seguir seu caminho através do chão empoeirado em direção à porta na parede oposta, sua mente se enche repentinamente com imagens de horror. Você grita de terror quando vê que toda a peça está sendo engolida pelas chamas. Sua carne parece queimar, a morte é iminente. Seu pesadelo prolonga-se por 5 minutos, antes que a tensão o faça perder a consciência. Uma hora depois você recobra a consciência e, quando tenta se levantar compreende que perdeu um pouco de seu controle e coragem. Suas mãos ainda tremem, e você se sente completamente abalado. Desconte 3 pontos de ENERGIA.",
-                        "Você cambaleia em direção à porta de ferro na parede oposta e deixa a sala do medo. Vá para 117."
+                        "Ao seguir seu caminho através do chão empoeirado em direção à porta na parede oposta, sua mente se enche repentinamente com imagens de horror.",
+                        "Você grita de terror quando vê que toda a peça está sendo engolida pelas chamas.",
+                        "Sua carne parece queimar, a morte é iminente.",
+                        "Seu pesadelo prolonga-se por 5 minutos, antes que a tensão o faça perder a consciência.",
+                        "Uma hora depois você recobra a consciência e, quando tenta se levantar compreende que perdeu um pouco de seu controle e coragem.",
+                        "Suas mãos ainda tremem, e você se sente completamente abalado."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoefeito": "Desconte 3 pontos de ENERGIA.",
+                            "atributoefeito": "ENERGIA",
+                            "quantidade": -3
+                        }
                     ]
+                },
+                {
+                    "textosHistoria": ["Você cambaleia em direção à porta de ferro na parede oposta e deixa a sala do medo."],
+                    "imagem": "Texto na parede IIIII"
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 117,
+                    "textoDestino": "Vá para 117."
                 }
             ]
         },
@@ -1446,14 +1598,18 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Através das cortinas semitransparentes, você chega a ver um homem paramentado de branco entrar no quarto, trazendo um cálice de ouro. Ele usa um turbante afivelado por um broche de ouro com o formato de uma fênix, cujas asas estão espalmadas sobre a testa. Quando o Sacerdote vê o Escravo-Guardião, ajoelha-se e aperta o ouvido contra o peito do homem morto. Em seguida, ele olha para cima e, depois de rapidamente observar o cômodo, corre para fora sem notar sua presença. Sem perder tempo, você começa a tentar abrir a porta. Vá para 336."
+                        "Através das cortinas semitransparentes, você chega a ver um homem paramentado de branco entrar no quarto, trazendo um cálice de ouro.",
+                        "Ele usa um turbante afivelado por um broche de ouro com o formato de uma fênix, cujas asas estão espalmadas sobre a testa.",
+                        "Quando o Sacerdote vê o Escravo-Guardião, ajoelha-se e aperta o ouvido contra o peito do homem morto.",
+                        "Em seguida, ele olha para cima e, depois de rapidamente observar o cômodo, corre para fora sem notar sua presença.",
+                        "Sem perder tempo, você começa a tentar abrir a porta."
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 336,
+                    "textoDestino": "Vá para 336."
                 }
             ]
         },
@@ -1462,17 +1618,24 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Seu corpulento oponente é um pirata bem experimentado no manejo da espada. Ele tira rapidamente o alfanje da bainha, enquanto a multidão ansiosa faz um círculo em torno de vocês.",
-                        "HABILIDADE ENERGIA",
-                        "PIRATA 9 8",
-                        "Se você ganhar, vá para 166."
+                        "Seu corpulento oponente é um pirata bem experimentado no manejo da espada.",
+                        "Ele tira rapidamente o alfanje da bainha, enquanto a multidão ansiosa faz um círculo em torno de vocês."
                     ]
                 }
             ],
+            "combate": {
+                "inimigos": [
+                    {
+                        "inimigo": "PIRATA",
+                        "habilidade": 9,
+                        "energia": 8
+                    }
+                ]
+            },
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 166,
+                    "textoDestino": "Se você ganhar, vá para 166."
                 }
             ]
         },
@@ -1480,15 +1643,18 @@
             "idPagina": 46,
             "historias": [
                 {
-                    "textosHistoria": [
-                        "Depois de andar por uns 50 metros, seu progresso é interrompido por um fosso profundo que atravessa toda a largura do corredor. Se você souber e desejar lançar o encanto de Saltar, vá para 215. Se você for obrigado a saltar o fosso sem a ajuda da magia, vá para 259."
-                    ]
+                    "textosHistoria": ["Depois de andar por uns 50 metros, seu progresso é interrompido por um fosso profundo que atravessa toda a largura do corredor."],
+                    "imagem": "Espada IIIII"
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 215,
+                    "textoDestino": "Se você souber e desejar lançar o encanto de Saltar, vá para 215."
+                },
+                {
+                    "idPagina": 259,
+                    "textoDestino": "Se você for obrigado a saltar o fosso sem a ajuda da magia, vá para 259."
                 }
             ]
         },
@@ -1497,14 +1663,21 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Você corre através da porta para uma passagem transversal. À sua esquerda, você vê Leesha no final da passagem, abrindo uma porta de ferro. À direita, um Anão engatinha na sua direção, o rosto vermelho e cheio de bolhas, e parece delirar com insolação. Ele parece reconhecê-lo, e grita com voz áspera. Se você desejar continuar perseguindo Leesha, vá para 314. Se desejar falar com o Anão, vá para 171."
-                    ]
+                        "Você corre através da porta para uma passagem transversal.",
+                        "À sua esquerda, você vê Leesha no final da passagem, abrindo uma porta de ferro.",
+                        "À direita, um Anão engatinha na sua direção, o rosto vermelho e cheio de bolhas, e parece delirar com insolação. Ele parece reconhecê-lo, e grita com voz áspera."
+                    ],
+                    "imagem": "Anão na passagem IIIII"
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 314,
+                    "textoDestino": "Se você desejar continuar perseguindo Leesha, vá para 314."
+                },
+                {
+                    "idPagina": 171,
+                    "textoDestino": "Se desejar falar com o Anão, vá para 171."
                 }
             ]
         },
@@ -1525,13 +1698,17 @@
             "idPagina": 49,
             "historias": [
                 {
-                    "textosHistoria": ["O corredor termina numa encruzilhada em T. Se você desejar ir para a esquerda, vá para 250. Se desejar ir para a direita, vá para 333."]
+                    "textosHistoria": ["O corredor termina numa encruzilhada em T."]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 250,
+                    "textoDestino": "Se você desejar ir para a esquerda, vá para 250."
+                },
+                {
+                    "idPagina": 333,
+                    "textoDestino": "Se desejar ir para a direita, vá para 333."
                 }
             ]
         },
@@ -1540,15 +1717,28 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Você provoca uma rachadura no pote de barro com o punho de sua espada e é surpreendido pelo ruído sibilante de escapamento de gás. A caixa é uma arca que contém um tesouro pilhado, mas os bandidos não foram vítimas da armadilha que foi deixada dentro dela. Sua cabeça é envolvida numa nuvem de gás venenoso, e você não consegue evitar á inalação. Perde 6 pontos de ENERGIA e 1 ponto de HABILIDADE.",
-                        "Se ainda continuar vivo, volte para 31."
+                        "Você provoca uma rachadura no pote de barro com o punho de sua espada e é surpreendido pelo ruído sibilante de escapamento de gás.",
+                        "A caixa é uma arca que contém um tesouro pilhado, mas os bandidos não foram vítimas da armadilha que foi deixada dentro dela.",
+                        "Sua cabeça é envolvida numa nuvem de gás venenoso, e você não consegue evitar á inalação."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoefeito": "Perde 6 pontos de ENERGIA.",
+                            "atributoefeito": "ENERGIA",
+                            "quantidade": -6
+                        },
+                        {
+                            "textoefeito": "E 1 ponto de HABILIDADE.",
+                            "atributoefeito": "HABILIDADE",
+                            "quantidade": -1
+                        }
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 31,
+                    "textoDestino": "Se ainda continuar vivo, volte para 31."
                 }
             ]
         },
@@ -1557,14 +1747,26 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Você corre para o mar e mergulha, nadando debaixo d'água tanto quanto consegue agüentar o fôlego. Somente quando seus pulmões parecem que vão estourar você volta à superfície. Você olha para trás e vê o Monstro da Concha hesitante na praia, no ponto em que você mergulhou no mar. Você nada ao longo da praia e volta para terra quando o Monstro da Concha não está mais à vista. Duas porções de suas Provisões foram encharcadas e não são mais comestíveis. Você decide não se ariscar andando ao longo da praia, e se dirige para leste, em direção ao interior (vá para 327)."
+                        "Você corre para o mar e mergulha, nadando debaixo d'água tanto quanto consegue agüentar o fôlego. Somente quando seus pulmões parecem que vão estourar você volta à superfície.",
+                        "Você olha para trás e vê o Monstro da Concha hesitante na praia, no ponto em que você mergulhou no mar. Você nada ao longo da praia e volta para terra quando o Monstro da Concha não está mais à vista.",
+                        "Duas porções de suas Provisões foram encharcadas e não são mais comestíveis."
+                    ],
+                    "efeitos": [
+                        {
+                            "textoefeito": "Você perdeu 2 provisões.",
+                            "atributoefeito": "PROVISAO",
+                            "quantidade": -2
+                        }
                     ]
+                },
+                {
+                    "textosHistoria": ["Você decide não se ariscar andando ao longo da praia, e se dirige para leste, em direção ao interior.   ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 327,
+                    "textoDestino": "Vá para 327."
                 }
             ]
         },
@@ -1573,14 +1775,17 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "O vapor acre se torna mais forte, até que você se sente muito mal. A sala começa a rodar diante de seus olhos, e você não consegue impedir o desmaio. Oscilando na borda da peça inundada, você cai. Teste a sua Sorte. Se você tiver Sorte, volte para 8. Se você não tiver Sorte, vá para 130."
+                        "O vapor acre se torna mais forte, até que você se sente muito mal. A sala começa a rodar diante de seus olhos, e você não consegue impedir o desmaio.",
+                        "Oscilando na borda da peça inundada, você cai."
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999999,
-                    "textoDestino": ""
+                    "idPagina": 8,
+                    "textosDestino": ["Teste a sua Sorte.", "Se você tiver Sorte, volte para 8.", "Se você não tiver Sorte, vá para 130."],
+                    "testeAtributo": "SORTE",
+                    "idPaginaAzar": 130
                 }
             ]
         },
@@ -2562,10 +2767,7 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Olhando em torno, você não vê qualquer sinal de vida. No lado oposto da praça há um grande arco de pedra. Parece ser um lugar tão bom quanto qualquer outro para começar a procurar os artefatos do Dragão. Você passa sob o arco em direção a uma escada de pedra que desce para um corredor iluminado por tochas. Enquanto desce com cuidado os degraus de pedra, você imagina onde poderia estar Malbordus. No fim dos degraus, você vê um porta-jóias de ferro. Se quiser abri-lo, vá para 287. Se preferir continuar a andar em direção sul no corredor, vá para 140."
-                        ////////////////////////////
-                        ////////////////////////////
-                        ////////////////////////////
+                        "Olhando em torno, você não vê qualquer sinal de vida. No lado oposto da praça há um grande arco de pedra. Parece ser um lugar tão bom quanto qualquer outro para começar a procurar os artefatos do Dragão. Você passa sob o arco em direção a uma escada de pedra que desce para um corredor iluminado por tochas. Enquanto desce com cuidado os degraus de pedra, você imagina onde poderia estar Malbordus. No fim dos degraus, você vê um porta-jóias de ferro. Se quiser abri-lo, vá para 287. Se preferir continuar a andar em direção sul no corredor, vá para 140. //////////////////////////////////////////////////////////////////////////////////////////"
                     ]
                 }
             ],
@@ -3865,14 +4067,14 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Quando o navio começa a afundar, toda a tripulação dos canhões corre na direção dos degraus de madeira que conduzem ao convés superior. Na furiosa correria para escapar, você é golpeado atrás da cabeça com um porrete e cai inconsciente no convés, afogando-se a bordo do navio que naufraga."
+                        "Quando o navio começa a afundar, toda a tripulação dos canhões corre na direção dos degraus de madeira que conduzem ao convés superior.",
+                        "Na furiosa correria para escapar, você é golpeado atrás da cabeça com um porrete e cai inconsciente no convés, afogando-se a bordo do navio que naufraga."
                     ]
                 }
             ],
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 99444
                 }
             ]
         },
@@ -3880,97 +4082,32 @@
             "idPagina": 188,
             "historias": [
                 {
-                    "textosHistoria": ["Os Discípulos Negros lançam uivos ao ar ao se movimentarem para atacá-lo. Lute com um de cada vez.", "Primeiro DISCÍPULO NEGRO"]
+                    "textosHistoria": ["Os Discípulos Negros lançam uivos ao ar ao se movimentarem para atacá-lo. Lute com um de cada vez."]
                 }
             ],
+            "combate": {
+                "inimigos": [
+                    {
+                        "inimigo": "Primeiro DISCÍPULO NEGRO",
+                        "habilidade": 9,
+                        "energia": 5
+                    },
+                    {
+                        "inimigo": "Segundo DISCÍPULO NEGRO",
+                        "habilidade": 8,
+                        "energia": 6
+                    },
+                    {
+                        "inimigo": "Terceiro DISCÍPULO NEGRO",
+                        "habilidade": 9,
+                        "energia": 5
+                    }
+                ]
+            },
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 9,
-            "historias": [
-                {
-                    "textosHistoria": []
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 5,
-            "historias": [
-                {
-                    "textosHistoria": ["Segundo DISCÍPULO NEGRO"]
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 8,
-            "historias": [
-                {
-                    "textosHistoria": []
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 6,
-            "historias": [
-                {
-                    "textosHistoria": ["Terceiro DISCÍPULO NEGRO"]
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 9,
-            "historias": [
-                {
-                    "textosHistoria": []
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 5,
-            "historias": [
-                {
-                    "textosHistoria": ["Se você vencer, volte para 41."]
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 41,
+                    "textoDestino": "Se você vencer, volte para 41."
                 }
             ]
         },
@@ -4366,44 +4503,25 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Não há alternativa, a não ser tentar forçar a porta com sua espada. Quando começa a golpear a fechadura, você se dá conta de um som sibilante que vem do outro lado da porta. De repente, a porta é aberta por dentro, e você se depara com uma estranha criatura, com corpo de serpente e a parte superior do tronco de aparência humanóide, a qual está protegida por uma armadura. As Serpentes-Guardiãs são assassinas violentas, e você é forçado a puxar sua espada, na tentativa de sobreviver.",
-                        "HABILIDADE ENERGIA",
-                        "SERPENTE-GUARDIÃ"
+                        "Não há alternativa, a não ser tentar forçar a porta com sua espada. Quando começa a golpear a fechadura, você se dá conta de um som sibilante que vem do outro lado da porta.",
+                        "De repente, a porta é aberta por dentro, e você se depara com uma estranha criatura, com corpo de serpente e a parte superior do tronco de aparência humanóide, a qual está protegida por uma armadura.",
+                        "As Serpentes-Guardiãs são assassinas violentas, e você é forçado a puxar sua espada, na tentativa de sobreviver."
                     ]
                 }
             ],
+            "combate": {
+                "inimigos": [
+                    {
+                        "inimigo": "SERPENTE-GUARDIÃ",
+                        "habilidade": 10,
+                        "energia": 10
+                    }
+                ]
+            },
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 10,
-            "historias": [
-                {
-                    "textosHistoria": []
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 10,
-            "historias": [
-                {
-                    "textosHistoria": ["Se você vencer, volte para 42."]
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 42,
+                    "textoDestino": "Se você vencer, volte para 42."
                 }
             ]
         },
@@ -4411,21 +4529,27 @@
             "idPagina": 211,
             "historias": [
                 {
-                    "textosHistoria": [
-                        "Os Homens-Esqueleto são fanáticos que sempre lutam até a morte. Eles serão difíceis de derrotar.",
-                        "HABILIDADE ENERGIA",
-                        "Primeiro",
-                        "HOMEM-ESQUELETO 9 6",
-                        "Segundo",
-                        "HOMEM-ESQUELETO 9 8",
-                        "Lute contra um de cada vez. Se você vencer, volte para 53."
-                    ]
+                    "textosHistoria": ["Os Homens-Esqueleto são fanáticos que sempre lutam até a morte. Eles serão difíceis de derrotar.", "Lute contra um de cada vez."]
                 }
             ],
+            "combate": {
+                "inimigos": [
+                    {
+                        "inimigo": "Primeiro HOMEM-ESQUELETO",
+                        "habilidade": 9,
+                        "energia": 6
+                    },
+                    {
+                        "inimigo": "Segundo HOMEM-ESQUELETO",
+                        "habilidade": 9,
+                        "energia": 8
+                    }
+                ]
+            },
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 53,
+                    "textoDestino": "Se você vencer, volte para 53."
                 }
             ]
         },
@@ -6704,129 +6828,42 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "A passagem em arco possui uma moldura elaborada de pedra entalhada. Você olha para o corredor do outro lado do arco e vê o que parece ser uma esvoaçante cortina dourada na outra extremidade. Fixadas ao longo das paredes, mãos de pedra sustentam espadas.",
-                        "Segurando firmemente sua espada, você anda pelo corredor em estado de alerta. Logo que você chega à primeira espada, o braço de pedra ganha vida e o ataca, enquanto os outros três pares desferem golpes no ar, esperando sua vez.",
-                        "HABILIDADE ENERGIA",
-                        "Primeira ESPADA"
+                        "A passagem em arco possui uma moldura elaborada de pedra entalhada.",
+                        "Você olha para o corredor do outro lado do arco e vê o que parece ser uma esvoaçante cortina dourada na outra extremidade.",
+                        "Fixadas ao longo das paredes, mãos de pedra sustentam espadas.",
+                        "Segurando firmemente sua espada, você anda pelo corredor em estado de alerta.",
+                        "Logo que você chega à primeira espada, o braço de pedra ganha vida e o ataca, enquanto os outros três pares desferem golpes no ar, esperando sua vez."
                     ]
                 }
             ],
+            "combate": {
+                "inimigos": [
+                    {
+                        "inimigo": "Primeira ESPADA",
+                        "habilidade": 6,
+                        "energia": 4
+                    },
+                    {
+                        "inimigo": "Segunda ESPADA",
+                        "habilidade": 6,
+                        "energia": 4
+                    },
+                    {
+                        "inimigo": "Terceira ESPADA",
+                        "habilidade": 6,
+                        "energia": 4
+                    },
+                    {
+                        "inimigo": "Quarta ESPADA",
+                        "habilidade": 6,
+                        "energia": 4
+                    }
+                ]
+            },
             "destinos": [
                 {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 6,
-            "historias": [
-                {
-                    "textosHistoria": []
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 4,
-            "historias": [
-                {
-                    "textosHistoria": ["Segunda ESPADA"]
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 6,
-            "historias": [
-                {
-                    "textosHistoria": []
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 4,
-            "historias": [
-                {
-                    "textosHistoria": ["Terceira ESPADA"]
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 6,
-            "historias": [
-                {
-                    "textosHistoria": []
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 4,
-            "historias": [
-                {
-                    "textosHistoria": ["Quarta ESPADA"]
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 6,
-            "historias": [
-                {
-                    "textosHistoria": []
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
-                }
-            ]
-        },
-        {
-            "idPagina": 4,
-            "historias": [
-                {
-                    "textosHistoria": ["Se você vencer, volte para 191."]
-                }
-            ],
-            "destinos": [
-                {
-                    "idPagina": 999999,
-                    "textoDestino": ""
+                    "idPagina": 191,
+                    "textoDestino": "Se você vencer, volte para 191."
                 }
             ]
         },
@@ -6970,10 +7007,7 @@
             "historias": [
                 {
                     "textosHistoria": [
-                        "Depois de desamarrar a corda, você abre lentamente o saco de algodão. No interior, você acha uma bola de vidro, dentro da qual um homem minúsculo, com asas e ouvidos pontudos, vestindo roupa de cor verde-ervilha, pula freneticamente de alegria de um lado para o outro. Você não consegue ouvir a voz dele através do vidro, mas compreende que o Espírito quer escapar. Se quiser libertar o Espírito, volte para 234. Se preferir deixá-lo na prisão de vidro e continuar para o sul, volte para 39."
-                        ////////////////////////////
-                        ////////////////////////////
-                        ////////////////////////////
+                        "Depois de desamarrar a corda, você abre lentamente o saco de algodão. No interior, você acha uma bola de vidro, dentro da qual um homem minúsculo, com asas e ouvidos pontudos, vestindo roupa de cor verde-ervilha, pula freneticamente de alegria de um lado para o outro. Você não consegue ouvir a voz dele através do vidro, mas compreende que o Espírito quer escapar. Se quiser libertar o Espírito, volte para 234. Se preferir deixá-lo na prisão de vidro e continuar para o sul, volte para 39. ////////////////////////////////////////////////////////////"
                     ]
                 }
             ],

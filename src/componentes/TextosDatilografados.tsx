@@ -11,6 +11,36 @@ export const TextosDatilografados = ({ textos, velocidade, aoConcluir }: ITextos
     const [indiceTexto, setIndiceTexto] = useState(0);
     const [indiceLetra, setIndiceLetra] = useState(0);
 
+    useEffect(() => {
+        if (!textos) {
+            return;
+        }
+        const timer = setTimeout(Datilografar, velocidade);
+        return () => clearTimeout(timer);
+    }, [textos, velocidade, datilografados, indiceTexto, indiceLetra]);
+
+    if (ContextosReprovados()) {
+        return <></>;
+    }
+    return (
+        <div className="datilografados_container">
+            {datilografados.map((datilografadoI, indiceI) => {
+                return (
+                    <p
+                        key={indiceI}
+                        className="datilografados_paragrafo"
+                    >
+                        {datilografadoI}
+                    </p>
+                );
+            })}
+        </div>
+    );
+
+    function ContextosReprovados() {
+        return !textos || !textos.length;
+    }
+
     function TextoAtual() {
         if (textos[indiceTexto]) {
             return textos[indiceTexto];
@@ -27,48 +57,23 @@ export const TextosDatilografados = ({ textos, velocidade, aoConcluir }: ITextos
         }
     }
 
-    useEffect(() => {
-        if (!textos || !textos.length) {
-            return;
-        }
-
-        function Datilografar() {
-            if (indiceTexto < TextoAtual().length) {
-                if (indiceLetra < TextoAtual().length) {
-                    IncrementarDatilografado(TextoAtual()[indiceLetra]);
-                    setIndiceLetra((prevIndiceLetra) => prevIndiceLetra + 1);
-                } else {
-                    setTimeout(() => {
-                        setIndiceTexto((prevIndiceTexto) => prevIndiceTexto + 1);
-                        setIndiceLetra(0);
-                    }, velocidade);
-                }
+    function Datilografar() {
+        if (indiceTexto < TextoAtual().length) {
+            if (indiceLetra < TextoAtual().length) {
+                IncrementarDatilografado(TextoAtual()[indiceLetra]);
+                setIndiceLetra((prevIndiceLetra) => prevIndiceLetra + 1);
             } else {
-                if (aoConcluir) {
-                    aoConcluir();
-                }
+                setTimeout(() => {
+                    setIndiceTexto((prevIndiceTexto) => prevIndiceTexto + 1);
+                    setIndiceLetra(0);
+                }, velocidade);
+            }
+        } else {
+            if (aoConcluir) {
+                aoConcluir();
             }
         }
-
-        const timer = setTimeout(Datilografar, velocidade);
-        return () => clearTimeout(timer);
-    }, [textos, velocidade, datilografados, indiceTexto, indiceLetra]);
-
-    if (!textos || !textos.length) return <></>;
-    return (
-        <div className="datilografados_container">
-            {datilografados.map((datilografadoI, indiceI) => {
-                return (
-                    <p
-                        key={indiceI}
-                        className="datilografados_paragrafo"
-                    >
-                        {datilografadoI}
-                    </p>
-                );
-            })}
-        </div>
-    );
+    }
 };
 
 export default TextosDatilografados;

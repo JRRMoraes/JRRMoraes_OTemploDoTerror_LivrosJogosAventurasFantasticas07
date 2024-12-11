@@ -13,7 +13,6 @@ export const Botao = ({ children, aoClicar, tipo = "button", desativado = false,
     return (
         <div className={styles.botao}>
             <button
-                className={styles.botao}
                 type={tipo}
                 onClick={() => AoClicar()}
                 disabled={desativado}

@@ -1,3 +1,5 @@
+@import "../globais/EstilosGlobais.scss";
+
 .paginaInicial {
     background-size: contain;
     background-repeat: no-repeat;
@@ -28,7 +30,7 @@
 
             p {
                 margin: 8px;
-                tab-size: 40px;
+                tab-size: PixelParaVW(40);
             }
         }
     }

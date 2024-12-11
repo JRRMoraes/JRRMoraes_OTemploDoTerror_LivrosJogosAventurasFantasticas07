@@ -171,6 +171,7 @@ export interface IHistoriaEfeitoExecucao {
 export interface IHistoriaImagemExecucao {
     imagem: string;
     arquivo: string;
+    exeProcessoImagem: EProcesso;
 }
 
 export enum EPosturaInimigo {
@@ -306,9 +307,8 @@ export interface ILivro {
     idLivroJogo: string;
     titulo: string;
     autor: string;
-    ilustrador: string;
-    isbn: string;
     capa: string;
+    copyright: string[];
     apresentacoes: IApresentacao[];
     paginasIniciais: IPagina[];
     paginasCampanha: IPagina[];

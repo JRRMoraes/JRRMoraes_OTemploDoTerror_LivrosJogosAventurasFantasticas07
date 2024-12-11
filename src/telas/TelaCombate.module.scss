@@ -27,16 +27,23 @@
     }
 
     &_derrota {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        font-style: italic;
-        gap: 10px;
+        &_2 {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            font-style: italic;
+            gap: 10px;
+        }
 
         &_operacoesJogoLivro {
             font-size: 1.2rem;
             font-style: italic;
+            border-left: 1px #282828 dotted;
+            padding-left: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 
             &_numeroAtual {
                 font-size: 1.4rem;

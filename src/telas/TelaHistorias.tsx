@@ -2,6 +2,7 @@ import styles from "./TelaHistorias.module.scss";
 import { IEfeito, IHistoriaTextoExecucao } from "../tipos";
 import { Botao, TextosDatilografados } from "../componentes";
 import { ControleHistorias } from "../controles";
+import { EProcesso } from "../uteis";
 
 export const TelaHistorias = () => {
     const {
@@ -81,11 +82,18 @@ export const TelaHistorias = () => {
     function MontarRetorno_Imagem(indice: number) {
         const _historiaImagemExecucao = ObterImagemDaHistoria(indice);
         if (_historiaImagemExecucao) {
+            let _estilo = styles.historias_imagem_zerado;
+            if (_historiaImagemExecucao.exeProcessoImagem !== EProcesso._ZERO) {
+                _estilo += " " + styles.historias_imagem_visivel;
+            }
             return (
-                <img
-                    src={_historiaImagemExecucao.arquivo}
-                    alt={_historiaImagemExecucao.imagem}
-                />
+                <div className={styles.historias_imagem}>
+                    <img
+                        className={_estilo}
+                        src={_historiaImagemExecucao.arquivo}
+                        alt={_historiaImagemExecucao.imagem}
+                    />
+                </div>
             );
         } else {
             return <></>;
